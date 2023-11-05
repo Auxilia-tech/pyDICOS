@@ -64,6 +64,8 @@ public:
     SDICOS::IODCommon::MODALITY GetModality() const
               override {PYBIND11_OVERRIDE(SDICOS::IODCommon::MODALITY, SDICOS::CT, GetModality);}  
 
+    SDICOS::DcsUniqueIdentifier GetSopClassUID() const
+              override {PYBIND11_OVERRIDE(SDICOS::DcsUniqueIdentifier, SDICOS::CT, GetSopClassUID);}  
 };
 
 
@@ -86,8 +88,8 @@ PYBIND11_MODULE(CT, m) {
         .def("GetRescaleSlope", &SDICOS::Section::GetRescaleSlope)
         .def("SetRescaleIntercept", &SDICOS::Section::SetRescaleIntercept,  py::arg("fIntercept"))
         .def("GetRescaleIntercept", &SDICOS::Section::GetRescaleIntercept)
-        .def("SetRescaleType", &SDICOS::Section::SetRescaleType,  py::arg("strType"))
-        .def("GetRescaleType", &SDICOS::Section::GetRescaleType)
+        .def("SetRescaleType", &SDICOS::Section::SetRescaleType, py::arg("strType"))
+        .def("GetRescaleType", &SDICOS::Section::GetRescaleType, py::return_value_policy::reference)
         .def("SetFilterMaterial", &SDICOS::Section::SetFilterMaterial,  py::arg("nFilterMaterial"))
         .def("GetFilterMaterial", &SDICOS::Section::GetFilterMaterial)
         .def("SetFilterMaterials", &SDICOS::Section::SetFilterMaterials,  py::arg("vFilterMaterial"))
@@ -240,5 +242,31 @@ PYBIND11_MODULE(CT, m) {
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = SDICOS::DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("GetModality", py::overload_cast<>(&PyCT::CT::GetModality, py::const_))
-        .def("GetNumberOfFilesToCreate", &SDICOS::CT::GetNumberOfFilesToCreate);
+        .def("GetNumberOfFilesToCreate", &SDICOS::CT::GetNumberOfFilesToCreate)
+        .def("SetBurnedInAnnotation", &SDICOS::CT::SetBurnedInAnnotation, py::arg("bUsesAnnotation"))
+        .def("HasBurnedInAnnotation", &SDICOS::CT::HasBurnedInAnnotation)
+        .def("SetPhotometricInterpretation", &SDICOS::CT::SetPhotometricInterpretation, py::arg("nPI"))
+        .def("GetPhotometricInterpretation", &SDICOS::CT::GetPhotometricInterpretation) 
+        .def("SetImageType", &SDICOS::CT::SetImageType, py::arg("nOOI"), py::arg("nFlavor") = SDICOS::CTTypes::CTImage::enumVolume)
+        .def("GetImageType", &SDICOS::CT::GetImageType, py::arg("nOOI"), py::arg("nFlavor")) 
+        .def("GetOOIImageCharacteristics", &SDICOS::CT::GetOOIImageCharacteristics)
+        .def("GetImageFlavor", &SDICOS::CT::GetImageFlavor) 
+        .def("SetSDI", &SDICOS::CT::SetSDI)
+        .def("IsSDI", &SDICOS::CT::IsSDI) 
+        .def("SetCDI", &SDICOS::CT::SetCDI)
+        .def("IsCDI", &SDICOS::CT::IsCDI) 
+        .def("SetStandard", &SDICOS::CT::SetStandard) 
+        .def("IsStandard", &SDICOS::CT::IsStandard) 
+        .def("SetImageAcquisitionDuration", &SDICOS::CT::SetImageAcquisitionDuration, py::arg("nAcquisitionDuration"))
+        .def("GetImageAcquisitionDuration", &SDICOS::CT::GetImageAcquisitionDuration) 
+        .def("SetContentDateAndTime", &SDICOS::CT::SetContentDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("GetContentDate", &SDICOS::CT::GetContentDate) 
+        .def("GetContentTime", &SDICOS::CT::GetContentTime) 
+        .def("SetInstanceNumber", &SDICOS::CT::SetInstanceNumber, py::arg("nInstanceNumber"))
+        .def("GetInstanceNumber", &SDICOS::CT::GetInstanceNumber) 
+        .def("SetNumberOfSections", &SDICOS::CT::SetNumberOfSections, py::arg("nNum"))
+        .def("GetNumberOfSections", &SDICOS::CT::GetNumberOfSections) 
+        .def("GetSopClassUID", py::overload_cast<>(&PyCT::CT::GetSopClassUID, py::const_))
+
+        ;
 }
