@@ -3,9 +3,10 @@
 
 namespace py = pybind11;
 void export_modCT(py::module &);
-
+void export_modDX(py::module &);
 
 PYBIND11_MODULE(pyDICOS, m)
 {
    export_modCT(m);
+   export_modDX(m);
 }

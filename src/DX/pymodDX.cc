@@ -3,8 +3,8 @@
 
 namespace py = pybind11;
 
-void export_ct(py::module &);
-void export_modCT(py::module &m)
+void export_dx(py::module &);
+void export_modDX(py::module &m)
 {
-    export_ct(m);
+    export_dx(m);
 }
