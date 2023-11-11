@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 # Find Python and pybind11
-find_package(pybind11 REQUIRED)
+find_package(pybind11)
 
 add_subdirectory(src)
 
