@@ -19,17 +19,20 @@ public:
     using TDR::TDR;
     void FreeMemory() override { PYBIND11_OVERRIDE(void,  TDR, FreeMemory); }
 
+    bool Write(const Filename &filename, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
+              override {PYBIND11_OVERRIDE(bool,  TDR, Write, filename, errorLog, nTransferSyntax);}  
+
+    bool Write(MemoryBuffer &memorybuffer, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
+              override {PYBIND11_OVERRIDE(bool,  TDR, Write, memorybuffer, errorLog, nTransferSyntax);}  
+
+    bool Write(MemoryFile &memfile, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
+              override {PYBIND11_OVERRIDE(bool,  TDR, Write, memfile, errorLog, nTransferSyntax);}  
+
     bool Read(const Filename &filename, ErrorLog& errorLog, IMemoryManager *pMemMgr)
               override {PYBIND11_OVERRIDE(bool,  TDR, Read, filename, errorLog, pMemMgr);}  
     
     bool Read(MemoryFile &memfile, ErrorLog& errorLog, IMemoryManager *pMemMgr)
               override {PYBIND11_OVERRIDE(bool,  TDR, Read, memfile, errorLog, pMemMgr);}  
-
-    bool Write(MemoryBuffer &memorybuffer, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
-              override {PYBIND11_OVERRIDE(bool,  TDR, Write, filename, errorLog, nTransferSyntax);}  
-
-    bool Write(MemoryFile &memfile, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
-              override {PYBIND11_OVERRIDE(bool,  TDR, Write, memfile, errorLog, nTransferSyntax);}  
 
     IODCommon::MODALITY GetModality() const
               override {PYBIND11_OVERRIDE(IODCommon::MODALITY, TDR, GetModality);}  
@@ -41,35 +44,50 @@ void export_tdr(py::module &m)
     py::class_<IODCommon>(m, "IODCommon");
     py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
 
-    py::enum_<DicosFile::TRANSFER_SYNTAX>(m, "TRANSFER_SYNTAX")
-        .value("enumLittleEndianExplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicit)
-        .value("enumLittleEndianExplicitExtended", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicitExtended)
-        .value("enumLittleEndianImplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianImplicit)
-        .value("enumLosslessJPEG", DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE);
+    py::enum_<TDRTypes::ThreatDetectionReport::TDR_TYPE>(m, "TDR_TYPE")
+        .value("enumUnknownTDRType", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumUnknownTDRType)
+        .value("enumMachine", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumMachine)
+        .value("enumOperator", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumOperator)
+        .value("enumGroundTruth", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumGroundTruth)
+        .value("enumAggregate", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumAggregate)
+        .value("enumModAggregate", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumModAggregate)
+        .value("enumUndefined", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumUndefined);
 
-    py::enum_<DXTypes::DXSeries::PRESENTATION_INTENT_TYPE>(m, "PRESENTATION_INTENT_TYPE")
-        .value("enumUnknownPresentationIntentType", DXTypes::DXSeries::enumUnknownPresentationIntentType)
-        .value("enumPresentation",  DXTypes::DXSeries::enumPresentation)
-        .value("enumProcessing",  DXTypes::DXSeries::enumProcessing);
+    py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER>(m, "OBJECT_OF_INSPECTION_GENDER")
+        .value("enumUnknownObjectOfInspectionGender", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumUnknownObjectOfInspectionGender)
+        .value("enumGenderMale", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderMale)
+        .value("enumGenderFemale", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderFemale)
+        .value("enumGenderOther", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderOther)
+        .value("enumGenderUnknown", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderUnknown);
 
-    py::enum_<ImageType::PIXEL_DATA_CHARACTERISTICS>(m, "PIXEL_DATA_CHARACTERISTICS")
-        .value("enumUnknownPixelDataCharacteristics",  GeneralImageModule::enumUnknownPixelDataCharacteristics)
-        .value("enumOriginal",   GeneralImageModule::enumOriginal)
-        .value("enumDerived",   GeneralImageModule::enumDerived);
+    py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE>(m, "OBJECT_OF_INSPECTION_TYPE")
+        .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumUnknownObjectOfInspectionType)
+        .value("enumTypeBioSample", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBioSample)
+        .value("enumTypeCargo", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeCargo)
+        .value("enumTypeBaggage", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBaggage)
+        .value("enumTypeAnimal", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeAnimal)
+        .value("enumTypeOther", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeOther)
+        .value("enumTypePerson", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypePerson);
+
+    py::enum_<ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE>(m, "OBJECT_OF_INSPECTION_ID_TYPE")
+        .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumUnknownObjectOfInspectionIdType)
+        .value("enumTypeBioSample", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumText)
+        .value("enumTypeCargo", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumRFID)
+        .value("enumTypeBaggage", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumBarcode)
+        .value("enumTypeAnimal", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumMRP);
 
     py::class_<PyTDR, TDR, IODCommon, 
                          FrameOfReferenceUser
                          >(m, "TDR")
         .def(py::init<>())
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
-                      const TDRTypes::ThreadDetectionReport::TDR_TYPE, 
+                      const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
                       const S_INT32>(), 
                        py::arg("OOIType"), 
                        py::arg("tdrType"), 
                        py::arg("instanceNumber"))
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
-                      const TDRTypes::ThreadDetectionReport::TDR_TYPE, 
+                      const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
                       const S_INT32, 
                       const DcsDate&, 
                       const DcsTime&>(), 
@@ -79,7 +97,7 @@ void export_tdr(py::module &m)
                        py::arg("contentCreationDate"), 
                        py::arg("contentCreationTime"))
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER, 
-                      const TDRTypes::ThreadDetectionReport::TDR_TYPE, 
+                      const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
                       const S_INT32, 
                       const DcsDate&, 
                       const DcsTime&>(), 
@@ -89,10 +107,10 @@ void export_tdr(py::module &m)
                        py::arg("contentCreationDate"), 
                        py::arg("contentCreationTime"))
         .def(py::init<const DcsLongString&, 
-                      const ObjectOfInspectionModule::IDinfo::OBJECT_OF_INSPECTION_ID_TYPE&,
+                      const ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE&,
                       const DcsLongString&,
                       const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
-                      const TDRTypes::ThreadDetectionReport::TDR_TYPE, 
+                      const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
                       const S_INT32>(), 
                        py::arg("OOIIdentifier"), 
                        py::arg("IdType"), 
@@ -100,31 +118,59 @@ void export_tdr(py::module &m)
                        py::arg("OOIType"), 
                        py::arg("tdrType"), 
                        py::arg("instanceNumber"))
-        .def("__copy__", [](const DX &self) { return DX(self); })
-        .def("__deepcopy__", [](const DX &self, py::dict) { return DX(self); })
+        .def("__copy__", [](const TDR &self) { return TDR(self); })
+        .def("__deepcopy__", [](const TDR &self, py::dict) { return TDR(self); })
         .def(py::self == py::self)
         .def(py::self != py::self)
-        .def("Initialize", py::overload_cast<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
-                                             const DXTypes::DXSeries::PRESENTATION_INTENT_TYPE, 
-                                             const GeneralImageModule::PIXEL_DATA_CHARACTERISTICS, 
-                                             const ImagePixelMacro::PHOTOMETRIC_INTERPRETATION>
-                           (&PyDX::Initialize), 
-                           py::arg("nOOIType"), 
-                           py::arg("presentationIntentType"),
-                           py::arg("pixelDataCharacteristics") = GeneralImageModule::enumOriginal, 
-                           py::arg("nPI") = ImagePixelMacro::enumMonochrome2)
-        .def("Initialize", py::overload_cast<DXModule&, 
+        .def("Initialize", py::overload_cast<const TDRModule&, 
                                              ErrorLog&, 
-                                             bool>
-                           (&PyDX::Initialize),
-                           py::arg("dx"), 
-                           py::arg("errorlog"), 
-                           py::arg("bMoveData"))
+                                             const bool>
+                           (&PyTDR::Initialize), 
+                           py::arg("tdr"), 
+                           py::arg("errorlog"),
+                           py::arg("bMoveData") = false)
+        .def("Initialize", py::overload_cast<const DcsLongString&, 
+                                             const ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE&,
+                                             const DcsLongString&,
+                                             const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
+                                             const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
+                                             const S_INT32>
+                           (&PyTDR::Initialize),
+                           py::arg("OOIIdentifier"), 
+                           py::arg("IdType"), 
+                           py::arg("OOIIdentifierIssuer"), 
+                           py::arg("OOIType"), 
+                           py::arg("tdrType"), 
+                           py::arg("instanceNumber"))    
+        .def("Write", py::overload_cast<const Filename&, 
+                                        ErrorLog&, 
+                                        const DicosFile::TRANSFER_SYNTAX
+                                        >
+                     (&PyTDR::TDR::Write, py::const_), 
+                     py::arg("filename"), 
+                     py::arg("errorLog"),
+                     py::arg("nTransferSyntax") = DicosFile::enumLosslessJPEG)
+        .def("Write", py::overload_cast<MemoryBuffer&, 
+                                        ErrorLog&, 
+                                        const DicosFile::TRANSFER_SYNTAX
+                                        >
+                     (&PyTDR::TDR::Write, py::const_), 
+                     py::arg("memorybuffer"), 
+                     py::arg("errorLog"),
+                     py::arg("nTransferSyntax") = DicosFile::enumLosslessJPEG)
+        .def("Write", py::overload_cast<MemoryFile&, 
+                                        ErrorLog&, 
+                                        const DicosFile::TRANSFER_SYNTAX
+                                        >
+                     (&PyTDR::TDR::Write, py::const_),
+                     py::arg("memfile"), 
+                     py::arg("errorlog"),
+                     py::arg("nTransferSyntax") = DicosFile::enumLosslessJPEG)
         .def("Read", py::overload_cast<const Filename&, 
                                        ErrorLog&, 
                                        IMemoryManager*
                                        >
-                     (&PyDX::DX::Read),
+                     (&PyTDR::TDR::Read),
                      py::arg("filename"), 
                      py::arg("errorlog"),
                      py::arg("pMemMgr") = S_NULL)
@@ -132,27 +178,10 @@ void export_tdr(py::module &m)
                                        ErrorLog& , 
                                        IMemoryManager*
                                        >
-                     (&PyDX::DX::Read),
+                     (&PyTDR::TDR::Read),
                      py::arg("memfile"), 
                      py::arg("errorlog"),
-                     py::arg("pMemMgr") = S_NULL)       
-
-        .def("Write", py::overload_cast<const Filename&, 
-                                        ErrorLog&, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
-                     (&PyDX::DX::Write, py::const_), 
-                     py::arg("filename"), 
-                     py::arg("errorLog"),
-                     py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .def("Write", py::overload_cast<MemoryFile&, 
-                                        ErrorLog&, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
-                     (&PyDX::DX::Write, py::const_),
-                     py::arg("memfile"), 
-                     py::arg("errorlog"),
-                     py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .def("GetModality", py::overload_cast<>(&PyDX::DX::GetModality, py::const_))
+                     py::arg("pMemMgr") = S_NULL)   
+        .def("GetModality", py::overload_cast<>(&PyTDR::TDR::GetModality, py::const_))
         ;
 }
