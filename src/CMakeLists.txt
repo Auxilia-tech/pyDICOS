@@ -1,5 +1,5 @@
 
-file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS CT/*.cc DX/*.cc)
+file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS CT/*.cc DX/*.cc TDR/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
