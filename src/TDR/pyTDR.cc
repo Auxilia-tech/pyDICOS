@@ -1,3 +1,6 @@
+#ifndef PYTDR_FILE_H
+#define PYTDR_FILE_H
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
@@ -39,7 +42,7 @@ public:
     
 };
 
-void export_tdr(py::module &m)
+void export_TDR(py::module &m)
 {
     py::class_<IODCommon>(m, "IODCommon");
     py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
@@ -185,3 +188,4 @@ void export_tdr(py::module &m)
         .def("GetModality", py::overload_cast<>(&PyTDR::TDR::GetModality, py::const_))
         ;
 }
+#endif

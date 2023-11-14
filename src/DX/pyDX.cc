@@ -1,3 +1,6 @@
+#ifndef PYDX_FILE_H
+#define PYDX_FILE_H
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
@@ -47,7 +50,7 @@ public:
     
 };
 
-void export_dx(py::module &m)
+void export_DX(py::module &m)
 {
     py::class_<ScanCommon>(m, "ScanCommon");
     py::class_<XRayEquipmentUser>(m, "XRayEquipmentUser");
@@ -150,3 +153,5 @@ void export_dx(py::module &m)
         .def("GetModality", py::overload_cast<>(&PyDX::DX::GetModality, py::const_))
         ;
 }
+
+#endif
