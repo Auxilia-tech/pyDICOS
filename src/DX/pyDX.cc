@@ -1,10 +1,4 @@
-#ifndef PYDX_FILE_H
-#define PYDX_FILE_H
-
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/operators.h>
-
+#include "../headers.hh"
 
 #include "SDICOS/UserDX.h"
 #include "SDICOS/ModuleDX.h"
@@ -52,16 +46,6 @@ public:
 
 void export_DX(py::module &m)
 {
-    py::class_<ScanCommon>(m, "ScanCommon");
-    py::class_<XRayEquipmentUser>(m, "XRayEquipmentUser");
-    py::class_<ImageCommonUser>(m, "ImageCommonUser");
-    py::class_<DXDetectorUser>(m, "DXDetectorUser");
-    py::class_<DXPositioningUser>(m, "DXPositioningUser");
-    py::class_<XRayGenerationUser>(m, "XRayGenerationUser");
-    py::class_<XRayFiltrationUser>(m, "XRayFiltrationUser");
-    py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
-    py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
-
     py::enum_<DicosFile::TRANSFER_SYNTAX>(m, "TRANSFER_SYNTAX")
         .value("enumLittleEndianExplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicit)
         .value("enumLittleEndianExplicitExtended", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicitExtended)
@@ -79,6 +63,16 @@ void export_DX(py::module &m)
         .value("enumOriginal",   GeneralImageModule::enumOriginal)
         .value("enumDerived",   GeneralImageModule::enumDerived);
 
+py::class_<ScanCommon>(m, "ScanCommon");
+    py::class_<XRayEquipmentUser>(m, "XRayEquipmentUser");
+    py::class_<ImageCommonUser>(m, "ImageCommonUser");
+    py::class_<DXDetectorUser>(m, "DXDetectorUser");
+    py::class_<DXPositioningUser>(m, "DXPositioningUser");
+    py::class_<XRayGenerationUser>(m, "XRayGenerationUser");
+    py::class_<XRayFiltrationUser>(m, "XRayFiltrationUser");
+    py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
+    py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
+    py::class_<DX>(m, "SDICOS::DX");
     py::class_<PyDX, DX, ScanCommon, 
                          XRayEquipmentUser, 
                          ImageCommonUser, 
@@ -150,8 +144,5 @@ void export_DX(py::module &m)
                      py::arg("memfile"), 
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .def("GetModality", py::overload_cast<>(&PyDX::DX::GetModality, py::const_))
-        ;
+        .def("GetModality", py::overload_cast<>(&PyDX::DX::GetModality, py::const_));
 }
-
-#endif
