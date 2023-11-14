@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/Client_SimpleSendData.dir/Client/SimpleSendData/main.cpp.o  -o ../bin/Client_SimpleSendData /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

@@ -1,0 +1,4 @@
+<map id="SDICOS::DcsUnlimitedText" name="SDICOS::DcsUnlimitedText">
+<area shape="rect" id="node1" title="This string has a 2^32&#45;2 character maximum." alt="" coords="5,80,187,107"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="28,5,164,32"/>
+</map>

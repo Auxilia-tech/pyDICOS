@@ -1,0 +1,4 @@
+<map id="SDICOS::DcsDecimal" name="SDICOS::DcsDecimal">
+<area shape="rect" id="node1" title="This string represents a decimal number. The string has the following restrictions: &#45;16 bytes max &#45;Al..." alt="" coords="5,80,155,107"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="12,5,148,32"/>
+</map>

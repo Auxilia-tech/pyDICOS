@@ -1,0 +1,4 @@
+<map id="SDICOS::GeneralImageModule" name="SDICOS::GeneralImageModule">
+<area shape="rect" id="node1" title="Implements General Image SPECREF V03 Section 14.3.1, Table 95." alt="" coords="5,80,207,107"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_image_type.html" title="Implements General Image Module&#39;s Image Type. Provides overridable functions for V02A and above...." alt="" coords="35,5,177,32"/>
+</map>

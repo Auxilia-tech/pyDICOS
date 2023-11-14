@@ -1,0 +1,5 @@
+<map id="SDICOS::ErrorLog::LogItem" name="SDICOS::ErrorLog::LogItem">
+<area shape="rect" id="node1" title="Implements LogItem." alt="" coords="95,5,277,32"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_error_log_1_1_error.html" title="Implements Error." alt="" coords="5,80,169,107"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_error_log_1_1_warning.html" title="Implements Warning." alt="" coords="194,80,378,107"/>
+</map>

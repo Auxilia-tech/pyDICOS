@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/V03API_UserLevel_TDR.dir/V03API/UserLevel/TDR/main.cpp.o  -o ../bin/V03API_UserLevel_TDR /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

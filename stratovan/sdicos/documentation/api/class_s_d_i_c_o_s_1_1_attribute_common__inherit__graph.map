@@ -1,0 +1,21 @@
+<map id="SDICOS::AttributeCommon" name="SDICOS::AttributeCommon">
+<area shape="rect" id="node1" title=" " alt="" coords="5,452,185,479"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_attribute_double.html" title=" " alt="" coords="257,5,425,32"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_attribute_float.html" title=" " alt="" coords="262,56,419,83"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_attribute_header.html" title="Class meant to only read the group, element, and VR from file. Used to determine which attribute clas..." alt="" coords="256,107,425,133"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_attribute_other.html" title="Attribute with VR = OB or OW or OF." alt="" coords="261,157,421,184"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_attribute_pixel_data.html" title="Handles pixel data, tag (7FE0, 0010), reading/writing based on transfer syntax. Values stored as 8bit..." alt="" coords="249,208,433,235"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_attribute_pixel_data32_bit.html" title="Handles 32 bit pixel data, tag (7FE0, 0011), reading/writing based on transfer syntax...." alt="" coords="233,259,448,285"/>
+<area shape="rect" id="node8" href="$class_s_d_i_c_o_s_1_1_attribute_pixel_data32_bit_float.html" title="Handles 32 bit float pixel data, tag (7FE0, 0013), reading/writing based on transfer syntax...." alt="" coords="241,310,440,351"/>
+<area shape="rect" id="node9" href="$class_s_d_i_c_o_s_1_1_attribute_pixel_data64_bit.html" title="Handles 64 bit pixel data, tag (7FE0, 0012), reading/writing based on transfer syntax...." alt="" coords="233,376,448,403"/>
+<area shape="rect" id="node10" href="$class_s_d_i_c_o_s_1_1_attribute_sequence.html" title="Attribute with VR = SQ." alt="" coords="247,427,434,453"/>
+<area shape="rect" id="node11" href="$class_s_d_i_c_o_s_1_1_attribute_signed_int16_bit.html" title=" " alt="" coords="235,477,447,504"/>
+<area shape="rect" id="node12" href="$class_s_d_i_c_o_s_1_1_attribute_signed_int32_bit.html" title=" " alt="" coords="235,528,447,555"/>
+<area shape="rect" id="node13" href="$class_s_d_i_c_o_s_1_1_attribute_signed_int64_bit.html" title=" " alt="" coords="235,579,447,605"/>
+<area shape="rect" id="node14" href="$class_s_d_i_c_o_s_1_1_attribute_string.html" title="Represents attributes with a string VR." alt="" coords="259,629,422,656"/>
+<area shape="rect" id="node15" href="$class_s_d_i_c_o_s_1_1_attribute_tag.html" title="Attribute with VR = AT." alt="" coords="266,680,415,707"/>
+<area shape="rect" id="node16" href="$class_s_d_i_c_o_s_1_1_attribute_unknown.html" title="Attribute with VR = UN. Data is stored in a memory buffer." alt="" coords="250,731,431,757"/>
+<area shape="rect" id="node17" href="$class_s_d_i_c_o_s_1_1_attribute_unsigned_int16_bit.html" title=" " alt="" coords="249,782,432,823"/>
+<area shape="rect" id="node18" href="$class_s_d_i_c_o_s_1_1_attribute_unsigned_int32_bit.html" title=" " alt="" coords="249,847,432,889"/>
+<area shape="rect" id="node19" href="$class_s_d_i_c_o_s_1_1_attribute_unsigned_int64_bit.html" title=" " alt="" coords="249,913,432,954"/>
+</map>

@@ -1,27 +1,6 @@
-#ifndef MY_HEADER_FILE_H
-#define MY_HEADER_FILE_H
+#include "../headers.hh"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/operators.h>
-#include <map>
-
-#include "SDICOS/DICOS.h"
-#include "SDICOS/UserCT.h"
-#include "SDICOS/ModuleCT.h"
-#include "SDICOS/Array1D.h"
-#include "SDICOS/Point3D.h"
 #include "SDICOS/TemplateCommon.h"
-#include "SDICOS/TemplateBase.h"
-#include "SDICOS/ClientManager.h"
-#include "SDICOS/MemoryPolicy.h"
-#include "SDICOS/AcquisitionContextUser.h"
-#include "SDICOS/ImageBaseUser.h"
-#include "SDICOS/XRayEquipmentUser.h"
-#include "SDICOS/FrameOfReferenceUser.h"
-
-
-namespace py = pybind11;
 
 using namespace SDICOS;
 
@@ -76,9 +55,10 @@ public:
 };
 
 
-void export_ct(py::module &m)
+void export_CT(py::module &m)
 {
     py::class_<SectionCommon>(m, "SectionCommon");
+    py::class_<Section>(m, "SDICOS::Section");
     py::class_<PySection, Section, SectionCommon>(m, "Section")
         .def(py::init<>())
         .def(py::init<const S_UINT32>(), py::arg("sectionId"))
@@ -86,7 +66,6 @@ void export_ct(py::module &m)
         .def("__deepcopy__", [](const Section &self, py::dict) { return Section(self); })
         .def(py::self == py::self)
         .def(py::self != py::self)
-        .def("SetImagePixelPresentation", &Section::SetImagePixelPresentation)
         .def("SetImagePixelPresentation", &Section::SetImagePixelPresentation, py::arg("nPresentation"))
         .def("GetImagePixelPresentation", &Section::GetImagePixelPresentation)
         .def("SetImageVolumeBasedCalculationTechnique", &Section::SetImageVolumeBasedCalculationTechnique, py::arg("nTechnique"))
@@ -117,7 +96,7 @@ void export_ct(py::module &m)
         .def("GetKVP", &Section::GetKVP)
         .def("ApplyRescaleToImage", &Section::ApplyRescaleToImage)
         .def("FreeMemory", &PySection::FreeMemory);
-
+        
     py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE>(m, "OBJECT_OF_INSPECTION_TYPE")
         .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumUnknownObjectOfInspectionType)
         .value("enumTypeBioSample", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBioSample)
@@ -166,7 +145,13 @@ void export_ct(py::module &m)
         .value("enumLosslessJPEG", DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE);
 
-
+    py::class_<IODCommon>(m, "IODCommon");
+    py::class_<ScanCommon>(m, "ScanCommon");
+    py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
+    py::class_<XRayEquipmentUser>(m, "XRayEquipmentUser");
+    py::class_<ImageCommonUser>(m, "ImageCommonUser");
+    py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
+    py::class_<CT>(m, "SDICOS::CT");
     py::class_<PyCT, CT, IODCommon, 
                          ScanCommon, 
                          AcquisitionContextUser, 
@@ -277,8 +262,5 @@ void export_ct(py::module &m)
         .def("GetInstanceNumber", &CT::GetInstanceNumber) 
         .def("SetNumberOfSections", &CT::SetNumberOfSections, py::arg("nNum"))
         .def("GetNumberOfSections", &CT::GetNumberOfSections) 
-        .def("GetSopClassUID", py::overload_cast<>(&PyCT::CT::GetSopClassUID, py::const_))
-        ;
+        .def("GetSopClassUID", py::overload_cast<>(&PyCT::CT::GetSopClassUID, py::const_));
 }
-
-#endif // MY_HEADER_FILE_H

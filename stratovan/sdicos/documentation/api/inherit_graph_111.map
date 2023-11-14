@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_s_d_i_c_o_s_1_1_i_file.html" title=" " alt="" coords="5,107,108,133"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dummy_file.html" title=" " alt="" coords="173,5,319,32"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_file.html" title="Object for reading/writing a file on disk." alt="" coords="196,56,296,83"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_i_memory_file.html" title=" " alt="" coords="171,107,321,133"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_memory_block_file___method_a.html" title="Read only Only loads the minimum needed number of memory blocks." alt="" coords="156,158,336,199"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_memory_block_file___method_b.html" title="Read only Maintains a maximum number of loaded memory blocks." alt="" coords="156,223,336,265"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_memory_file.html" title=" " alt="" coords="384,199,531,225"/>
+<area shape="rect" id="node8" href="$class_s_d_i_c_o_s_1_1_memory_buffer.html" title="A grow&#45;only buffer class." alt="" coords="167,289,325,316"/>
+</map>

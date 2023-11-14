@@ -1,0 +1,6 @@
+<map id="SDICOS::Utils::DicosData&lt; TYPE &gt;" name="SDICOS::Utils::DicosData&lt; TYPE &gt;">
+<area shape="rect" id="node1" title="Structure for holding DICOS used in callback functions. Data can be moved out of this object." alt="" coords="77,215,251,256"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_utils_1_1_dicos_data_base.html" title="Holds information about DICOS network transfer." alt="" coords="63,139,265,165"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_utils_1_1_time_stamp.html" title="Structure for holding date and time." alt="" coords="165,5,344,32"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="SDICOS::AttributeManager::OverlayPlane" name="SDICOS::AttributeManager::OverlayPlane">
+<area shape="rect" id="node1" title="A struct for holding overlay plane attribute pointers." alt="" coords="1084,186,1263,227"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_attribute_manager_1_1_attribute_pointer.html" title=" " alt="" coords="693,136,875,192"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_attribute_signed_int16_bit.html" title=" " alt="" coords="243,101,455,128"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_attribute_common.html" title=" " alt="" coords="5,208,185,235"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_attribute_string.html" title="Represents attributes with a string VR." alt="" coords="268,25,431,52"/>
+<area shape="rect" id="node9" href="$class_s_d_i_c_o_s_1_1_attribute_other.html" title="Attribute with VR = OB or OW or OF." alt="" coords="269,349,429,376"/>
+<area shape="rect" id="node11" href="$class_s_d_i_c_o_s_1_1_attribute_unsigned_int16_bit.html" title=" " alt="" coords="258,274,441,315"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_attribute_manager_1_1_attribute_pointer.html" title="Pointer to an attribute." alt="" coords="235,203,464,245"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_attribute_manager_1_1_attribute_pointer.html" title=" " alt="" coords="693,56,875,112"/>
+<area shape="rect" id="node8" href="$class_s_d_i_c_o_s_1_1_attribute_manager_1_1_attribute_pointer.html" title=" " alt="" coords="693,300,875,356"/>
+<area shape="rect" id="node10" href="$class_s_d_i_c_o_s_1_1_attribute_manager_1_1_attribute_pointer.html" title=" " alt="" coords="689,220,879,276"/>
+</map>

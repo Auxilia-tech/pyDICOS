@@ -1,0 +1,8 @@
+<map id="SDICOS::DicosFileListing::SopInstanceFiles" name="SDICOS::DicosFileListing::SopInstanceFiles">
+<area shape="rect" id="node1" title="Structure for holding files of the same SOP Instance and includes all other hierarchical UID&#39;s." alt="" coords="76,348,247,389"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="5,178,141,205"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title=" " alt="" coords="165,171,352,212"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_filename.html" title=" " alt="" coords="77,81,209,108"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_folder.html" title=" " alt="" coords="85,5,200,32"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title="Allocates memory on a single contiguous block for efficient access." alt="" coords="233,81,420,108"/>
+</map>

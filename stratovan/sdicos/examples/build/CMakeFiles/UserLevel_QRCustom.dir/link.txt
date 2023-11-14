@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/UserLevel_QRCustom.dir/UserLevel/QRCustom/main.cpp.o  -o ../bin/UserLevel_QRCustom /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

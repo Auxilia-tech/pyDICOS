@@ -1,0 +1,8 @@
+<map id="SDICOS::AIT2DTypes::AIT2DImage" name="SDICOS::AIT2DTypes::AIT2DImage">
+<area shape="rect" id="node1" title=" " alt="" coords="241,155,390,196"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_image_pixel_module.html" title="Implements image pixel module SPECREF V03 Section 14.2.1, Table 85." alt="" coords="5,80,191,107"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_image_pixel_macro.html" title="Implements image pixel macro SPECREF V03 Section 14.2.1, Table 86." alt="" coords="9,5,187,32"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_general_image_module.html" title="Implements General Image SPECREF V03 Section 14.3.1, Table 95." alt="" coords="215,80,416,107"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_image_type.html" title="Implements General Image Module&#39;s Image Type. Provides overridable functions for V02A and above...." alt="" coords="244,5,387,32"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_image_common.html" title="Base class containing attributes shared by CT, AIT2D, AIT3D, and DX/X&#45;Ray Image Modules SPECREF V03 S..." alt="" coords="440,80,607,107"/>
+</map>

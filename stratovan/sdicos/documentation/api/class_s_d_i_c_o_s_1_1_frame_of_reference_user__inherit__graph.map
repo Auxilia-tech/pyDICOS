@@ -1,0 +1,8 @@
+<map id="SDICOS::FrameOfReferenceUser" name="SDICOS::FrameOfReferenceUser">
+<area shape="rect" id="node1" title=" " alt="" coords="223,5,438,32"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d.html" title="AIT2D represents a single AIT 2D scan. The class is not thread safe." alt="" coords="5,80,120,107"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_a_i_t3_d.html" title="Represents a single series in a AIT3D scan with original pixel data." alt="" coords="144,80,259,107"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_c_t.html" title="Represents a single CT scan with original pixel data." alt="" coords="283,80,378,107"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_d_x.html" title="DX represents a single DX/X&#45;Ray Scan. This class is not thread safe." alt="" coords="402,80,497,107"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_t_d_r.html" title="TDR represents a Thread Detection Report (TDR) for an Object of Inspection (OOI)" alt="" coords="521,80,625,107"/>
+</map>

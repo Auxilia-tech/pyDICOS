@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/TagLevel_DX.dir/TagLevel/DX/main.cpp.o  -o ../bin/TagLevel_DX /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

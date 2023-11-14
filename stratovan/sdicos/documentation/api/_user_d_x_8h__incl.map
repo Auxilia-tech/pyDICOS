@@ -1,0 +1,102 @@
+<map id="UserDX.h" name="UserDX.h">
+<area shape="rect" id="node1" title=" " alt="" coords="4869,5,4945,32"/>
+<area shape="rect" id="node2" href="$_module_d_x_8h.html" title=" " alt="" coords="3399,408,3543,435"/>
+<area shape="rect" id="node9" href="$_array1_d_8h.html" title=" " alt="" coords="3447,1064,3580,1091"/>
+<area shape="rect" id="node65" href="$_vector3_d_8h.html" title=" " alt="" coords="5801,565,5941,591"/>
+<area shape="rect" id="node66" href="$_point3_d_8h.html" title=" " alt="" coords="5809,654,5941,681"/>
+<area shape="rect" id="node76" href="$_template_base_8h.html" title=" " alt="" coords="3769,80,3938,107"/>
+<area shape="rect" id="node88" href="$_template_common_8h.html" title=" " alt="" coords="5498,483,5689,509"/>
+<area shape="rect" id="node92" href="$_image2_d_8h.html" title=" " alt="" coords="5250,565,5387,591"/>
+<area shape="rect" id="node93" href="$_image_base_user_8h.html" title=" " alt="" coords="813,743,992,770"/>
+<area shape="rect" id="node94" href="$_x_ray_equipment_user_8h.html" title=" " alt="" coords="4667,743,4872,770"/>
+<area shape="rect" id="node95" href="$_x_ray_generation_user_8h.html" title=" " alt="" coords="5801,408,6007,435"/>
+<area shape="rect" id="node96" href="$_d_x_detector_user_8h.html" title=" " alt="" coords="4556,80,4735,107"/>
+<area shape="rect" id="node97" href="$_d_x_positioning_user_8h.html" title=" " alt="" coords="5027,408,5221,435"/>
+<area shape="rect" id="node98" href="$_x_ray_filtration_user_8h.html" title=" " alt="" coords="4810,408,5003,435"/>
+<area shape="rect" id="node99" href="$_frame_of_reference_user_8h.html" title=" " alt="" coords="163,483,384,509"/>
+<area shape="rect" id="node100" href="$_acquisition_context_user_8h.html" title=" " alt="" coords="1056,155,1240,196"/>
+<area shape="rect" id="node3" href="$_scanner_common_8h.html" title=" " alt="" coords="1961,565,2148,591"/>
+<area shape="rect" id="node43" href="$_acquisition_context_module_8h.html" title=" " alt="" coords="1089,557,1273,599"/>
+<area shape="rect" id="node44" href="$_overlay_plane_module_8h.html" title=" " alt="" coords="3142,565,3346,591"/>
+<area shape="rect" id="node45" href="$_frame_of_reference_8h.html" title=" " alt="" coords="2321,565,2516,591"/>
+<area shape="rect" id="node46" href="$_tip_image_8h.html" title=" " alt="" coords="1444,565,1583,591"/>
+<area shape="rect" id="node47" href="$_image_histogram_module_8h.html" title=" " alt="" coords="2895,565,3118,591"/>
+<area shape="rect" id="node48" href="$_d_x_series_8h.html" title=" " alt="" coords="4240,565,4379,591"/>
+<area shape="rect" id="node50" href="$_d_x_image_8h.html" title=" " alt="" coords="3490,483,3627,509"/>
+<area shape="rect" id="node61" href="$_d_x_detector_8h.html" title=" " alt="" coords="4291,483,4442,509"/>
+<area shape="rect" id="node62" href="$_d_x_positioning_8h.html" title=" " alt="" coords="4810,483,4977,509"/>
+<area shape="rect" id="node64" href="$_x_ray_generation_8h.html" title=" " alt="" coords="5103,483,5281,509"/>
+<area shape="rect" id="node67" href="$_x_ray_filtration_8h.html" title=" " alt="" coords="4466,483,4633,509"/>
+<area shape="rect" id="node68" href="$_basic_pixel_spacing_calibration_macro_8h.html" title=" " alt="" coords="2856,825,3040,867"/>
+<area shape="rect" id="node69" href="$_dicos_file_8h.html" title=" " alt="" coords="2441,833,2581,859"/>
+<area shape="rect" id="node75" href="$_x_ray_equipment_module_8h.html" title=" " alt="" coords="4550,833,4770,859"/>
+<area shape="rect" id="node4" href="$_object_of_inspection_owner_module_8h.html" title=" " alt="" coords="510,647,695,688"/>
+<area shape="rect" id="node32" href="$_object_of_inspection_module_8h.html" title=" " alt="" coords="1321,736,1506,777"/>
+<area shape="rect" id="node33" href="$_itinerary_module_8h.html" title=" " alt="" coords="2657,833,2831,859"/>
+<area shape="rect" id="node34" href="$_general_scan_module_8h.html" title=" " alt="" coords="2483,743,2685,770"/>
+<area shape="rect" id="node37" href="$_sop_common_module_8h.html" title=" " alt="" coords="1793,654,1996,681"/>
+<area shape="rect" id="node40" href="$_common_instance_reference_module_8h.html" title=" " alt="" coords="2269,647,2504,688"/>
+<area shape="rect" id="node42" href="$_general_equipment_module_8h.html" title=" " alt="" coords="683,915,917,941"/>
+<area shape="rect" id="node5" href="$_person_identification_macro_8h.html" title=" " alt="" coords="145,736,333,777"/>
+<area shape="rect" id="node30" href="$_dicos_code_definitions_8h.html" title=" " alt="" coords="145,915,354,941"/>
+<area shape="rect" id="node31" href="$_utils_8h.html" title=" " alt="" coords="2568,989,2680,1016"/>
+<area shape="rect" id="node6" title=" " alt="" coords="409,1288,479,1315"/>
+<area shape="rect" id="node7" href="$_string_8h.html" title=" " alt="" coords="2197,1213,2317,1240"/>
+<area shape="rect" id="node17" href="$_code_sequence_8h.html" title=" " alt="" coords="1218,833,1393,859"/>
+<area shape="rect" id="node8" href="$_types_8h.html" title=" " alt="" coords="3925,1288,4046,1315"/>
+<area shape="rect" id="node10" href="$_memory_8h.html" title=" " alt="" coords="5453,1213,5587,1240"/>
+<area shape="rect" id="node12" href="$_tools_light_8h.html" title=" " alt="" coords="5689,1139,5834,1165"/>
+<area shape="rect" id="node11" title=" " alt="" coords="5488,1288,5552,1315"/>
+<area shape="rect" id="node13" title=" " alt="" coords="4151,1288,4206,1315"/>
+<area shape="rect" id="node14" title=" " alt="" coords="4071,1288,4127,1315"/>
+<area shape="rect" id="node15" title=" " alt="" coords="5763,1213,5829,1240"/>
+<area shape="rect" id="node16" title=" " alt="" coords="5853,1213,5915,1240"/>
+<area shape="rect" id="node18" href="$_attribute_8h.html" title=" " alt="" coords="3375,915,3510,941"/>
+<area shape="rect" id="node29" href="$_error_log_8h.html" title=" " alt="" coords="1357,989,1491,1016"/>
+<area shape="rect" id="node19" title=" " alt="" coords="3655,1064,3727,1091"/>
+<area shape="rect" id="node20" href="$_i_file_8h.html" title=" " alt="" coords="3139,1139,3250,1165"/>
+<area shape="rect" id="node23" href="$_array2_d_8h.html" title=" " alt="" coords="4597,1064,4731,1091"/>
+<area shape="rect" id="node25" href="$_array3_d_large_8h.html" title=" " alt="" coords="3904,989,4069,1016"/>
+<area shape="rect" id="node27" href="$_i_memory_manager_8h.html" title=" " alt="" coords="3801,1064,3988,1091"/>
+<area shape="rect" id="node28" href="$_tag_8h.html" title=" " alt="" coords="1461,1064,1568,1091"/>
+<area shape="rect" id="node21" href="$_file_system_8h.html" title=" " alt="" coords="3796,1213,3948,1240"/>
+<area shape="rect" id="node22" href="$_memory_buffer_8h.html" title=" " alt="" coords="3294,1213,3461,1240"/>
+<area shape="rect" id="node24" title=" " alt="" coords="4651,1139,4712,1165"/>
+<area shape="rect" id="node26" href="$_memory_policy_8h.html" title=" " alt="" coords="5006,1064,5175,1091"/>
+<area shape="rect" id="node35" href="$_sop_instance_reference_8h.html" title=" " alt="" coords="2149,833,2365,859"/>
+<area shape="rect" id="node36" href="$_external_references_macro_8h.html" title=" " alt="" coords="3065,825,3253,867"/>
+<area shape="rect" id="node38" title=" " alt="" coords="1734,743,1773,770"/>
+<area shape="rect" id="node39" href="$_purpose_of_reference_code_8h.html" title=" " alt="" coords="1797,736,1992,777"/>
+<area shape="rect" id="node41" href="$_referenced_series_8h.html" title=" " alt="" coords="2219,743,2407,770"/>
+<area shape="rect" id="node49" href="$_general_series_module_8h.html" title=" " alt="" coords="4219,654,4429,681"/>
+<area shape="rect" id="node51" href="$_voi_lut_8h.html" title=" " alt="" coords="3835,833,3957,859"/>
+<area shape="rect" id="node52" href="$_image_base_8h.html" title=" " alt="" coords="1417,833,1567,859"/>
+<area shape="rect" id="node53" href="$_image_pixel_module_8h.html" title=" " alt="" coords="5013,654,5205,681"/>
+<area shape="rect" id="node56" href="$_general_image_module_8h.html" title=" " alt="" coords="3523,565,3731,591"/>
+<area shape="rect" id="node60" href="$_image_characteristics_8h.html" title=" " alt="" coords="3856,565,4064,591"/>
+<area shape="rect" id="node54" href="$_image_pixel_macro_8h.html" title=" " alt="" coords="4161,743,4348,770"/>
+<area shape="rect" id="node55" href="$_palette_color_lookup_table_8h.html" title=" " alt="" coords="3982,825,4170,867"/>
+<area shape="rect" id="node57" href="$_image_sop_instance_reference_8h.html" title=" " alt="" coords="3520,743,3771,770"/>
+<area shape="rect" id="node58" href="$_icon_image_8h.html" title=" " alt="" coords="3947,654,4093,681"/>
+<area shape="rect" id="node59" href="$_image_type_8h.html" title=" " alt="" coords="3469,654,3619,681"/>
+<area shape="rect" id="node63" href="$_detector_geometry_8h.html" title=" " alt="" coords="4809,565,5001,591"/>
+<area shape="rect" id="node70" href="$_file_8h.html" title=" " alt="" coords="3199,1064,3305,1091"/>
+<area shape="rect" id="node71" href="$_memory_file_8h.html" title=" " alt="" coords="2339,989,2493,1016"/>
+<area shape="rect" id="node74" title=" " alt="" coords="2301,915,2341,941"/>
+<area shape="rect" id="node72" href="$_i_memory_file_8h.html" title=" " alt="" coords="2849,1064,3007,1091"/>
+<area shape="rect" id="node73" title=" " alt="" coords="2385,1064,2447,1091"/>
+<area shape="rect" id="node77" href="$_client_manager_8h.html" title=" " alt="" coords="3389,162,3558,189"/>
+<area shape="rect" id="node86" href="$_object_of_inspection_owner_user_8h.html" title=" " alt="" coords="618,244,803,285"/>
+<area shape="rect" id="node87" href="$_itinerary_user_8h.html" title=" " alt="" coords="4483,743,4642,770"/>
+<area shape="rect" id="node78" href="$_client_8h.html" title=" " alt="" coords="2757,251,2875,278"/>
+<area shape="rect" id="node79" href="$_module_c_t_8h.html" title=" " alt="" coords="2176,483,2320,509"/>
+<area shape="rect" id="node80" href="$_module_a_i_t2_d_8h.html" title=" " alt="" coords="2675,483,2837,509"/>
+<area shape="rect" id="node81" href="$_module_a_i_t3_d_8h.html" title=" " alt="" coords="1888,483,2051,509"/>
+<area shape="rect" id="node82" href="$_module_q_r_8h.html" title=" " alt="" coords="1632,483,1779,509"/>
+<area shape="rect" id="node83" href="$_module_t_d_r_8h.html" title=" " alt="" coords="2345,483,2498,509"/>
+<area shape="rect" id="node84" href="$_i_receive_callback_8h.html" title=" " alt="" coords="2417,333,2601,360"/>
+<area shape="rect" id="node85" href="$_i_client_8h.html" title=" " alt="" coords="2755,333,2877,360"/>
+<area shape="rect" id="node89" href="$_volume_8h.html" title=" " alt="" coords="5493,565,5624,591"/>
+<area shape="rect" id="node90" href="$_image_data_base_8h.html" title=" " alt="" coords="5280,654,5459,681"/>
+<area shape="rect" id="node91" href="$_memory_buffer_const_8h.html" title=" " alt="" coords="5483,654,5683,681"/>
+</map>

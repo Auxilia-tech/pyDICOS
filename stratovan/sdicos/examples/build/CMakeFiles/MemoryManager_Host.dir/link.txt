@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/MemoryManager_Host.dir/MemoryManager/Host/main.cpp.o  -o ../bin/MemoryManager_Host /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

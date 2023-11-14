@@ -1,0 +1,4 @@
+<map id="SDICOS::Network::IClient" name="SDICOS::Network::IClient">
+<area shape="rect" id="node1" title="Client base class." alt="" coords="15,5,186,32"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_network_1_1_dcs_client.html" title="DICOS client for sending data using the DICOM protocol over a TCP/IP connection." alt="" coords="5,80,196,107"/>
+</map>

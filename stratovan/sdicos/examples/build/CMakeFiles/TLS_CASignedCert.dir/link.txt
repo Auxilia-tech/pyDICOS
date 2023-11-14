@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/TLS_CASignedCert.dir/TLS/CASignedCert/main.cpp.o  -o ../bin/TLS_CASignedCert /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

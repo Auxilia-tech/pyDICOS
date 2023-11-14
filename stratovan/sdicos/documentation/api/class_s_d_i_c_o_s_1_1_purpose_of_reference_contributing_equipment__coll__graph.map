@@ -1,0 +1,5 @@
+<map id="SDICOS::PurposeOfReferenceContributingEquipment" name="SDICOS::PurposeOfReferenceContributingEquipment">
+<area shape="rect" id="node1" title="Implements a specialized Code Sequence with Context ID = 7005 SPECREF V03 Section 14...." alt="" coords="15,155,214,196"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_code_sequence.html" title=" " alt="" coords="31,80,198,107"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_code_sequence_common.html" title=" " alt="" coords="5,5,224,32"/>
+</map>

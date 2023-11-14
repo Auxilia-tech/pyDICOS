@@ -1,0 +1,4 @@
+<map id="SDICOS::DXDetectorUser" name="SDICOS::DXDetectorUser">
+<area shape="rect" id="node1" title="User API Implementation of DX Detector Module." alt="" coords="5,5,176,32"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_d_x.html" title="DX represents a single DX/X&#45;Ray Scan. This class is not thread safe." alt="" coords="43,80,138,107"/>
+</map>

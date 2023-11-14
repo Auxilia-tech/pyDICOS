@@ -1,0 +1,4 @@
+<map id="SDICOS::AitPlaneOrientation" name="SDICOS::AitPlaneOrientation">
+<area shape="rect" id="node1" title="Implements AIT Plane Orientation SPECREF V03 Section 14.14.5, Table 115." alt="" coords="5,80,196,107"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_plane_orientation.html" title="Implements Plane Orientation, a required single item sequence (0020, 9116) SPECREF V03 Section 14...." alt="" coords="13,5,188,32"/>
+</map>

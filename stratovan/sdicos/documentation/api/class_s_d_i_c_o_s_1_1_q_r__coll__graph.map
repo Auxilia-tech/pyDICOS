@@ -1,0 +1,8 @@
+<map id="SDICOS::QR" name="SDICOS::QR">
+<area shape="rect" id="node1" title="Represents a Quadrupole Resonance (QR)" alt="" coords="329,169,428,196"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_i_o_d_common.html" title="Base class for Information Object Definition (IOD) Template classes containing shared,..." alt="" coords="121,95,274,121"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_object_of_inspection_owner_user.html" title=" " alt="" coords="5,5,195,47"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_itinerary_user.html" title="Implements Itinerary Module User Level API." alt="" coords="219,13,371,39"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_scan_common.html" title="This class contains data that is common to all modalities except TDR." alt="" coords="298,95,459,121"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_acquisition_context_user.html" title=" " alt="" coords="483,95,698,121"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="SDICOS::Network::IReceiveCallback" name="SDICOS::Network::IReceiveCallback">
+<area shape="rect" id="node1" title="Interface for callback functions used by DcsClient and DcsServer. Each function is a blocking call fo..." alt="" coords="5,89,188,131"/>
+<area shape="rect" id="node2" title=" " alt="" coords="236,5,400,47"/>
+<area shape="rect" id="node3" title="Stratovan Corporation Copyright and Disclaimer Notice:" alt="" coords="261,71,375,98"/>
+<area shape="rect" id="node4" title="Stratovan Corporation Copyright and Disclaimer Notice:" alt="" coords="263,122,373,149"/>
+<area shape="rect" id="node5" title=" " alt="" coords="240,173,396,215"/>
+</map>

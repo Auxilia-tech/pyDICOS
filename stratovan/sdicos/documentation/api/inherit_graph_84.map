@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_s_d_i_c_o_s_1_1_general_series_module.html" title="Implements General Series Module SPECREF V03 Section 6.1, Table 16." alt="" coords="5,187,208,214"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d_types_1_1_a_i_t2_d_series.html" title="Implements 2D AIT Series SPECREF V03 Section 9.2.3.1, Table 41." alt="" coords="286,5,435,47"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_a_i_t3_d_types_1_1_a_i_t3_d_series.html" title=" " alt="" coords="286,71,435,112"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_c_t_types_1_1_c_t_series.html" title=" " alt="" coords="265,137,456,163"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_d_x_types_1_1_d_x_series.html" title="Implements DX/X&#45;Ray Series SPECREF V03 Section 8.2.2.1, Table 34." alt="" coords="265,187,456,214"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_e_t_d_series.html" title=" " alt="" coords="290,238,431,265"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_q_r_types_1_1_q_r_series.html" title=" " alt="" coords="262,289,459,315"/>
+<area shape="rect" id="node8" href="$class_s_d_i_c_o_s_1_1_t_d_r_types_1_1_t_d_r_series.html" title="TDR Series Module SPECREF V03 Section 12.1, Table 66." alt="" coords="256,339,465,366"/>
+</map>

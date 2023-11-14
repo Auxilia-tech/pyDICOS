@@ -1,0 +1,4 @@
+<map id="SDICOS::TDRTypes::ThreatDetectionReport::OperatorIdentification" name="SDICOS::TDRTypes::ThreatDetectionReport::OperatorIdentification">
+<area shape="rect" id="node1" title="Operator Identification Sequence, a conditionally required single item sequence (0008,..." alt="" coords="5,95,251,136"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_person_identification_macro.html" title=" " alt="" coords="32,5,224,47"/>
+</map>

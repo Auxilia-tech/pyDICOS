@@ -1,0 +1,12 @@
+<map id="SDICOS::DicosFileListing::Scan::SeriesFiles" name="SDICOS::DicosFileListing::Scan::SeriesFiles">
+<area shape="rect" id="node1" title="Structure for grouping files based on Series Instance UID." alt="" coords="2285,30,2456,71"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="568,57,704,84"/>
+<area shape="rect" id="node4" href="$struct_s_d_i_c_o_s_1_1_dicos_file_listing_1_1_series_1_1_modality_files.html" title="Structure for grouping files based on SOP Class UID." alt="" coords="1709,86,1880,127"/>
+<area shape="rect" id="node6" href="$struct_s_d_i_c_o_s_1_1_dicos_file_listing_1_1_series_1_1_sop_instance_files.html" title="Structure for grouping files based on SOP instance UID." alt="" coords="943,130,1117,171"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title=" " alt="" coords="1985,79,2172,135"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title=" " alt="" coords="1331,123,1517,179"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title=" " alt="" coords="543,145,729,186"/>
+<area shape="rect" id="node8" href="$class_s_d_i_c_o_s_1_1_filename.html" title=" " alt="" coords="197,123,329,149"/>
+<area shape="rect" id="node9" href="$class_s_d_i_c_o_s_1_1_folder.html" title=" " alt="" coords="5,123,120,149"/>
+<area shape="rect" id="node10" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title="Allocates memory on a single contiguous block for efficient access." alt="" coords="169,212,356,239"/>
+</map>

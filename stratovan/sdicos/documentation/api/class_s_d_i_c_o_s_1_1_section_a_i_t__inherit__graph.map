@@ -1,0 +1,4 @@
+<map id="SDICOS::SectionAIT" name="SDICOS::SectionAIT">
+<area shape="rect" id="node1" title="A section of an AIT3D volume." alt="" coords="21,80,164,107"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_section_common.html" title="Attributes Common to all types of scan data." alt="" coords="5,5,180,32"/>
+</map>

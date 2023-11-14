@@ -1,0 +1,9 @@
+<map id="SDICOS::ImagePixelMacro" name="SDICOS::ImagePixelMacro">
+<area shape="rect" id="node1" title="Implements image pixel macro SPECREF V03 Section 14.2.1, Table 86." alt="" coords="5,82,184,109"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_icon_image.html" title="Implements icon image, a single item sequence (0088, 0200) [optional] SPECREF V03 Section 14...." alt="" coords="255,57,394,83"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_image_pixel_module.html" title="Implements image pixel module SPECREF V03 Section 14.2.1, Table 85." alt="" coords="232,107,417,134"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d_types_1_1_a_i_t2_d_image.html" title=" " alt="" coords="485,5,635,47"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_a_i_t3_d_types_1_1_a_i_t3_d_image.html" title="Implements 3D AIT Image SPECREF V03 Section 9.3.3.2, Table 48." alt="" coords="485,71,635,112"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_c_t_types_1_1_c_t_image.html" title=" " alt="" coords="465,137,655,163"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_d_x_types_1_1_d_x_image.html" title="Implements DX/X&#45;Ray Image SPECREF V03 Section 8.2.2.2, Table 35." alt="" coords="465,187,655,214"/>
+</map>

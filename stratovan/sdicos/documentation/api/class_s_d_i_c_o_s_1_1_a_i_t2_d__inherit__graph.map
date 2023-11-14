@@ -1,0 +1,15 @@
+<map id="SDICOS::AIT2D" name="SDICOS::AIT2D">
+<area shape="rect" id="node1" title="AIT2D represents a single AIT 2D scan. The class is not thread safe." alt="" coords="512,270,627,297"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_i_o_d_common.html" title="Base class for Information Object Definition (IOD) Template classes containing shared,..." alt="" coords="277,42,430,69"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_object_of_inspection_owner_user.html" title=" " alt="" coords="5,5,195,47"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_itinerary_user.html" title="Implements Itinerary Module User Level API." alt="" coords="24,71,176,98"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_scan_common.html" title="This class contains data that is common to all modalities except TDR." alt="" coords="273,93,434,119"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_image_common_user.html" title=" " alt="" coords="257,143,450,170"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_pixel_measurement_user.html" title="Implements Pixel Measurement User Level API." alt="" coords="246,194,461,221"/>
+<area shape="rect" id="node8" href="$class_s_d_i_c_o_s_1_1_plane_position_user.html" title="Implements Plane Position User Level API." alt="" coords="260,245,447,271"/>
+<area shape="rect" id="node9" href="$class_s_d_i_c_o_s_1_1_ait_plane_orientation_user.html" title="Implements AIT Plane Orientation User Level API." alt="" coords="244,295,463,322"/>
+<area shape="rect" id="node10" href="$class_s_d_i_c_o_s_1_1_real_world_value_mapping_sequence_user.html" title="World Value Mapping SPECREF V03 Section 14.14.9, Table 119." alt="" coords="243,347,464,388"/>
+<area shape="rect" id="node11" href="$class_s_d_i_c_o_s_1_1_image_histogram_user.html" title=" " alt="" coords="253,413,453,439"/>
+<area shape="rect" id="node12" href="$class_s_d_i_c_o_s_1_1_frame_of_reference_user.html" title=" " alt="" coords="246,463,461,490"/>
+<area shape="rect" id="node13" href="$class_s_d_i_c_o_s_1_1_acquisition_context_user.html" title=" " alt="" coords="246,514,461,541"/>
+</map>

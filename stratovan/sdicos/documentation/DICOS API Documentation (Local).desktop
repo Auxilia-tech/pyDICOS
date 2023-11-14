@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Link
+Version=0.9.4
+Name=DICOS API Documentation (Local)
+Comment=DICOS API Documentation (Local)
+Icon=
+URL=file:///opt/stratovan/sdicos/documentation/api/index.html

@@ -1,0 +1,17 @@
+Origin object (Bounding Box Corner)
+--------------
+Smallest Dimension on X axis
+Longest Dimension on Z axis
+
+Object in Opposite Corner of Bounding Box from Origin Object
+-------------------------------------------------------------
+Smallest Dimension on Z axis
+Longest Dimension on Y axis
+
+Robot Object
+--------------
+Robot is facing forward with its right arm pointing up.
+
+Image facing forwards = towards +Y axis
+Robot's right arm = towards -X axis
+Up = towards +Z axis

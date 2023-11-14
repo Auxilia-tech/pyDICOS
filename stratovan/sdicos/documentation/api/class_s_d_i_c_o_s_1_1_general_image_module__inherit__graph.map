@@ -1,0 +1,6 @@
+<map id="SDICOS::GeneralImageModule" name="SDICOS::GeneralImageModule">
+<area shape="rect" id="node1" title="Implements General Image SPECREF V03 Section 14.3.1, Table 95." alt="" coords="75,80,277,107"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d_types_1_1_a_i_t2_d_image.html" title=" " alt="" coords="5,155,155,196"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_d_x_types_1_1_d_x_image.html" title="Implements DX/X&#45;Ray Image SPECREF V03 Section 8.2.2.2, Table 35." alt="" coords="179,162,368,189"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_image_type.html" title="Implements General Image Module&#39;s Image Type. Provides overridable functions for V02A and above...." alt="" coords="105,5,247,32"/>
+</map>

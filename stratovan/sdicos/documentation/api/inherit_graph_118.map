@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_s_d_i_c_o_s_1_1_network_1_1_i_client.html" title="Client base class." alt="" coords="5,5,176,32"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_network_1_1_dcs_client.html" title="DICOS client for sending data using the DICOM protocol over a TCP/IP connection." alt="" coords="224,5,415,32"/>
+</map>

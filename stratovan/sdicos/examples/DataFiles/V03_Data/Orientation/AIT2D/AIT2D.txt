@@ -1,0 +1,17 @@
+Origin Object (Bounding Box Corner)
+-----------------------------------
+Longest Dimension on Y axis
+Smallest Dimension on X axis
+
+
+Object in Opposite Corner of Bounding Box from Origin Object
+-------------------------------------------------------------
+Longest Dimension on X axis
+Smallest Dimension on Y axis
+
+Robot Object
+-------------
+Robot's left arm is pointing down.
+
+Left Arm = towards -X direction
+Down = towards +Y direction

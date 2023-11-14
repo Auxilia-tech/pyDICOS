@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/Client_SetaUserNameandPasscode.dir/Client/SetaUserNameandPasscode/main.cpp.o  -o ../bin/Client_SetaUserNameandPasscode /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

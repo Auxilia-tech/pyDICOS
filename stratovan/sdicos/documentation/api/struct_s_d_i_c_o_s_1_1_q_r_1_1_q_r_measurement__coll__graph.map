@@ -1,0 +1,9 @@
+<map id="SDICOS::QR::QRMeasurement" name="SDICOS::QR::QRMeasurement">
+<area shape="rect" id="node1" title="This structure represents a single QR measurement." alt="" coords="297,317,501,344"/>
+<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title=" " alt="" coords="201,199,388,240"/>
+<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_point3_d.html" title=" " alt="" coords="12,95,185,121"/>
+<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_point3_d.html" title=" " alt="" coords="5,5,192,32"/>
+<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title="Allocates memory on a single contiguous block for efficient access." alt="" coords="209,95,396,121"/>
+<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_dcs_long_string.html" title="This string has a 64 character maximum." alt="" coords="413,206,577,233"/>
+<area shape="rect" id="node7" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="427,95,563,121"/>
+</map>
