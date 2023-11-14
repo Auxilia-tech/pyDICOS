@@ -9,6 +9,7 @@
 #include <iostream>
 
 namespace py = pybind11;
+void export_ERRORLOG(py::module &);
 void export_FS(py::module &);
 void export_CT(py::module &);
 //void export_DX(py::module &);
