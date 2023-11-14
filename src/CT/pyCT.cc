@@ -1,7 +1,19 @@
 #include "../headers.hh"
 
-#include "SDICOS/TemplateCommon.h"
 
+ #include "SDICOS/UserCT.h"
+ #include "SDICOS/ModuleCT.h"
+ #include "SDICOS/Array1D.h"
+ #include "SDICOS/Point3D.h"
+ #include "SDICOS/TemplateCommon.h"
+ #include "SDICOS/TemplateBase.h"
+ #include "SDICOS/ClientManager.h"
+ #include "SDICOS/MemoryPolicy.h"
+ #include "SDICOS/AcquisitionContextUser.h"
+ #include "SDICOS/ImageBaseUser.h"
+ #include "SDICOS/XRayEquipmentUser.h"
+ #include "SDICOS/FrameOfReferenceUser.h"
+ 
 using namespace SDICOS;
 
 PYBIND11_MAKE_OPAQUE(std::vector<CTModule*>);

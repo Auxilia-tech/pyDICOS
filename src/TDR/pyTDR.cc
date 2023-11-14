@@ -1,9 +1,8 @@
-#ifndef PYTDR_FILE_H
-#define PYTDR_FILE_H
-
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
+
+#include "../headers.hh"
 
 #include "SDICOS/UserTDR.h"
  #include "SDICOS/DicosFile.h"
@@ -79,6 +78,7 @@ void export_TDR(py::module &m)
         .value("enumTypeBaggage", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumBarcode)
         .value("enumTypeAnimal", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumMRP);
 
+    py::class_<TDR>(m, "SDICOS::TDR");
     py::class_<PyTDR, TDR, IODCommon, 
                          FrameOfReferenceUser
                          >(m, "TDR")
@@ -188,4 +188,3 @@ void export_TDR(py::module &m)
         .def("GetModality", py::overload_cast<>(&PyTDR::TDR::GetModality, py::const_))
         ;
 }
-#endif
