@@ -1,5 +1,5 @@
 
-file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS FILESYSTEM/*.cc CT/*.cc )#DX/*.cc TDR/*.cc)
+file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS ErrorLog/*.cc FILESYSTEM/*.cc CT/*.cc )#DX/*.cc TDR/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
