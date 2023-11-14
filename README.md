@@ -23,7 +23,8 @@ pip install pydicos
 
 ## Contributing
 
-We welcome contributions to the projects from all actors.
+As our resources are limited, we very much value your contributions, be it bug fixes, new core features, or documentation improvements.
+For more information, please read our contribution guide.
 
 ## License
 
