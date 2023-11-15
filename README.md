@@ -3,11 +3,17 @@
 This project was initiated to enable the usage of DICOS data in machine learning workflows. 
 PyDICOS is intended to be a simple python wrapper of Stratovan's C++ [DICOS library](https://www.stratovan.com/products/dicos-toolkit).
 This project relies on [pybind11](https://github.com/pybind/pybind11) to wrap DICOS user-level API to python.
- It depends on numpy to load data in python.
+ It depends on numpy to load data in python and can easily be installed _via_ `pip`.
+
+This project is unrelated to [pydicom](https://github.com/pydicom/pydicom) in its implementation and contributors, 
+while being similar in its core spirit (enabling python data manipulations).
 
 ## Scope
 
  - Provide a pythonized API for the DICOS toolkit
+   - First release : read/write functions, user-level API
+   - Later releases : client/server functions
+   - Module and Tag level APIs are out of scope for now
  - Stay up to date with Stratovan latest releases
 
 <div align="center">
@@ -24,7 +30,12 @@ pip install pydicos
 ## Contributing
 
 As our resources are limited, we very much value your contributions, be it bug fixes, new core features, or documentation improvements.
-For more information, please read our contribution guide.
+For more information, please read our [contribution guide](CONTRIBUTING.md).
+
+### Contributors
+
+Many thanks to our main contributors :
+ - [Ahmad Audi](https://github.com/AAUDI)
 
 ## License
 
