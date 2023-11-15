@@ -10,7 +10,7 @@ void export_ERRORLOG(py::module &m)
         .value("enumRedirect_Warning", Redirect::REDIRECT_LOG_TYPE::enumRedirect_Warning)
         .value("enumRedirect_Error", Redirect::REDIRECT_LOG_TYPE::enumRedirect_Error);
 
-    py::class_<ErrorLog>(m, "SDICOS::ErrorLog")
+    py::class_<ErrorLog>(m, "ErrorLog")
         .def(py::init<>())
         .def(py::init<const ErrorLog&>(), py::arg("errorlog"))
         .def("FreeMemory", &ErrorLog::FreeMemory)
