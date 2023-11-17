@@ -13,6 +13,9 @@ void export_ERRORLOG(py::module &);
 void export_IMEMMANAGER(py::module &);
 void export_FS(py::module &);
 void export_CT(py::module &);
+void export_DCSSTRING(py::module &);
+void export_MEMORYBUFFER(py::module &);
+void export_ARRAY1D(py::module &m);
 //void export_DX(py::module &);
 //void export_TDR(py::module &);
 
