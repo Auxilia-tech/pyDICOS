@@ -2,6 +2,7 @@
 
 #include "CustomMemManager.hh"
 
+
 class PyCustomMemoryManager : public CustomMemoryManager {
 public:
     using CustomMemoryManager::CustomMemoryManager;
@@ -21,7 +22,9 @@ void export_IMEMMANAGER(py::module &m)
     py::class_<IMemoryManager>(m, "IMemoryManager");
     py::class_<CustomMemoryManager>(m, "SDICOS::CustomMemoryManager");
     py::class_<PyCustomMemoryManager, CustomMemoryManager, IMemoryManager>(m, "CustomMemoryManager")
-        .def(py::init<const S_UINT64, const S_UINT32>(), py::arg("m_nBufferSizeInBytes"), py::arg("nNumBuffersToAllocated"))
+        .def(py::init<const S_UINT64, const S_UINT32>(), 
+             py::arg("m_nBufferSizeInBytes") = (512 * 512 * 8), 
+             py::arg("nNumBuffersToAllocated") = 500)
         .def("Allocate", py::overload_cast<MemoryBuffer&, const S_UINT64>
                      (&PyCustomMemoryManager::CustomMemoryManager::OnAllocate),
                      py::arg("mbAllocate"), 
@@ -30,5 +33,8 @@ void export_IMEMMANAGER(py::module &m)
                      (&PyCustomMemoryManager::CustomMemoryManager::OnDeallocate),
                      py::arg("mbDeallocate"))
         .def("OnGetSliceMemoryPolicy", py::overload_cast<>
-                     (&PyCustomMemoryManager::CustomMemoryManager::OnGetSliceMemoryPolicy,  py::const_));
+                     (&PyCustomMemoryManager::CustomMemoryManager::OnGetSliceMemoryPolicy,  py::const_))
+        .def_readonly("m_vBuffers", &CustomMemoryManager::m_vBuffers)
+        .def_readonly("m_mapUsedBuffers", &CustomMemoryManager::m_mapUsedBuffers)
+        .def_readonly("m_nBufferSizeInBytes", &CustomMemoryManager::m_nBufferSizeInBytes);
 }

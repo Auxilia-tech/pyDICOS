@@ -1,5 +1,11 @@
 
-file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS MemManager/*.cc ErrorLog/*.cc FILESYSTEM/*.cc CT/*.cc )#DX/*.cc TDR/*.cc)
+file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS 
+    Array1D/*.cc
+    MemManager/*.cc 
+    ErrorLog/*.cc 
+    DcsString/*.cc 
+    FILESYSTEM/*.cc 
+    CT/*.cc )#DX/*.cc TDR/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 

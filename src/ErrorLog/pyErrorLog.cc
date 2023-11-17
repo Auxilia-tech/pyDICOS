@@ -17,5 +17,12 @@ void export_ERRORLOG(py::module &m)
         .def_static("SetErrorLogRedirect", &ErrorLog::SetErrorLogRedirect, "Set the redirect function")
         .def_static("HasRedirect", &ErrorLog::HasRedirect)
         .def("IgnoreErrorLogRedirect", &ErrorLog::IgnoreErrorLogRedirect)
-        .def("UseErrorLogRedirect", &ErrorLog::UseErrorLogRedirect);
+        .def("UseErrorLogRedirect", &ErrorLog::UseErrorLogRedirect)
+        .def("GetErrorLog", py::overload_cast<Array1D<DcsString>&, Array1D<DcsString>&>
+                     (&ErrorLog::GetErrorLog, py::const_), 
+                     py::arg("arrayErrors"), 
+                     py::arg("arrayWarnings"))
+        .def("GetErrorLog", py::overload_cast<>(&ErrorLog::GetErrorLog,  py::const_))
+        .def("NumErrors", &ErrorLog::NumErrors)
+        .def("NumWarnings", &ErrorLog::NumWarnings);
 }
