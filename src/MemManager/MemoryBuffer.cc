@@ -1,4 +1,5 @@
 #include "../headers.hh"
+#include <pybind11/numpy.h>
 
 #include "SDICOS/MemoryBuffer.h"
 
@@ -10,7 +11,7 @@ void export_MEMORYBUFFER(py::module &m)
         .value("enumPolicy_DoesNotOwnData", MemoryBuffer::MEMORY_POLICY::enumPolicy_DoesNotOwnData)
         .value("enumPolicy_OwnsData", MemoryBuffer::MEMORY_POLICY::enumPolicy_OwnsData);
 
-    py::class_<MemoryBuffer>(m, "MemoryBuffer")
+    py::class_<MemoryBuffer>(m, "MemoryBuffer", py::buffer_protocol())
         .def(py::init<>())
         .def(py::init<const MemoryBuffer&>(), py::arg("obj"))
         .def("__copy__", [](const MemoryBuffer &self) { return MemoryBuffer(self); })

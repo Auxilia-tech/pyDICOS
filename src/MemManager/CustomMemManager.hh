@@ -4,6 +4,9 @@
 #include "SDICOS/DICOS.h" //Header for DICOS
 #include <iostream>
 #include <map>
+#include "../headers.hh"
+#include <pybind11/numpy.h>
+
 
 
 using namespace SDICOS;
@@ -30,5 +33,14 @@ public:
 	//Since this class owns the data and the DICOS library is borrowing it, this function will be set
 	//to return MemoryBuffer::enumPolicy_DoesNotOwnData
 	virtual MemoryBuffer::MEMORY_POLICY OnGetSliceMemoryPolicy()const;
+
+	py::array_t<float> getData() {
+		std::pair<bool, MemoryBuffer> *pBuffer(m_vBuffers.GetBuffer());
+		MemoryBuffer& MemBuf = pBuffer->second;
+    	float* floatData = reinterpret_cast<float*>(MemBuf.GetData());
+   	 	py::array_t<float> array(100, floatData);
+    	return array;
+	}
+
 };
 #endif
