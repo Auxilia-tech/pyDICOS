@@ -34,6 +34,7 @@ void export_IMEMMANAGER(py::module &m)
                      py::arg("mbDeallocate"))
         .def("OnGetSliceMemoryPolicy", py::overload_cast<>
                      (&PyCustomMemoryManager::CustomMemoryManager::OnGetSliceMemoryPolicy,  py::const_))
+        .def("getData", &CustomMemoryManager::getData)
         .def_readonly("m_vBuffers", &CustomMemoryManager::m_vBuffers)
         .def_readonly("m_mapUsedBuffers", &CustomMemoryManager::m_mapUsedBuffers)
         .def_readonly("m_nBufferSizeInBytes", &CustomMemoryManager::m_nBufferSizeInBytes);

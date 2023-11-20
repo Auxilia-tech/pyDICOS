@@ -6,18 +6,22 @@ from pyDICOS import CT
 from pyDICOS import DcsString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1D
+import numpy
+
+numpy.set_printoptions(suppress=True, formatter={'float_kind':'{:0.2f}'.format}) 
 
 CTObject = CT()
-FS = Filename("/home/ahau/freelance/Louis/pyDICOS/pyDICOS/python/SimpleCT0000.dcs")
+FS = Filename("/home/ahau/freelance/Louis/pyDICOS/pyDICOS/python/CTUserAPI.dcs")
 print(FS.GetFullPath())
 EL = ErrorLog()
-MM = CustomMemoryManager(512 * 512 * 8, 500)
+MM = CustomMemoryManager()
 DC = DcsString()
 
 if CTObject.Read(FS, EL, MM):
+    print(EL.GetErrorLog())
     print("Loaded CT")
-    buff = MM.m_vBuffers.GetSize()
-    print("Preallocated buffers:", buff)
+    numpy_array = numpy.array(MM.getData())
+    print(numpy_array)
 else:
     print("Failed to load CT")
     print(EL.GetErrorLog())
