@@ -107,7 +107,7 @@ void export_CT(py::module &m)
         .def("GetKVP", &Section::GetKVP)
         .def("ApplyRescaleToImage", &Section::ApplyRescaleToImage)
         .def("FreeMemory", &PySection::FreeMemory);
-        
+  
     py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE>(m, "OBJECT_OF_INSPECTION_TYPE")
         .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumUnknownObjectOfInspectionType)
         .value("enumTypeBioSample", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBioSample)
@@ -134,7 +134,7 @@ void export_CT(py::module &m)
     py::enum_<CTTypes::CTImage::IMAGE_FLAVOR>(m, "IMAGE_FLAVOR")
         .value("enumUnknownImageFlavor", CTTypes::CTImage::IMAGE_FLAVOR::enumUnknownImageFlavor)
         .value("enumProjection", CTTypes::CTImage::IMAGE_FLAVOR::enumProjection)
-        .value("enumVolume", CTTypes::CTImage::IMAGE_FLAVOR::enumVolume);  
+        .value("enumVolume", CTTypes::CTImage::IMAGE_FLAVOR::enumVolume);
 
     py::enum_<ImagePixelMacro::PHOTOMETRIC_INTERPRETATION>(m, "PHOTOMETRIC_INTERPRETATION")
         .value("enumUnknownPhotometricInterpretation", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumUnknownPhotometricInterpretation)
@@ -147,7 +147,7 @@ void export_CT(py::module &m)
         .value("enumYBR_Partial_422", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_Partial_422)
         .value("enumYBR_Partial_420", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_Partial_420)
         .value("enumYBR_ICT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_ICT)
-        .value("enumYBR_RCT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_RCT);  
+        .value("enumYBR_RCT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_RCT);
 
     py::enum_<DicosFile::TRANSFER_SYNTAX>(m, "TRANSFER_SYNTAX")
         .value("enumLittleEndianExplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicit)
@@ -160,7 +160,7 @@ void export_CT(py::module &m)
         .value("DOES_NOT_OWN_SLICES", MemoryPolicy::VOLUME_MEMORY_POLICY::DOES_NOT_OWN_SLICES)
         .value("OWNS_SLICES", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_SLICES)
         .value("DOES_NOT_OWN_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::DOES_NOT_OWN_DATA)
-         .value("OWNS_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_DATA)
+        .value("OWNS_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_DATA)
         .value("MEMORY_POLICY_UNKNOWN", MemoryPolicy::VOLUME_MEMORY_POLICY::MEMORY_POLICY_UNKNOWN);
        
     py::enum_<Array3DLargeBase::ADD_SLICE_FAILURE_POLICY>(m, "ADD_SLICE_FAILURE_POLICY")
@@ -190,6 +190,22 @@ void export_CT(py::module &m)
                        py::arg("nOOI"), 
                        py::arg("nFlavor") = CTTypes::CTImage::enumVolume, 
                        py::arg("nPI") = ImagePixelMacro::enumMonochrome2)
+
+        .def_property_readonly_static("OBJECT_OF_INSPECTION_TYPE", [m](py::object) {
+            return m.attr("OBJECT_OF_INSPECTION_TYPE");
+        })  
+
+        .def_property_readonly_static("OOI_IMAGE_CHARACTERISTICS", [m](py::object) {
+            return m.attr("OOI_IMAGE_CHARACTERISTICS");
+        }) 
+
+        .def_property_readonly_static("IMAGE_FLAVOR", [m](py::object) {
+            return m.attr("IMAGE_FLAVOR");
+        }) 
+
+        .def_property_readonly_static("PHOTOMETRIC_INTERPRETATION", [m](py::object) {
+            return m.attr("PHOTOMETRIC_INTERPRETATION");
+        })         
 
         .def("__copy__", [](const CT &self) { return CT(self); })
         .def("__deepcopy__", [](const CT &self, py::dict) { return CT(self); })
@@ -448,6 +464,6 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT);   
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT);
 
 }
