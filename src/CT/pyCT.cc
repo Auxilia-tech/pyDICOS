@@ -464,6 +464,7 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT);
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+        .def("SetScanDescription", &IODCommon::SetScanDescription, py::arg("strDescription"));
 
 }
