@@ -18,4 +18,10 @@ void export_DCSSTRING(py::module &m)
         .def("Get", py::overload_cast<wchar_t&, const S_UINT32>(&DcsString::Get, py::const_), 
                      py::arg("str"), 
                      py::arg("nIndex"));
+
+     py::class_<DcsLongString, DcsString>(m, "DcsLongString")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsLongString&>(), py::arg("dcslongstring"));
 }
