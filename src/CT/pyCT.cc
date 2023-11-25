@@ -18,21 +18,6 @@ using namespace SDICOS;
 
 PYBIND11_MAKE_OPAQUE(std::vector<CTModule*>);
 
-class PySection : public Section {
-public:
-    using Section::Section;
-    void FreeMemory() override { PYBIND11_OVERRIDE(void,  Section, FreeMemory); }
-};
-
-float GetFocalSpotSizeFloat(const Section &self) {
-    return self.GetFocalSpotSize();
-}
-
-void GetFocalSpotSizePair(const Section &self, float &fSmallSize, float &fLargeSize) {
-    self.GetFocalSpotSize(fSmallSize, fLargeSize);
-}
-
-
 class PyCT : public CT {
 public:
     using CT::CT;
@@ -68,46 +53,6 @@ public:
 
 void export_CT(py::module &m)
 {
-    py::class_<SectionCommon>(m, "SectionCommon");
-    py::class_<Section>(m, "SDICOS::Section");
-    py::class_<PySection, Section, SectionCommon>(m, "Section")
-        .def(py::init<>())
-        .def(py::init<const S_UINT32>(), py::arg("sectionId"))
-        .def("__copy__", [](const Section &self) { return Section(self); })
-        .def("__deepcopy__", [](const Section &self, py::dict) { return Section(self); })
-        .def(py::self == py::self)
-        .def(py::self != py::self)
-        .def("SetImagePixelPresentation", &Section::SetImagePixelPresentation, py::arg("nPresentation"))
-        .def("GetImagePixelPresentation", &Section::GetImagePixelPresentation)
-        .def("SetImageVolumeBasedCalculationTechnique", &Section::SetImageVolumeBasedCalculationTechnique, py::arg("nTechnique"))
-        .def("GetImageVolumeBasedCalculationTechnique", &Section::GetImageVolumeBasedCalculationTechnique)
-        .def("SetImageVolumetricProperties", &Section::SetImageVolumetricProperties,  py::arg("nProperties"))
-        .def("GetImageVolumetricProperties", &Section::GetImageVolumetricProperties)
-        .def("SetRescaleSlope", &Section::SetRescaleSlope,  py::arg("fSlope"))
-        .def("GetRescaleSlope", &Section::GetRescaleSlope)
-        .def("SetRescaleIntercept", &Section::SetRescaleIntercept,  py::arg("fIntercept"))
-        .def("GetRescaleIntercept", &Section::GetRescaleIntercept)
-        .def("SetRescaleType", &Section::SetRescaleType, py::arg("strType"))
-        .def("GetRescaleType", &Section::GetRescaleType, py::return_value_policy::reference)
-        .def("SetFilterMaterial", &Section::SetFilterMaterial,  py::arg("nFilterMaterial"))
-        .def("GetFilterMaterial", &Section::GetFilterMaterial)
-        .def("SetFilterMaterials", &Section::SetFilterMaterials,  py::arg("vFilterMaterial"))
-        .def("GetFilterMaterials", &Section::GetFilterMaterials)
-        .def("SetFilterType", &Section::SetFilterType,  py::arg("nFilterType"))
-        .def("GetFilterType", &Section::GetFilterType)
-        .def("SetFocalSpotSizeInMM", &Section::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
-        .def("GetFocalSpotSize", &GetFocalSpotSizeFloat, "Get the focal spot size")
-        .def("HasOneFocalSpotSize", &Section::HasOneFocalSpotSize)
-        .def("SetFocalSpotSizesInMM", &Section::SetFocalSpotSizesInMM, py::arg("fSmallSize"), py::arg("fLargeSize"))
-        .def("GetFocalSpotSize", &GetFocalSpotSizePair, "Get the focal spot size as a pair of small and large sizes")
-        .def("GetFocalSpotSmallSize", &Section::GetFocalSpotSmallSize)
-        .def("GetFocalSpotLargeSize", &Section::GetFocalSpotLargeSize)
-        .def("HasTwoFocalSpotSizes", &Section::HasTwoFocalSpotSizes)
-        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
-        .def("GetKVP", &Section::GetKVP)
-        .def("ApplyRescaleToImage", &Section::ApplyRescaleToImage)
-        .def("FreeMemory", &PySection::FreeMemory);
-  
     py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE>(m, "OBJECT_OF_INSPECTION_TYPE")
         .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumUnknownObjectOfInspectionType)
         .value("enumTypeBioSample", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBioSample)
@@ -229,24 +174,21 @@ void export_CT(py::module &m)
                            py::arg("bMoveData"))
         .def("Read", py::overload_cast<const DicosFileListing::SopInstance&, 
                                              Array1D< std::pair<Filename, ErrorLog> >&, 
-                                             IMemoryManager*
-                                      >
+                                             IMemoryManager*>
                      (&PyCT::Read), 
                      py::arg("sopinstance"), 
                      py::arg("vErrorlogs"),
                      py::arg("pMemMgr") = S_NULL)
         .def("Read", py::overload_cast<const Filename&, 
                                        ErrorLog&, 
-                                       IMemoryManager*
-                                       >
+                                       IMemoryManager*>
                      (&PyCT::CT::Read),
                      py::arg("filename"), 
                      py::arg("errorlog"),
                      py::arg("pMemMgr") = S_NULL)
         .def("Read", py::overload_cast<MemoryFile&, 
                                        ErrorLog& , 
-                                       IMemoryManager*
-                                       >
+                                       IMemoryManager*>
                      (&PyCT::CT::Read),
                      py::arg("memfile"), 
                      py::arg("errorlog"),
@@ -254,24 +196,21 @@ void export_CT(py::module &m)
 
         .def("Write", py::overload_cast<const Filename&, 
                                         ErrorLog&, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
+                                        const DicosFile::TRANSFER_SYNTAX>
                      (&PyCT::CT::Write, py::const_), 
                      py::arg("filename"), 
                      py::arg("errorLog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("Write", py::overload_cast<const Filename&, 
                                         Array1D< std::pair<Filename, ErrorLog> > &, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
+                                        const DicosFile::TRANSFER_SYNTAX>
                      (&PyCT::CT::Write, py::const_),
                      py::arg("filenameBase"), 
                      py::arg("vErrorlogs"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("Write", py::overload_cast<MemoryFile&, 
                                         ErrorLog&, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
+                                        const DicosFile::TRANSFER_SYNTAX>
                      (&PyCT::CT::Write, py::const_),
                      py::arg("memfile"), 
                      py::arg("errorlog"),
@@ -465,6 +404,10 @@ void export_CT(py::module &m)
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
                                              py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
-        .def("SetScanDescription", &IODCommon::SetScanDescription, py::arg("strDescription"));
+                                     
+        .def("SetScanDescription", &IODCommon::SetScanDescription, py::arg("strDescription"))
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex), py::arg("nSectionIndex"), py::return_value_policy::automatic_reference)
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex, py::const_), py::arg("nSectionIndex"), py::return_value_policy::automatic_reference);
+
 
 }
