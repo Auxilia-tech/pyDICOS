@@ -1,12 +1,12 @@
-from pyDICOS import Section
 from pyDICOS import Filename
 from pyDICOS import ErrorLog
 from pyDICOS import CustomMemoryManager
+from pyDICOS import Section
 from pyDICOS import CT
-from pyDICOS import DcsString
+from pyDICOS import DcsString, DcsLongString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1D
-#from pyDICOS import *
+
 import numpy
 
 
@@ -16,7 +16,12 @@ CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
 
 CTObject.SetImageAcquisitionDuration(5.2)
-CTObject.SetScanDescription("HIGH ENERGY SCAN")
+DCS = DcsLongString("HIGH ENERGY SCAN")
+CTObject.SetScanDescription(DCS)
+CTObject.SetNumberOfSections(1)
 
-
+SectionObject = Section()
+SectionObject = CTObject.GetSectionByIndex(0)
+SectionObject.SetFocalSpotSizeInMM(1.414)
+print(SectionObject.GetFocalSpotSize())
 

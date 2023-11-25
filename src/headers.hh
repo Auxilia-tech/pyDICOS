@@ -13,6 +13,7 @@ namespace py = pybind11;
 void export_ERRORLOG(py::module &);
 void export_IMEMMANAGER(py::module &);
 void export_FS(py::module &);
+void export_SECTION(py::module &);
 void export_CT(py::module &);
 void export_DCSSTRING(py::module &);
 void export_MEMORYBUFFER(py::module &);

@@ -6,7 +6,7 @@ using namespace SDICOS;
 
 void export_FS(py::module &m)
 {
-    py::class_<Folder>(m, "SDICOS::Folder")
+    py::class_<Folder>(m, "Folder")
         .def(py::init<const std::string&>(), py::arg("strFolder") = "")
         .def(py::init<const Folder&, const std::string&>(), py::arg("folderParent"), py::arg("strSubFolder"))
         .def("Set", &Folder::Set, py::arg("strFolder") = "")

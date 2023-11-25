@@ -5,7 +5,8 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     ErrorLog/*.cc 
     DcsString/*.cc 
     FILESYSTEM/*.cc 
-    CT/*.cc )#DX/*.cc TDR/*.cc)
+    CT/*.cc 
+    Section/*.cc)#DX/*.cc TDR/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
