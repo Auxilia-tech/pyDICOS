@@ -6,7 +6,8 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     DcsString/*.cc 
     FILESYSTEM/*.cc 
     CT/*.cc 
-    Section/*.cc)#DX/*.cc TDR/*.cc)
+    Section/*.cc
+    Vector3D/*.hh)#DX/*.cc TDR/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
