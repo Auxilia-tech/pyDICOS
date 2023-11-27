@@ -6,6 +6,7 @@ from pyDICOS import CT
 from pyDICOS import DcsString, DcsLongString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1D
+from pyDICOS import Vector3Dfloat
 
 import numpy
 
@@ -23,5 +24,8 @@ CTObject.SetNumberOfSections(1)
 SectionObject = Section()
 SectionObject = CTObject.GetSectionByIndex(0)
 SectionObject.SetFocalSpotSizeInMM(1.414)
-print(SectionObject.GetFocalSpotSize())
+VecRow = Vector3Dfloat(1, 0, 0)
+VecColumn = Vector3Dfloat(0, 1, 0)
+SectionObject.SetPlaneOrientation(VecRow, VecColumn)
+
 
