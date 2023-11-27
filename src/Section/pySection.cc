@@ -62,7 +62,10 @@ void export_SECTION(py::module &m)
     py::class_<SectionCommon>(m, "SectionCommon");
     py::class_<Section>(m, "SDICOS::Section")
         .def(py::init<>())
-        .def("SetFocalSpotSizeInMM", &PySection::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"));
+        .def("SetFocalSpotSizeInMM", &PySection::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
+        .def("GetFocalSpotSize", py::overload_cast<>(&Section::GetFocalSpotSize, py::const_))
+        .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"));
+
     py::class_<PySection, Section, SectionCommon>(m, "Section")
         .def(py::init<>())
         .def(py::init<const S_UINT32>(), py::arg("sectionId"))
