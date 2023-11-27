@@ -7,6 +7,7 @@ from pyDICOS import DcsString, DcsLongString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1D
 from pyDICOS import Vector3Dfloat
+from pyDICOS import Volume
 
 import numpy
 
@@ -27,5 +28,5 @@ SectionObject.SetFocalSpotSizeInMM(1.414)
 VecRow = Vector3Dfloat(1, 0, 0)
 VecColumn = Vector3Dfloat(0, 1, 0)
 SectionObject.SetPlaneOrientation(VecRow, VecColumn)
-
+SectionObject.SetSlicingDirection(True)
 
