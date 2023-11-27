@@ -5,6 +5,7 @@
  #include "SDICOS/ModuleCT.h"
  #include "SDICOS/Array1D.h"
  #include "SDICOS/Point3D.h"
+#include "SDICOS/Vector3D.h"
  #include "SDICOS/TemplateCommon.h"
  #include "SDICOS/TemplateBase.h"
  #include "SDICOS/ClientManager.h"
@@ -24,48 +25,18 @@ public:
     void FreeMemory() override { PYBIND11_OVERRIDE(void,  Section, FreeMemory); }
 };
 
-class PyCT : public CT {
-public:
-    using CT::CT;
-    void FreeMemory() override { PYBIND11_OVERRIDE(void,  CT, FreeMemory); }
-
-    bool Read(const DicosFileListing::SopInstance& sopinstance, 
-              Array1D< std::pair<Filename, ErrorLog> > &vErrorlogs, 
-              IMemoryManager *pMemMgr) 
-              override {PYBIND11_OVERRIDE(bool,  CT, Read, sopinstance, vErrorlogs, pMemMgr);}
-
-    bool Read(const Filename &filename, ErrorLog& errorLog, IMemoryManager *pMemMgr)
-              override {PYBIND11_OVERRIDE(bool,  CT, Read, filename, errorLog, pMemMgr);}  
-    
-    bool Read(MemoryFile &memfile, ErrorLog& errorLog, IMemoryManager *pMemMgr)
-              override {PYBIND11_OVERRIDE(bool,  CT, Read, memfile, errorLog, pMemMgr);}  
-
-    bool Write(const Filename &filename, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
-              override {PYBIND11_OVERRIDE(bool,  CT, Write, filename, errorLog, nTransferSyntax);}  
-
-    bool Write(const Filename &filenameBase, Array1D< std::pair<Filename, ErrorLog> > &vErrorlogs, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
-              override {PYBIND11_OVERRIDE(bool,  CT, Write, filenameBase, vErrorlogs, nTransferSyntax);}  
-  
-    bool Write(MemoryFile &memfile, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
-              override {PYBIND11_OVERRIDE(bool,  CT, Write, memfile, errorLog, nTransferSyntax);}  
-
-    IODCommon::MODALITY GetModality() const
-              override {PYBIND11_OVERRIDE(IODCommon::MODALITY, CT, GetModality);}  
-
-    DcsUniqueIdentifier GetSopClassUID() const
-              override {PYBIND11_OVERRIDE(DcsUniqueIdentifier, CT, GetSopClassUID);}
-};
-
-
 void export_SECTION(py::module &m)
 {
     py::class_<SectionCommon>(m, "SectionCommon");
     py::class_<Section>(m, "SDICOS::Section")
         .def(py::init<>())
-        .def("SetFocalSpotSizeInMM", &PySection::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
+        .def("SetFocalSpotSizeInMM", &Section::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
         .def("GetFocalSpotSize", py::overload_cast<>(&Section::GetFocalSpotSize, py::const_))
-        .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"));
-
+        .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"))
+        .def("SetPlaneOrientation", &SectionCommon::SetPlaneOrientation, py::arg("ptRowOrientation"), py::arg("ptColumnOrientation"))
+        .def("GetRowOrientation", &SectionCommon::GetRowOrientation)
+        .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation);
+   
     py::class_<PySection, Section, SectionCommon>(m, "Section")
         .def(py::init<>())
         .def(py::init<const S_UINT32>(), py::arg("sectionId"))
@@ -91,7 +62,10 @@ void export_SECTION(py::module &m)
         .def("GetFilterMaterials", &Section::GetFilterMaterials)
         .def("SetFilterType", &Section::SetFilterType,  py::arg("nFilterType"))
         .def("GetFilterType", &Section::GetFilterType)
-        .def("SetFocalSpotSizeInMM", &PySection::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
+        .def("SetFocalSpotSizeInMM", &Section::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
+        .def("SetPlaneOrientation", &SectionCommon::SetPlaneOrientation, py::arg("ptRowOrientation"), py::arg("ptColumnOrientation"))
+        .def("GetRowOrientation", &SectionCommon::GetRowOrientation)
+        .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
         .def("GetFocalSpotSize", py::overload_cast<>(&Section::GetFocalSpotSize, py::const_))
         .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"))
         .def("HasOneFocalSpotSize", &Section::HasOneFocalSpotSize)
