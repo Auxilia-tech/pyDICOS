@@ -113,13 +113,13 @@ void export_CT(py::module &m)
         .value("OWNS_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_DATA)
         .value("MEMORY_POLICY_UNKNOWN", MemoryPolicy::VOLUME_MEMORY_POLICY::MEMORY_POLICY_UNKNOWN)
         .export_values();
-       
+    
     py::enum_<Array3DLargeBase::ADD_SLICE_FAILURE_POLICY>(m, "ADD_SLICE_FAILURE_POLICY")
         .value("EARLY_OUT", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::EARLY_OUT)
         .value("SKIP_AND_CONTINUE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::SKIP_AND_CONTINUE)
         .value("ADD_DEBUG_SLICE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::ADD_DEBUG_SLICE)
         .export_values();
-
+       
     py::class_<IODCommon>(m, "IODCommon");
     py::class_<ScanCommon>(m, "ScanCommon");
     py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
@@ -157,7 +157,12 @@ void export_CT(py::module &m)
 
         .def_property_readonly_static("PHOTOMETRIC_INTERPRETATION", [m](py::object) {
             return m.attr("PHOTOMETRIC_INTERPRETATION");
+        })   
+
+        .def_property_readonly_static("ADD_SLICE_FAILURE_POLICY", [m](py::object) {
+            return m.attr("ADD_SLICE_FAILURE_POLICY");
         })         
+      
 
         .def("__copy__", [](const CT &self) { return CT(self); })
         .def("__deepcopy__", [](const CT &self, py::dict) { return CT(self); })
