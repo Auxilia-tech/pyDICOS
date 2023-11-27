@@ -35,7 +35,10 @@ void export_SECTION(py::module &m)
         .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"))
         .def("SetPlaneOrientation", &SectionCommon::SetPlaneOrientation, py::arg("ptRowOrientation"), py::arg("ptColumnOrientation"))
         .def("GetRowOrientation", &SectionCommon::GetRowOrientation)
-        .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation);
+        .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
+        .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
+        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"));
+
    
     py::class_<PySection, Section, SectionCommon>(m, "Section")
         .def(py::init<>())
@@ -66,6 +69,8 @@ void export_SECTION(py::module &m)
         .def("SetPlaneOrientation", &SectionCommon::SetPlaneOrientation, py::arg("ptRowOrientation"), py::arg("ptColumnOrientation"))
         .def("GetRowOrientation", &SectionCommon::GetRowOrientation)
         .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
+        .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
+        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
         .def("GetFocalSpotSize", py::overload_cast<>(&Section::GetFocalSpotSize, py::const_))
         .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"))
         .def("HasOneFocalSpotSize", &Section::HasOneFocalSpotSize)

@@ -60,7 +60,8 @@ void export_CT(py::module &m)
         .value("enumTypeBaggage", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBaggage)
         .value("enumTypeAnimal", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeAnimal)
         .value("enumTypeOther", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeOther)
-        .value("enumTypePerson", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypePerson);
+        .value("enumTypePerson", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypePerson)
+        .export_values();
 
     py::enum_<CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS>(m, "OOI_IMAGE_CHARACTERISTICS")
         .value("enumUnknownOOIImageCharacteristics", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumUnknownOOIImageCharacteristics)
@@ -74,12 +75,14 @@ void export_CT(py::module &m)
         .value("enumDensity", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumDensity)
         .value("enumIntensity", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumIntensity)
         .value("enumMu", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumMu)
-        .value("enumMultiEnergy", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumMultiEnergy);
+        .value("enumMultiEnergy", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumMultiEnergy)
+        .export_values();
 
     py::enum_<CTTypes::CTImage::IMAGE_FLAVOR>(m, "IMAGE_FLAVOR")
         .value("enumUnknownImageFlavor", CTTypes::CTImage::IMAGE_FLAVOR::enumUnknownImageFlavor)
         .value("enumProjection", CTTypes::CTImage::IMAGE_FLAVOR::enumProjection)
-        .value("enumVolume", CTTypes::CTImage::IMAGE_FLAVOR::enumVolume);
+        .value("enumVolume", CTTypes::CTImage::IMAGE_FLAVOR::enumVolume)
+        .export_values();
 
     py::enum_<ImagePixelMacro::PHOTOMETRIC_INTERPRETATION>(m, "PHOTOMETRIC_INTERPRETATION")
         .value("enumUnknownPhotometricInterpretation", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumUnknownPhotometricInterpretation)
@@ -92,26 +95,30 @@ void export_CT(py::module &m)
         .value("enumYBR_Partial_422", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_Partial_422)
         .value("enumYBR_Partial_420", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_Partial_420)
         .value("enumYBR_ICT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_ICT)
-        .value("enumYBR_RCT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_RCT);
+        .value("enumYBR_RCT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_RCT)
+        .export_values();
 
     py::enum_<DicosFile::TRANSFER_SYNTAX>(m, "TRANSFER_SYNTAX")
         .value("enumLittleEndianExplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicit)
         .value("enumLittleEndianExplicitExtended", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicitExtended)
         .value("enumLittleEndianImplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianImplicit)
         .value("enumLosslessJPEG", DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE);
+        .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE)
+        .export_values();
 
     py::enum_<MemoryPolicy::VOLUME_MEMORY_POLICY>(m, "VOLUME_MEMORY_POLICY")
         .value("DOES_NOT_OWN_SLICES", MemoryPolicy::VOLUME_MEMORY_POLICY::DOES_NOT_OWN_SLICES)
         .value("OWNS_SLICES", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_SLICES)
         .value("DOES_NOT_OWN_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::DOES_NOT_OWN_DATA)
         .value("OWNS_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_DATA)
-        .value("MEMORY_POLICY_UNKNOWN", MemoryPolicy::VOLUME_MEMORY_POLICY::MEMORY_POLICY_UNKNOWN);
+        .value("MEMORY_POLICY_UNKNOWN", MemoryPolicy::VOLUME_MEMORY_POLICY::MEMORY_POLICY_UNKNOWN)
+        .export_values();
        
     py::enum_<Array3DLargeBase::ADD_SLICE_FAILURE_POLICY>(m, "ADD_SLICE_FAILURE_POLICY")
         .value("EARLY_OUT", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::EARLY_OUT)
         .value("SKIP_AND_CONTINUE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::SKIP_AND_CONTINUE)
-        .value("ADD_DEBUG_SLICE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::ADD_DEBUG_SLICE);
+        .value("ADD_DEBUG_SLICE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::ADD_DEBUG_SLICE)
+        .export_values();
 
     py::class_<IODCommon>(m, "IODCommon");
     py::class_<ScanCommon>(m, "ScanCommon");
