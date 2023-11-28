@@ -37,6 +37,9 @@ void export_Volume(py::module &m)
         .def_property_readonly_static("VOLUME_MEMORY_POLICY", [m](py::object) {
             return m.attr("VOLUME_MEMORY_POLICY");
         })  
+        .def_property_readonly_static("IMAGE_DATA_TYPE", [m](py::object) {
+            return m.attr("IMAGE_DATA_TYPE");
+        })  
         .def(py::init<>())
         .def(py::init<const ImageDataBase::IMAGE_DATA_TYPE, const MemoryPolicy::VOLUME_MEMORY_POLICY>(),
                       py::arg("nDataType") = ImageDataBase::IMAGE_DATA_TYPE::enumUndefinedDataType, 
@@ -44,6 +47,9 @@ void export_Volume(py::module &m)
         .def("__copy__", [](const Volume &self) { return Volume(self); })
         .def("__deepcopy__", [](const Volume &self, py::dict) { return Volume(self); })
         .def(py::self == py::self)
-        .def(py::self != py::self);
-
+        .def(py::self != py::self)
+        .def("Allocate", py::overload_cast<const ImageDataBase::IMAGE_DATA_TYPE>(&Volume::Allocate),  py::arg("nDataType"))
+        .def("Allocate", py::overload_cast<const ImageDataBase::IMAGE_DATA_TYPE, S_UINT32, const S_UINT32, const S_UINT32>(&Volume::Allocate),  
+                                           py::arg("nDataType"),  py::arg("nWidth"),  py::arg("nHeight"),  py::arg("nDepth"));
+  
 }
