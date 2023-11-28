@@ -44,11 +44,6 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
                                                   const T*))&Array3DLarge<T>::AddSlice, 
                                                   py::arg("pNewSlice"), 
                                                   py::arg("nFailurePolicy") = Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::EARLY_OUT, 
-                                                  py::arg("pfFillValue") = S_NULL)
-
-        .def("AddSlices",(bool(Array3DLarge<T>::*)(Array2D<T>**, 
-                                                  const S_UINT32))&Array3DLarge<T>::AddSlices, 
-                                                  py::arg("pNewSlices"), 
-                                                  py::arg("numSlices"));
+                                                  py::arg("pfFillValue") = S_NULL);
 
 }

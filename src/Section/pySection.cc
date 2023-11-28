@@ -37,8 +37,9 @@ void export_SECTION(py::module &m)
         .def("GetRowOrientation", &SectionCommon::GetRowOrientation)
         .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
         .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
-        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"));
-
+        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
+        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData))
+        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData, py::const_));
    
     py::class_<PySection, Section, SectionCommon>(m, "Section")
         .def(py::init<>())
