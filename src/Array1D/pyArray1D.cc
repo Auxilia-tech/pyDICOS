@@ -5,8 +5,8 @@
 
 using namespace SDICOS;
 
-void export_ARRAY1D(py::module &m){
-    py::class_<Array1D<std::pair<bool, MemoryBuffer>>>(m,"Array1D")
+void export_ARRAY1D_PAIR_BOOL_MEMBUFF(py::module &m){
+    py::class_<Array1D<std::pair<bool, MemoryBuffer>>>(m,"Array1D_PairBoolMemBuff")
         .def(py::init<>())
         .def(py::init<const S_UINT32>())
         .def(py::init<const Array1D<std::pair<bool, MemoryBuffer>>&>())
