@@ -17,7 +17,7 @@ void export_SECTION(py::module &);
 void export_CT(py::module &);
 void export_DCSSTRING(py::module &);
 void export_MEMORYBUFFER(py::module &);
-void export_ARRAY1D(py::module &m);
+void export_ARRAY1D_PAIR_BOOL_MEMBUFF(py::module &m);
 void export_Volume(py::module &m);
 
 
