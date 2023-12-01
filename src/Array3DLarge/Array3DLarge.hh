@@ -1,3 +1,6 @@
+#ifndef EXPORT_ARRAY3DLARGE_FILE_H
+#define EXPORT_ARRAY3DLARGE_FILE_H
+
 #include "../headers.hh"
 #include "SDICOS/Array3DLarge.h"
 
@@ -13,11 +16,8 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
         .export_values();
 
     std::string pyclass_array3d_large_name = std::string("Array3DLarge") + typestr;
-    std::string pyclass_array1d_name = std::string("Array1D") + typestr;
 
-    py::class_<Array3DLargeBase>(m, "Array3DLargeBase");
-    py::class_<Array1D<Array2D<T>*>>(m, pyclass_array1d_name.c_str());
-    py::class_<Array3DLarge<T>, Array1D<Array2D<T>*>, Array3DLargeBase>(m, pyclass_array3d_large_name.c_str())
+    py::class_<Array3DLarge<T>>(m, pyclass_array3d_large_name.c_str())
         .def(py::init<>())
         .def(py::init<const S_UINT32, 
                       const S_UINT32, 
@@ -47,3 +47,5 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
                                                   py::arg("pfFillValue") = S_NULL);
 
 }
+
+#endif
