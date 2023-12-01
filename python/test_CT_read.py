@@ -5,7 +5,8 @@ from pyDICOS import CustomMemoryManager
 from pyDICOS import CT
 from pyDICOS import DcsString
 from pyDICOS import MemoryBuffer
-from pyDICOS import Array1D
+from pyDICOS import Array1DS_UINT16
+from pyDICOS import Array1DPairBoolMemBuff
 import numpy
 
 numpy.set_printoptions(suppress=True, formatter={'float_kind':'{:0.2f}'.format}) 
