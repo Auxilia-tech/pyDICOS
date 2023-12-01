@@ -1,5 +1,8 @@
-#include "../headers.hh"
+#ifndef EXPORT_ARRAY2D_FILE_H
+#define EXPORT_ARRAY2D_FILE_H
 
+
+#include "../headers.hh"
 #include "SDICOS/Array2D.h"
 
 using namespace SDICOS;
@@ -69,5 +72,6 @@ void export_Array2D(py::module &m, const std::string & typestr){
         .def("Set", &Array2D<T>::Set, py::arg("i"), py::arg("j"), py::arg("obj"))
         .def("GetBuffer", (const T* (Array2D<T>::*)() const) &Array2D<T>::GetBuffer)
         .def("GetBuffer", (T* (Array2D<T>::*)()) &Array2D<T>::GetBuffer);
-       
 }
+
+#endif

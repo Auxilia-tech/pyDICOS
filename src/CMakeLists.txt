@@ -1,6 +1,6 @@
 
 file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS 
-    Array1D/*.cc
+    Array1D/*.hh
     Array2D/*.hh
     MemManager/*.cc 
     ErrorLog/*.cc 
