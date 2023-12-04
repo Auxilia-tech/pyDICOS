@@ -34,7 +34,7 @@ void export_Volume(py::module &m)
         .export_values();
 
     py::class_<ImageDataBase>(m, "ImageDataBase");
-    py::class_<Volume, ImageDataBase>(m, "Volume")
+    py::class_<Volume, ImageDataBase>(m, "Volume", py::buffer_protocol(), py::dynamic_attr())
         .def_property_readonly_static("VOLUME_MEMORY_POLICY", [m](py::object) {
             return m.attr("VOLUME_MEMORY_POLICY");
         })  
@@ -57,7 +57,7 @@ void export_Volume(py::module &m)
         .def("GetSigned32", (Array3DLarge<S_INT32>* (Volume::*)()) &Volume::GetSigned32)     
         .def("GetSigned64", (Array3DLarge<S_INT64>* (Volume::*)()) &Volume::GetSigned64)
         .def("GetUnSigned8", (Array3DLarge<S_UINT8>* (Volume::*)()) &Volume::GetUnsigned8)
-        .def("GetUnSigned16", (Array3DLarge<S_UINT16>* (Volume::*)()) &Volume::GetUnsigned16)     
+        .def("GetUnSigned16", (Array3DLarge<S_UINT16>* (Volume::*)()) &Volume::GetUnsigned16, py::return_value_policy::copy)     
         .def("GetUnSigned32", (Array3DLarge<S_UINT32>* (Volume::*)()) &Volume::GetUnsigned32)
         .def("GetUnSigned64", (Array3DLarge<S_UINT64>* (Volume::*)()) &Volume::GetUnsigned64)
         .def("GetFloat", (Array3DLarge<float>* (Volume::*)()) &Volume::GetFloat)
@@ -66,7 +66,7 @@ void export_Volume(py::module &m)
         .def("GetSigned32", (const Array3DLarge<S_INT32>* (Volume::*)() const) &Volume::GetSigned32)     
         .def("GetSigned64", (const Array3DLarge<S_INT64>* (Volume::*)() const) &Volume::GetSigned64)
         .def("GetUnsigned8", (const Array3DLarge<S_UINT8>* (Volume::*)() const) &Volume::GetUnsigned8)
-        .def("GetUnsigned16", (const Array3DLarge<S_UINT16>* (Volume::*)() const) &Volume::GetUnsigned16)     
+        .def("GetUnsigned16", (const Array3DLarge<S_UINT16>* (Volume::*)() const) &Volume::GetUnsigned16, py::return_value_policy::copy)     
         .def("GetUnsigned32", (const Array3DLarge<S_UINT32>* (Volume::*)() const) &Volume::GetUnsigned32)
         .def("GetUnsigned64", (const Array3DLarge<S_UINT64>* (Volume::*)() const) &Volume::GetUnsigned64)
         .def("GetWidth", &Volume::GetWidth) 

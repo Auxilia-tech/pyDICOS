@@ -8,10 +8,10 @@ from pyDICOS import MemoryBuffer
 from pyDICOS import Array1DS_UINT16
 from pyDICOS import Array1DArray2DS_UINT16
 from pyDICOS import Array1DPairBoolMemBuff
+from pyDICOS import Array2DS_UINT16
 from pyDICOS import Vector3Dfloat
 from pyDICOS import Volume
 from pyDICOS import Array3DLargeS_UINT16
-#from pyDICOS import Array2DS_UINT16
 
 import numpy as np
 
@@ -36,7 +36,6 @@ SectionObject.SetSlicingDirection(True)
 volume = SectionObject.GetPixelData()
 volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 128, 129, 100)
 sectionData = volume.GetUnsigned16()
-
 # Create userData array
 userData = np.zeros(volume.GetWidth() * volume.GetHeight(), dtype=np.uint16)
 
@@ -44,9 +43,14 @@ userData = np.zeros(volume.GetWidth() * volume.GetHeight(), dtype=np.uint16)
 for i in range(volume.GetSliceSize()):
     userData[i] = i & 0xFFFF
 
-for i in range(volume.GetDepth()):
-    xyPlane = sectionData[i]
-    pBuffer = xyPlane.GetBuffer()
+
+
+for i in range(1):
+     xyPlane = sectionData[i]
+     pBuffer = xyPlane.GetBuffer()
+     for j in range(1, 20):
+          for k in range(1, 20):
+               print('(', j, ', ', k, ')', xyPlane.Get(j, k)) 
 
     # The user can copy their data into pBuffer from another source or place it directly in pBuffer.
  #   pBuffer[:, :] = userData[:xyPlane.GetHeight(), :xyPlane.GetWidth()]

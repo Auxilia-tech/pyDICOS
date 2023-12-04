@@ -70,8 +70,8 @@ void export_Array2D(py::module &m, const std::string & typestr){
         .def("Get", &Array2D<T>::Get, py::arg("i"), py::arg("j"))
         .def("At", &Array2D<T>::At, py::arg("i"), py::arg("j"))
         .def("Set", &Array2D<T>::Set, py::arg("i"), py::arg("j"), py::arg("obj"))
-        .def("GetBuffer", (const T* (Array2D<T>::*)() const) &Array2D<T>::GetBuffer)
-        .def("GetBuffer", (T* (Array2D<T>::*)()) &Array2D<T>::GetBuffer);
+        .def("GetBuffer", (const T* (Array2D<T>::*)() const) &Array2D<T>::GetBuffer, py::return_value_policy::copy)
+        .def("GetBuffer", (T* (Array2D<T>::*)()) &Array2D<T>::GetBuffer, py::return_value_policy::copy);
 }
 
 #endif

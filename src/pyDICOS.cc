@@ -18,8 +18,6 @@ PYBIND11_MODULE(pyDICOS, m)
    export_Array2D<float>(m, "float");
    export_Array1DArray2D<float>(m, "float");
    export_Array1DArray2D<S_UINT16>(m, "S_UINT16");
-   //export_Array1DArray2DPointer<S_UINT16>(m, "S_UINT16");
-   //export_Array1D<Array2D<float>*>(m, "Array1DArray2DFloat");
    export_Array2D<S_UINT16>(m, "S_UINT16");
    export_VECTOR3D<float>(m, "float");
    export_Volume(m);
