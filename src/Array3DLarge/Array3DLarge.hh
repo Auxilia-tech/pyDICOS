@@ -44,7 +44,9 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
                                                   const T*))&Array3DLarge<T>::AddSlice, 
                                                   py::arg("pNewSlice"), 
                                                   py::arg("nFailurePolicy") = Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::EARLY_OUT, 
-                                                  py::arg("pfFillValue") = S_NULL);
+                                                  py::arg("pfFillValue") = S_NULL)
+        .def("__getitem__", (const Array2D<T>& (Array3DLarge<T>::*)(S_UINT32) const) &Array3DLarge<T>::operator[], py::arg("n"))
+        .def("__getitem__", (Array2D<T>& (Array3DLarge<T>::*)(S_UINT32)) &Array3DLarge<T>::operator[], py::arg("n"));
 
 }
 
