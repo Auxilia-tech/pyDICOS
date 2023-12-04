@@ -59,30 +59,5 @@ void export_Array1DArray2D(py::module &m, const std::string & typestr){
 }
 
 
-template<typename T>
-void export_Array1DArray2DPointer(py::module &m, const std::string & typestr){
-    std::string pyclass_array1Darray2D_name = std::string("Array1DArray2DPointer") + typestr;
-    py::class_<Array1D<Array2D<T>*>>(m, pyclass_array1Darray2D_name.c_str())
-        .def(py::init<>())
-        .def(py::init<const S_UINT32>(), py::arg("size"))
-        .def(py::init<const Array1D<Array2D<T>*>&>())
-        .def("__eq__", &Array1D<Array2D<T>*>::operator==)
-        .def("__ne__", &Array1D<Array2D<T>*>::operator!=)
-        .def("Empty", &Array1D<Array2D<T>*>::Empty)
-        .def("Clear", &Array1D<Array2D<T>*>::Clear)
-        .def("SetSize", &Array1D<Array2D<T>*>::SetSize, py::arg("nSize"), py::arg("bAllocateExtraCapacity"))
-        .def("Reserve", &Array1D<Array2D<T>*>::Reserve, py::arg("reserveCapacity"))
-        .def("Extend", &Array1D<Array2D<T>*>::Extend, py::arg("numAdditionalElements"))
-        .def("SetOverlay", &Array1D<Array2D<T>*>::SetOverlay, py::arg("pBuf"), py::arg("nSize"))
-        .def("Zero", &Array1D<Array2D<T>*>::Zero, py::arg("zero"))
-        .def("GetSize", py::overload_cast<>(&Array1D<Array2D<T>*>::GetSize, py::const_))
-        .def("GetSize", py::overload_cast<S_UINT32&>(&Array1D<Array2D<T>*>::GetSize, py::const_), py::arg("nSize"))
-        .def("GetCapacity", py::overload_cast<>(&Array1D<Array2D<T>*>::GetCapacity, py::const_))
-        .def("GetCapacity", py::overload_cast<S_UINT32&>(&Array1D<Array2D<T>*>::GetCapacity, py::const_), py::arg("nCapacity"))
-        .def("GetNumUnusedElements", &Array1D<Array2D<T>*>::GetNumUnusedElements)
-        .def("GetBuffer", (const Array2D<T>** (Array1D<Array2D<T>*>::*)() const) &Array1D<Array2D<T>*>::GetBuffer)
-        .def("GetBuffer", (const Array2D<T>** (Array1D<Array2D<T>*>::*)()) &Array1D<Array2D<T>*>::GetBuffer);      
-}
-
 
 #endif
