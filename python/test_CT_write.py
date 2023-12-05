@@ -14,6 +14,7 @@ from pyDICOS import Volume
 from pyDICOS import Array3DLargeS_UINT16
 
 import numpy as np
+import ctypes
 
 
 CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
@@ -45,12 +46,33 @@ for i in range(volume.GetSliceSize()):
 
 
 
-for i in range(1):
+for i in range(volume.GetDepth()):
      xyPlane = sectionData[i]
      pBuffer = xyPlane.GetBuffer()
-     for j in range(1, 20):
-          for k in range(1, 20):
-               print('(', j, ', ', k, ')', xyPlane.Get(j, k)) 
+     size_of_data = ctypes.sizeof(ctypes.c_uint16) * xyPlane.GetWidth() * xyPlane.GetHeight()
 
-    # The user can copy their data into pBuffer from another source or place it directly in pBuffer.
- #   pBuffer[:, :] = userData[:xyPlane.GetHeight(), :xyPlane.GetWidth()]
+    # Create a ctypes array from the userData
+     data_array = (ctypes.c_uint16 * (xyPlane.GetWidth() * xyPlane.GetHeight())).from_buffer(userData)
+
+    # Copy the data to pBuffer
+     for j in range(1, xyPlane.GetHeight()):
+        for k in range(1, xyPlane.GetWidth()):
+            xyPlane.Set(j, k, userData[k + j * xyPlane.GetWidth()])
+            #print('(', j, ', ', k,')' , xyPlane.Get(j, k))
+
+slice_count = 0
+b_res = True
+
+volume_iterator = volume.Begin()
+while volume_iterator != volume.End():
+    cur_slice = volume_iterator.AsUnsigned16()
+    cur_slice.Zero(slice_count)
+    b_res = (cur_slice.GetWidth() == 128) and (cur_slice.GetHeight() == 129) and b_res
+    print(b_res)
+    next(volume_iterator)
+    print(volume_iterator)
+    print(slice_count)
+    slice_count += 1
+
+if slice_count != 100 or not b_res:
+    print("UserCTExample CreateCTSimple failed to verify slice count using iterator. ", b_res)

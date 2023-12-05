@@ -15,10 +15,18 @@ PYBIND11_MODULE(pyDICOS, m)
    export_MEMORYBUFFER(m);
    export_Array1D<S_UINT16>(m, "S_UINT16");
    export_Array1D<std::pair<bool, MemoryBuffer>>(m, "PairBoolMemBuff");
+   export_Array2D<S_UINT8>(m, "S_UINT8");
+   export_Array2D<S_UINT16>(m, "S_UINT16");
+   export_Array2D<S_UINT32>(m, "S_UINT32");
+   export_Array2D<S_UINT64>(m, "S_UINT64");
+   export_Array2D<S_INT8>(m, "S_INT8");
+   export_Array2D<S_INT16>(m, "S_INT16");
+   export_Array2D<S_INT32>(m, "S_INT32");
+   export_Array2D<S_INT64>(m, "S_INT64");
    export_Array2D<float>(m, "float");
+
    export_Array1DArray2D<float>(m, "float");
    export_Array1DArray2D<S_UINT16>(m, "S_UINT16");
-   export_Array2D<S_UINT16>(m, "S_UINT16");
    export_VECTOR3D<float>(m, "float");
    export_Volume(m);
    export_Array3DLarge<S_UINT16>(m, "S_UINT16");
