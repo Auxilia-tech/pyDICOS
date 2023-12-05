@@ -36,7 +36,7 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
         .def(py::self != py::self)
         .def("SetMemoryPolicy", &Array3DLarge<T>::SetMemoryPolicy, py::arg("nMemPolicy")) 
         .def("OwnsSlices", &Array3DLarge<T>::OwnsSlices)
-        .def("GetSlice",(Array2D<T>*(Array3DLarge<T>::*)(const S_UINT32))&Array3DLarge<T>::GetSlice, py::arg("nD"))
+        .def("GetSlice",(Array2D<T>*(Array3DLarge<T>::*)(const S_UINT32))&Array3DLarge<T>::GetSlice, py::arg("nD"), py::return_value_policy::copy)
         .def("AddSlice",(Array2D<T>*(Array3DLarge<T>::*)(const S_UINT32, const S_UINT32))&Array3DLarge<T>::AddSlice, py::arg("width"), py::arg("height"))
         .def("AddSlice",(Array2D<T>*(Array3DLarge<T>::*)(T*, const S_UINT32, const S_UINT32))&Array3DLarge<T>::AddSlice, py::arg("pSlice"), py::arg("width"), py::arg("height"))
         .def("AddSlice",(bool(Array3DLarge<T>::*)(Array2D<T>*, 
@@ -46,7 +46,8 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
                                                   py::arg("nFailurePolicy") = Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::EARLY_OUT, 
                                                   py::arg("pfFillValue") = S_NULL)
         .def("__getitem__", (const Array2D<T>& (Array3DLarge<T>::*)(S_UINT32) const) &Array3DLarge<T>::operator[], py::arg("n"))
-        .def("__getitem__", (Array2D<T>& (Array3DLarge<T>::*)(S_UINT32)) &Array3DLarge<T>::operator[], py::arg("n"));
+        .def("__getitem__", (Array2D<T>& (Array3DLarge<T>::*)(S_UINT32)) &Array3DLarge<T>::operator[], py::arg("n"))
+        .def("Zero", &Array3DLarge<T>::Zero, py::arg("zero"));
 
 }
 
