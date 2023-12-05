@@ -17,8 +17,29 @@ void export_Volume(py::module &m)
         .def("GetCurrentSlice", &Volume::SliceIterator::GetCurrentSlice)
         .def(py::self == py::self)
         .def(py::self != py::self)
+        .def("__next__", (Volume::SliceIterator& (Volume::SliceIterator::*)()) &Volume::SliceIterator::operator++, py::return_value_policy::reference_internal)
+        .def("__next__", (Volume::SliceIterator (Volume::SliceIterator::*)(S_INT32)) &Volume::SliceIterator::operator++, py::return_value_policy::reference_internal)
         .def(py::self += S_INT32())
-        .def(py::self -= S_INT32());
+        .def(py::self -= S_INT32())
+        .def("AsUnsigned8",(Array2D<S_UINT8>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsUnsigned8)
+        .def("AsUnsigned8",(const Array2D<S_UINT8>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsUnsigned8)
+        .def("AsUnsigned16",(Array2D<S_UINT16>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsUnsigned16)
+        .def("AsUnsigned16",(const Array2D<S_UINT16>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsUnsigned16)
+        .def("AsUnsigned32",(Array2D<S_UINT32>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsUnsigned32)
+        .def("AsUnsigned32",(const Array2D<S_UINT32>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsUnsigned32)
+        .def("AsUnsigned64",(Array2D<S_UINT64>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsUnsigned64)
+        .def("AsUnsigned64",(const Array2D<S_UINT64>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsUnsigned64)
+        .def("AsSigned8",(Array2D<S_INT8>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsSigned8)
+        .def("AsSigned8",(const Array2D<S_INT8>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsSigned8)
+        .def("AsSigned16",(Array2D<S_INT16>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsSigned16)
+        .def("AsSigned16",(const Array2D<S_INT16>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsSigned16)
+        .def("AsSigned32",(Array2D<S_INT32>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsSigned32)
+        .def("AsSigned32",(const Array2D<S_INT32>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsSigned32)
+        .def("AsSigned64",(Array2D<S_INT64>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsSigned64)
+        .def("AsSigned64",(const Array2D<S_INT64>*(Volume::SliceIterator::*)()const) &Volume::SliceIterator::AsSigned64)
+        .def("AsFloat",(Array2D<float>*(Volume::SliceIterator::*)())&Volume::SliceIterator::AsFloat)
+        .def("AsFloat",(const Array2D<float>*(Volume::SliceIterator::*)() const)&Volume::SliceIterator::AsFloat);
+
     
     py::enum_<ImageDataBase::IMAGE_DATA_TYPE>(m, "IMAGE_DATA_TYPE")
         .value("enumUndefinedDataType", ImageDataBase::IMAGE_DATA_TYPE::enumUndefinedDataType)
@@ -76,5 +97,8 @@ void export_Volume(py::module &m)
         .def("GetSliceSizeInBytes", &Volume::GetSliceSizeInBytes)
         .def("GetSizeInBytes", &Volume::GetSizeInBytes)
         .def("GetDepth", &Volume::GetDepth)
-        .def("GetCapacity", &Volume::GetCapacity);
+        .def("GetCapacity", &Volume::GetCapacity)
+        .def("Begin", &Volume::Begin)
+        .def("End", &Volume::End);
+  
 }
