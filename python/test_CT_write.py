@@ -41,13 +41,6 @@ def GenerateCTSection(ct):
     volume = SectionObject.GetPixelData()
     volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 256, 256, 256)
     Array3Dlarge = volume.GetUnsigned16()
-    print(SectionObject.GetWidth())
-    #print(volume.GetWidth())
-    #print(volume.GetHeight())
-    #print(volume.GetDepth())
-    #print(Array3Dlarge.GetWidth())
-    #print(Array3Dlarge.GetHeight())
-    #print(Array3Dlarge.GetDepth())
     Array3Dlarge.Zero(0)
 
     ptCenter = Point3DS_UINT16(125,125,125)
