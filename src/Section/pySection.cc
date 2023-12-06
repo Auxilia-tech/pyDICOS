@@ -51,8 +51,8 @@ void export_SECTION(py::module &m)
         .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
         .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
         .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
-        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData))
-        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData, py::const_))
+        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData), py::return_value_policy::automatic)
+        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData, py::const_), py::return_value_policy::automatic)
         .def("SetFilterMaterial", &Section::SetFilterMaterial,  py::arg("nFilterMaterial"))
         .def("GetFilterMaterial", &Section::GetFilterMaterial)
         .def("SetPositionInMM", py::overload_cast<const float, const float, const float>(&SectionCommon::SetPositionInMM), 
@@ -60,7 +60,10 @@ void export_SECTION(py::module &m)
         .def("SetPositionInMM", py::overload_cast<const Point3D<float> &>(&SectionCommon::SetPositionInMM), 
                                 py::arg("pt"))
         .def("SetSpacingInMM", &SectionCommon::SetSpacingInMM, py::arg("fColumn"), py::arg("fRow"), py::arg("fSlice"))
-        .def("SetSliceThickness", &SectionCommon::SetSliceThickness, py::arg("fSliceThickness"));
+        .def("SetSliceThickness", &SectionCommon::SetSliceThickness, py::arg("fSliceThickness"))
+        .def("GetWidth",  &SectionCommon:: GetWidth)
+        .def("GetHeight",  &SectionCommon:: GetHeight)
+        .def("GetDepth",  &SectionCommon:: GetDepth);
 
    
     py::class_<PySection, Section, SectionCommon>(m, "Section")
@@ -113,5 +116,8 @@ void export_SECTION(py::module &m)
         .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
         .def("GetKVP", &Section::GetKVP)
         .def("ApplyRescaleToImage", &Section::ApplyRescaleToImage)
-        .def("FreeMemory", &PySection::FreeMemory);
+        .def("FreeMemory", &PySection::FreeMemory)
+        .def("GetWidth",  &SectionCommon:: GetWidth)
+        .def("GetHeight",  &SectionCommon:: GetHeight)
+        .def("GetDepth",  &SectionCommon:: GetDepth);
 }
