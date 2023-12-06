@@ -47,8 +47,10 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
                                                   py::arg("pfFillValue") = S_NULL)
         .def("__getitem__", (const Array2D<T>& (Array3DLarge<T>::*)(S_UINT32) const) &Array3DLarge<T>::operator[], py::arg("n"))
         .def("__getitem__", (Array2D<T>& (Array3DLarge<T>::*)(S_UINT32)) &Array3DLarge<T>::operator[], py::arg("n"))
-        .def("Zero", &Array3DLarge<T>::Zero, py::arg("zero"));
-
+        .def("Zero", &Array3DLarge<T>::Zero, py::arg("zero"))
+        .def("GetWidth", &Array3DLarge<T>::GetWidth)
+        .def("GetHeight", &Array3DLarge<T>::GetHeight)
+        .def("GetDepth", &Array3DLarge<T>::GetDepth);
 }
 
 #endif
