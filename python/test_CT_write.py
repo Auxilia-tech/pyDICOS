@@ -18,16 +18,16 @@ import numpy as np
 import ctypes
 
 def GenerateCTSection(ct):
-    SectionObject = Section()
     ct.SetNumberOfSections(1)
     SectionObject = ct.GetSectionByIndex(0)
     SectionObject.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum)
     SectionObject.SetFocalSpotSizeInMM(10)
     SectionObject.SetKVP(7000)
+    print(ct.GetNumberOfSections())
 
     VecRowOrientation = Vector3Dfloat(1, 0, 0)
     VecColumnOrientation = Vector3Dfloat(0, 1, 0)
-    SectionObject.SetPlaneOrientation(VecRow, VecColumn)
+    SectionObject.SetPlaneOrientation(VecRowOrientation, VecColumnOrientation)
     SectionObject.SetPositionInMM(-125,-125,125)
 
     fColumnSpacing = 1.0
@@ -37,9 +37,17 @@ def GenerateCTSection(ct):
 
     SectionObject.SetSpacingInMM(fColumnSpacing, fRowSpacing, fSliceSpacing)
     SectionObject.SetSliceThickness(fSliceThickness)
+
     volume = SectionObject.GetPixelData()
     volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 256, 256, 256)
     Array3Dlarge = volume.GetUnsigned16()
+    print(SectionObject.GetWidth())
+    #print(volume.GetWidth())
+    #print(volume.GetHeight())
+    #print(volume.GetDepth())
+    #print(Array3Dlarge.GetWidth())
+    #print(Array3Dlarge.GetHeight())
+    #print(Array3Dlarge.GetDepth())
     Array3Dlarge.Zero(0)
 
     ptCenter = Point3DS_UINT16(125,125,125)
@@ -52,28 +60,33 @@ def GenerateCTSection(ct):
     curSlice = 0
 
     for ptPos.z in range(200):
-        pSlice = Array3Dlarge.GetSlice(ptPos.z) #SDICOS::Array2D<SDICOS::S_UINT16>* pSlice
+        pSlice = Array3Dlarge.GetSlice(curSlice) #SDICOS::Array2D<SDICOS::S_UINT16>* pSlice
 
         for ptPos.y in range(20):
             for ptPos.x in range(50):
                  pSlice.Set(ptPos.y, ptPos.x , nWhite)
+                 #print('(', ptPos.z, ', ', ptPos.y, ', ', ptPos.x,')' , pSlice.Get(ptPos.y, ptPos.x))
         curSlice += 1
 
     curSlice = 0
     for ptPos.z in range(ptCenter.z - 40, ptCenter.z + 40):
-        pSlice = Array3Dlarge.GetSlice(ptPos.z) #SDICOS::Array2D<SDICOS::S_UINT16>* pSlice
+        pSlice = Array3Dlarge.GetSlice(curSlice) #SDICOS::Array2D<SDICOS::S_UINT16>* pSlice
         for ptPos.y in range(ptCenter.y - 40, ptCenter.y + 40):
             for ptPos.x in range(ptCenter.x - 40, ptCenter.x + 40):
                 pSlice.Set(ptPos.y, ptPos.x , nGray256)
+                #print('(', ptPos.z, ', ', ptPos.y, ', ', ptPos.x,')' , pSlice.Get(ptPos.y, ptPos.x))
         curSlice += 1
 
     curSlice = 0
     for ptPos.z in range(ptCenter.z - 5, ptCenter.z + 5):
-        pSlice = Array3Dlarge.GetSlice(ptPos.z) #SDICOS::Array2D<SDICOS::S_UINT16>* pSlice
+        pSlice = Array3Dlarge.GetSlice(curSlice) #SDICOS::Array2D<SDICOS::S_UINT16>* pSlice
         for ptPos.y in range(ptCenter.y - 5, ptCenter.y + 5):
-            for ptPos.x in range(ptCenter.x - 5, ptCenter.x + 5):
+            for ptPos.x in range(ptCenter.x + 41, ptCenter.x + 51):
                 pSlice.Set(ptPos.y, ptPos.x , nGray2048)
+                #print('(', ptPos.z, ', ', ptPos.y, ', ', ptPos.x,')' , pSlice.Get(ptPos.y, ptPos.x))
         curSlice += 1
+    
+    return ct
 
 CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               CT.OOI_IMAGE_CHARACTERISTICS.enumHighEnergy,
@@ -85,7 +98,6 @@ DCS = DcsLongString("HIGH ENERGY SCAN")
 CTObject.SetScanDescription(DCS)
 CTObject.SetNumberOfSections(1)
 
-SectionObject = Section()
 SectionObject = CTObject.GetSectionByIndex(0)
 SectionObject.SetFocalSpotSizeInMM(1.414)
 VecRow = Vector3Dfloat(1, 0, 0)
@@ -134,4 +146,6 @@ while volume_iterator != volume.End():
 if slice_count != 100 or not b_res:
     print("UserCTExample CreateCTSimple failed to verify slice count using iterator. ", b_res)
 
-GenerateCTSection(CTObject)
+CTobj = GenerateCTSection(CTObject)
+totalSliceCount = CTobj.GetSectionByIndex(0).GetDepth()
+print(totalSliceCount)
