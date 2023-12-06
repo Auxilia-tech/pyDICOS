@@ -418,8 +418,8 @@ void export_CT(py::module &m)
                                              py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
                                      
         .def("SetScanDescription", &IODCommon::SetScanDescription, py::arg("strDescription"))
-        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex), py::arg("nSectionIndex"), py::return_value_policy::automatic_reference)
-        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex, py::const_), py::arg("nSectionIndex"), py::return_value_policy::automatic_reference);
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex), py::arg("nSectionIndex"), py::return_value_policy::reference_internal)
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex, py::const_), py::arg("nSectionIndex"), py::return_value_policy::reference_internal);
 
 
 }

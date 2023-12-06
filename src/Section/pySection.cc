@@ -51,8 +51,8 @@ void export_SECTION(py::module &m)
         .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
         .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
         .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
-        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData), py::return_value_policy::automatic)
-        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData, py::const_), py::return_value_policy::automatic)
+        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData), py::return_value_policy::reference_internal)
+        .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData, py::const_), py::return_value_policy::reference_internal)
         .def("SetFilterMaterial", &Section::SetFilterMaterial,  py::arg("nFilterMaterial"))
         .def("GetFilterMaterial", &Section::GetFilterMaterial)
         .def("SetPositionInMM", py::overload_cast<const float, const float, const float>(&SectionCommon::SetPositionInMM), 
@@ -117,7 +117,7 @@ void export_SECTION(py::module &m)
         .def("GetKVP", &Section::GetKVP)
         .def("ApplyRescaleToImage", &Section::ApplyRescaleToImage)
         .def("FreeMemory", &PySection::FreeMemory)
-        .def("GetWidth",  &SectionCommon:: GetWidth)
-        .def("GetHeight",  &SectionCommon:: GetHeight)
-        .def("GetDepth",  &SectionCommon:: GetDepth);
+        .def("GetWidth",  &SectionCommon::GetWidth)
+        .def("GetHeight",  &SectionCommon::GetHeight)
+        .def("GetDepth",  &SectionCommon::GetDepth);
 }
