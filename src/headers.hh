@@ -4,6 +4,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
+#include <pybind11/functional.h>
+#include <pybind11/complex.h>
 #include <map>
 #include <string>
 #include <iostream>
@@ -19,6 +21,7 @@ void export_DCSSTRING(py::module &);
 void export_MEMORYBUFFER(py::module &);
 void export_ARRAY1D_PAIR_BOOL_MEMBUFF(py::module &m);
 void export_Volume(py::module &m);
+void export_DicosFileListing(py::module &m);
 
 
 //void export_DX(py::module &);

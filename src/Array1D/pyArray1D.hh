@@ -13,8 +13,6 @@ void export_Array1D(py::module &m, const std::string & typestr){
         .def(py::init<>())
         .def(py::init<const S_UINT32>(), py::arg("size"))
         .def(py::init<const Array1D<T>&>())
-        .def("__eq__", &Array1D<T>::operator==)
-        .def("__ne__", &Array1D<T>::operator!=)
         .def("Empty", &Array1D<T>::Empty)
         .def("Clear", &Array1D<T>::Clear)
         .def("SetSize", &Array1D<T>::SetSize, py::arg("nSize"), py::arg("bAllocateExtraCapacity"))
@@ -29,8 +27,8 @@ void export_Array1D(py::module &m, const std::string & typestr){
         .def("GetNumUnusedElements", &Array1D<T>::GetNumUnusedElements)
         .def("__getitem__", [](const Array1D<T>& array, S_UINT32 index) { return array[index]; })
         .def("__setitem__", [](Array1D<T>& array, S_UINT32 index, const T& value) { array[index] = value; })
-        .def("GetBuffer", (const T* (Array1D<T>::*)() const) &Array1D<T>::GetBuffer)
-        .def("GetBuffer", (T* (Array1D<T>::*)()) &Array1D<T>::GetBuffer);
+        .def("GetBuffer", (const T* (Array1D<T>::*)() const) &Array1D<T>::GetBuffer, py::return_value_policy::reference_internal)
+        .def("GetBuffer", (T* (Array1D<T>::*)()) &Array1D<T>::GetBuffer, py::return_value_policy::reference_internal);
 }
 
 template<typename T>

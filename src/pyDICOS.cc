@@ -3,19 +3,23 @@
 #include "Array3DLarge/Array3DLarge.hh"
 #include "Array2D/pyArray2D.hh"
 #include "Array1D/pyArray1D.hh"
-#include "Point3D/Point3D.hh"
+#include "Point3D/pyPoint3D.hh"
+#include "SDICOS/ErrorLog.h"
+#include "SDICOS/FileSystem.h"
 
 PYBIND11_MODULE(pyDICOS, m)
 {
    export_IMEMMANAGER(m);
    export_ERRORLOG(m);
    export_FS(m);
+   export_DicosFileListing(m);
    export_SECTION(m);
    export_CT(m);
    export_DCSSTRING(m);
    export_MEMORYBUFFER(m);
    export_Array1D<S_UINT16>(m, "S_UINT16");
    export_Array1D<std::pair<bool, MemoryBuffer>>(m, "PairBoolMemBuff");
+   export_Array1D<std::pair<Filename, ErrorLog>>(m, "PairFilenameErrorLog");
 
    export_Array2D<S_UINT8>(m, "S_UINT8");
    export_Array2D<S_UINT16>(m, "S_UINT16");
