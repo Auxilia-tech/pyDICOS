@@ -11,9 +11,10 @@ while being similar in its core spirit (enabling python data manipulations).
 ## Scope
 
  - Provide a pythonized API for the DICOS toolkit
-   - First release : read/write functions, user-level API
-   - Later releases : client/server functions
-   - Module and Tag level APIs are out of scope for now
+   - [x] First release : read/write functions for CT, DX and TDR, user-level API
+   - [ ] Later releases : DICOS protocol, client/server functions
+   - [ ] Out of scope for now : AIT2D, AIT3D, QR
+   - [ ] Out of scope for now : Module and Tag level APIs
  - Stay up to date with Stratovan latest releases
 
 <div align="center">
@@ -32,10 +33,11 @@ pip install pydicos
 As our resources are limited, we very much value your contributions, be it bug fixes, new core features, or documentation improvements.
 For more information, please read our [contribution guide](CONTRIBUTING.md).
 
-### Contributors
+### Contributors acknowledgement
 
 Many thanks to our main contributors :
  - [Ahmad Audi](https://github.com/AAUDI)
+ - [Louis Combaldieu](https://github.com/lcombaldieu)
 
 ## License
 
