@@ -119,7 +119,30 @@ void export_CT(py::module &m)
         .value("SKIP_AND_CONTINUE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::SKIP_AND_CONTINUE)
         .value("ADD_DEBUG_SLICE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::ADD_DEBUG_SLICE)
         .export_values();
-       
+
+    py::enum_<ITERATION_DIRECTION>(m, "ITERATION_DIRECTION")
+        .value("ITERATION_DIRECTION_FORWARD", ITERATION_DIRECTION::ITERATION_DIRECTION_FORWARD)
+        .value("ITERATION_DIRECTION_BACKWARD", ITERATION_DIRECTION::ITERATION_DIRECTION_BACKWARD)
+        .value("ITERATION_END", ITERATION_DIRECTION::ITERATION_END)
+        .export_values();
+
+    py::class_<CT::Iterator>(m, "Iterator")
+        .def_property_readonly_static("ITERATION_DIRECTION", [m](py::object) {
+            return m.attr("ITERATION_DIRECTION");
+        })  
+        .def(py::init<>())
+        .def(py::init<const CT&, const ITERATION_DIRECTION>(), 
+                      py::arg("ct"), 
+                      py::arg("dir") = ITERATION_DIRECTION::ITERATION_DIRECTION_FORWARD)
+        .def("__copy__", [](const CT::Iterator &self) { return CT::Iterator(self); })
+        .def("__deepcopy__", [](const CT::Iterator &self, py::dict) { return CT::Iterator(self); })
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        .def("__next__", (CT::Iterator& (CT::Iterator::*)()) &CT::Iterator::operator++, py::return_value_policy::reference_internal)
+        .def("deref", (const Section* (CT::Iterator::*)() const) &CT::Iterator::operator*, py::return_value_policy::reference_internal)
+        .def("deref", (Section* (CT::Iterator::*)()) &CT::Iterator::operator*, py::return_value_policy::reference_internal)
+        .def("GetIndex", &CT::Iterator::GetIndex);
+
     py::class_<IODCommon>(m, "IODCommon");
     py::class_<ScanCommon>(m, "ScanCommon");
     py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
@@ -161,9 +184,13 @@ void export_CT(py::module &m)
 
         .def_property_readonly_static("ADD_SLICE_FAILURE_POLICY", [m](py::object) {
             return m.attr("ADD_SLICE_FAILURE_POLICY");
-        })         
-      
-
+        })  
+        .def_property_readonly_static("VOLUME_MEMORY_POLICY", [m](py::object) {
+            return m.attr("VOLUME_MEMORY_POLICY");
+        })        
+        .def_property_readonly_static("TRANSFER_SYNTAX", [m](py::object) {
+            return m.attr("TRANSFER_SYNTAX");
+        })     
         .def("__copy__", [](const CT &self) { return CT(self); })
         .def("__deepcopy__", [](const CT &self, py::dict) { return CT(self); })
         .def(py::self == py::self)
@@ -257,33 +284,43 @@ void export_CT(py::module &m)
         .def("GetNumberOfSections", &CT::GetNumberOfSections) 
         .def("GetSopClassUID", py::overload_cast<>(&PyCT::CT::GetSopClassUID, py::const_))
         .def("AddSection", (Section*(CT::*)())&PyCT::AddSection)
-        .def("AddSection", (Section*(CT::*)(const S_UINT32, const S_UINT32, const S_UINT32, const Volume::IMAGE_DATA_TYPE))&PyCT::AddSection, 
-                            py::arg("nWidth"), py::arg("nHeight"), py::arg("nDepth"), py::arg("nDataType"))
+        .def("AddSection", (Section*(CT::*)(const S_UINT32, 
+                                            const S_UINT32, 
+                                            const S_UINT32, 
+                                            const Volume::IMAGE_DATA_TYPE))&PyCT::AddSection, 
+                                            py::arg("nWidth"), 
+                                            py::arg("nHeight"), 
+                                            py::arg("nDepth"), 
+                                            py::arg("nDataType"), 
+                                            py::return_value_policy::reference_internal)
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT8> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
-
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT8> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT8> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT16> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT16> &, 
@@ -291,7 +328,8 @@ void export_CT(py::module &m)
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT32> &, 
@@ -299,42 +337,48 @@ void export_CT(py::module &m)
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT32> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT64> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT64> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<float> &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
         .def("AddSection", (Section*(CT::*)(Volume &, 
                                              const MemoryPolicy::VOLUME_MEMORY_POLICY,
                                              const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
                                              py::arg("vol"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT8>::Iterator &, 
                                              const Array3DLarge<S_INT8>::Iterator &, 
@@ -343,7 +387,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)   
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)   
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT8>::Iterator &, 
                                              const Array3DLarge<S_UINT8>::Iterator &, 
@@ -352,7 +397,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)      
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)      
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT16>::Iterator &, 
                                              const Array3DLarge<S_INT16>::Iterator &, 
@@ -361,7 +407,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)      
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)      
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT16>::Iterator &, 
                                              const Array3DLarge<S_UINT16>::Iterator &, 
@@ -370,7 +417,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)      
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT32>::Iterator &, 
                                              const Array3DLarge<S_INT32>::Iterator &, 
@@ -379,7 +427,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)     
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT32>::Iterator &, 
                                              const Array3DLarge<S_UINT32>::Iterator &, 
@@ -388,7 +437,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)     
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT64>::Iterator &, 
                                              const Array3DLarge<S_INT64>::Iterator &, 
@@ -397,7 +447,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)     
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT64>::Iterator &, 
                                              const Array3DLarge<S_UINT64>::Iterator &, 
@@ -406,7 +457,8 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)     
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
 
         .def("AddSection", (Section*(CT::*)(Array3DLarge<float>::Iterator &, 
                                              const Array3DLarge<float>::Iterator &, 
@@ -415,11 +467,18 @@ void export_CT(py::module &m)
                                              py::arg("itStart"), 
                                              py::arg("itEnd"), 
                                              py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
-                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT)
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
                                      
         .def("SetScanDescription", &IODCommon::SetScanDescription, py::arg("strDescription"))
-        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex), py::arg("nSectionIndex"), py::return_value_policy::reference_internal)
-        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex, py::const_), py::arg("nSectionIndex"), py::return_value_policy::reference_internal);
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex), 
+                                  py::arg("nSectionIndex"), 
+                                  py::return_value_policy::reference_internal)
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex, py::const_), 
+                                  py::arg("nSectionIndex"), 
+                                  py::return_value_policy::reference_internal)
 
+        .def("Begin", &CT::Begin)
+        .def("End", &CT::End);
 
 }

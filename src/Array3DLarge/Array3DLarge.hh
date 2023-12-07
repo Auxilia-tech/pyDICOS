@@ -9,12 +9,6 @@ using namespace SDICOS;
 template<typename T>
 void export_Array3DLarge(py::module &m,  const std::string & typestr){
 
-    py::enum_<ITERATION_DIRECTION>(m, "ITERATION_DIRECTION")
-        .value("ITERATION_DIRECTION_FORWARD", ITERATION_DIRECTION::ITERATION_DIRECTION_FORWARD)
-        .value("ITERATION_DIRECTION_BACKWARD", ITERATION_DIRECTION::ITERATION_DIRECTION_BACKWARD)
-        .value("ITERATION_END", ITERATION_DIRECTION::ITERATION_END)
-        .export_values();
-
     std::string pyclass_array3d_large_name = std::string("Array3DLarge") + typestr;
 
     py::class_<Array3DLarge<T>>(m, pyclass_array3d_large_name.c_str())
@@ -36,7 +30,7 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
         .def(py::self != py::self)
         .def("SetMemoryPolicy", &Array3DLarge<T>::SetMemoryPolicy, py::arg("nMemPolicy")) 
         .def("OwnsSlices", &Array3DLarge<T>::OwnsSlices)
-        .def("GetSlice",(Array2D<T>*(Array3DLarge<T>::*)(const S_UINT32))&Array3DLarge<T>::GetSlice, py::arg("nD"), py::return_value_policy::copy)
+        .def("GetSlice",(Array2D<T>*(Array3DLarge<T>::*)(const S_UINT32))&Array3DLarge<T>::GetSlice, py::arg("nD"), py::return_value_policy::reference_internal)
         .def("AddSlice",(Array2D<T>*(Array3DLarge<T>::*)(const S_UINT32, const S_UINT32))&Array3DLarge<T>::AddSlice, py::arg("width"), py::arg("height"))
         .def("AddSlice",(Array2D<T>*(Array3DLarge<T>::*)(T*, const S_UINT32, const S_UINT32))&Array3DLarge<T>::AddSlice, py::arg("pSlice"), py::arg("width"), py::arg("height"))
         .def("AddSlice",(bool(Array3DLarge<T>::*)(Array2D<T>*, 
