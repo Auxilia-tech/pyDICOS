@@ -1,76 +1,81 @@
-from pyDICOS import Section
-from pyDICOS import Filename
-from pyDICOS import ErrorLog
-from pyDICOS import CustomMemoryManager
-from pyDICOS import CT
-from pyDICOS import DcsString
-from pyDICOS import MemoryBuffer
-from pyDICOS import Array1DS_UINT16
-from pyDICOS import Array1DPairBoolMemBuff
-from pyDICOS import Array3DLargeS_UINT16
-from pyDICOS import Volume
+from pyDICOS import CT, Filename, ErrorLog, Volume
 import numpy as np
 
-np.set_printoptions(suppress=True, formatter={'float_kind':'{:0.2f}'.format}) 
+class CTLoader:
+    def __init__(self, filename=None, ct_object=None):
+        self.depth_size = 0
+        self.height_size = 0
+        self.width_size = 0
+        self.section_size = 0
+        self.data_arrays = []
+        if filename is not None and ct_object is not None:
+            raise ValueError("Cannot set both filename and CT object simultaneously.")
+        
+        if filename is not None:
+            self.ct_object = CT()
+            self.load_file(filename)
+        
+        elif ct_object is not None:
+            self.ct_object = ct_object
+            self.load_ct_object()
 
-CTObject = CT()
-filename_ = Filename("SimpleCT/SimpleCT0000.dcs")
-print(filename_.GetFullPath())
-errorlog_ = ErrorLog()
-
-if CTObject.Read(filename_, errorlog_, None):
-    print("Loaded CT")
-    sectionIt = CTObject.Begin()
-    sectionCount = 0
-    slice_count = 0
-    b_res = True
-    section_size = CTObject.GetNumberOfSections()
-    depth_size = 0
-    height_size = 0
-    width_size = 0
-
-    sectionIt = CTObject.Begin()
-    while sectionIt != CTObject.End():
-        pSection = sectionIt.deref()
-        pixel_data_type = pSection.GetPixelDataType()
-
-        if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
-            volume = pSection.GetPixelData()
-
-            if volume.GetDepth() > depth_size:
-                depth_size = volume.GetDepth()
-
-            xyPlane = volume.GetUnsigned16()
-            if xyPlane.GetHeight() > height_size:
-                height_size = xyPlane.GetHeight()
-            if xyPlane.GetWidth() > width_size:
-                width_size = xyPlane.GetWidth()
-
-        next(sectionIt)
-
-    data_array = np.zeros((section_size, depth_size, height_size, width_size), dtype=np.uint16)
+    def load_file(self, filename):
+        errorlog_ = ErrorLog()
+        if self.ct_object.Read(Filename(filename), errorlog_, None):
+            print("Loaded CT from file")
+        else:
+            print("Failed to load CT from file")        
     
-    sectionIt = CTObject.Begin()
-    while sectionIt != CTObject.End():
-        pSection = sectionIt.deref()
-        pixel_data_type = pSection.GetPixelDataType()
-        if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
-            volume_iterator = pSection.GetPixelData().Begin()
-            while volume_iterator != pSection.GetPixelData().End():
+    def load_ct_object(self):
+        print("Using provided CT object")
+
+    def get_data(self):
+        sectionIt = self.ct_object.Begin()
+
+        sectionCount = 0
+        while sectionIt != self.ct_object.End():
+            pSection = sectionIt.deref()
+            pixel_data_type = pSection.GetPixelDataType()
+
+            if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
                 volume = pSection.GetPixelData()
-                sectionData = volume.GetUnsigned16()
+                self.depth_size = volume.GetDepth()
+                self.height_size = volume.GetUnsigned16().GetHeight()
+                self.width_size = volume.GetUnsigned16().GetWidth()
+
+                data_array = np.zeros((self.depth_size, self.height_size, self.width_size), dtype=np.uint16)
+
                 for i in range(volume.GetDepth()):
-                    xyPlane = sectionData[i]
-                    for j in range(1, xyPlane.GetHeight()):
-                        for k in range(1, xyPlane.GetWidth()):
-                            #print('(', i, ',', j, ', ', k,')', xyPlane.Get(j, k), '|', 'Depth ', volume.GetDepth(), 'Height ', xyPlane.GetHeight(),  'Width ', xyPlane.GetWidth())
-                            data_array[sectionCount, i, j, k] = xyPlane.Get(j, k)
-                cur_slice = volume_iterator.AsUnsigned16()
-                b_res = (cur_slice is not None) and b_res
-                print('b_Res  ', b_res, '  sliceCount  ', slice_count, '  sectionCount  ', sectionCount)
-                next(volume_iterator)
-                slice_count += 1
-        next(sectionIt)
-        sectionCount += 1
-else:
-    print("Failed to load CT")
+                    xyPlane = volume.GetUnsigned16()[i]
+                    for j in range(xyPlane.GetHeight()):
+                        for k in range(xyPlane.GetWidth()):
+                                data_array[i, j, k] = xyPlane.Get(j, k)
+                self.data_arrays.append(data_array)
+            next(sectionIt)
+            print(sectionCount)
+            sectionCount += 1
+        return self.data_arrays
+
+
+def main():
+    # Example 1: Load CT from a file
+    filename = "SimpleCT/SimpleCT0000.dcs"
+    ct_loader_file = CTLoader(filename=filename)
+    ct_loader_file.get_data()
+    for idx, data_array in enumerate(ct_loader_file.data_arrays):
+        print(f"Section {idx + 1}:\n{data_array}")
+
+    # Example 2: Load CT from an existing CT object
+    CTObject = CT()
+    errorlog_ = ErrorLog()
+    if CTObject.Read(Filename("SimpleCT/SimpleCT0000.dcs"), errorlog_, None):
+        ct_loader_object = CTLoader(ct_object=CTObject)
+        ct_loader_object.get_data()
+        for idx, data_array in enumerate(ct_loader_object.data_arrays):
+            print(f"Section {idx + 1}:\n{data_array}")
+    else:
+        print("Failed to load CT")
+
+
+if __name__ == "__main__":
+    main()
