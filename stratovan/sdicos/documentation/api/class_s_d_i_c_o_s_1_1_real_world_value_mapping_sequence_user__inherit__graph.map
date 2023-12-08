@@ -1,4 +1,0 @@
-<map id="SDICOS::RealWorldValueMappingSequenceUser" name="SDICOS::RealWorldValueMappingSequenceUser">
-<area shape="rect" id="node1" title="World Value Mapping SPECREF V03 Section 14.14.9, Table 119." alt="" coords="5,5,227,47"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d.html" title="AIT2D represents a single AIT 2D scan. The class is not thread safe." alt="" coords="59,95,173,121"/>
-</map>

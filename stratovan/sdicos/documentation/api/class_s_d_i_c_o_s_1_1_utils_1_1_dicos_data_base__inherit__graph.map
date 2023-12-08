@@ -1,4 +1,0 @@
-<map id="SDICOS::Utils::DicosDataBase" name="SDICOS::Utils::DicosDataBase">
-<area shape="rect" id="node1" title="Holds information about DICOS network transfer." alt="" coords="5,5,208,32"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_utils_1_1_dicos_data.html" title="Structure for holding DICOS used in callback functions. Data can be moved out of this object." alt="" coords="20,80,193,121"/>
-</map>

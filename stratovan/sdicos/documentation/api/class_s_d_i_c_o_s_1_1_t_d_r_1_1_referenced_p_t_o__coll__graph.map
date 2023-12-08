@@ -1,5 +1,0 @@
-<map id="SDICOS::TDR::ReferencedPTO" name="SDICOS::TDR::ReferencedPTO">
-<area shape="rect" id="node1" title=" " alt="" coords="5,171,208,197"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_unique_identifier.html" title="This string contains the following restrictions: &#45;64 bytes maximum &#45;Allows the characters &#39;0&#39;&#45;&#39;9&#39; and..." alt="" coords="11,81,202,108"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="39,5,175,32"/>
-</map>

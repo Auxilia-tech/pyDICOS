@@ -1,7 +1,0 @@
-<map id="SDICOS::ImageCommon" name="SDICOS::ImageCommon">
-<area shape="rect" id="node1" title="Base class containing attributes shared by CT, AIT2D, AIT3D, and DX/X&#45;Ray Image Modules SPECREF V03 S..." alt="" coords="5,107,172,134"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d_types_1_1_a_i_t2_d_image.html" title=" " alt="" coords="240,5,389,47"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_a_i_t3_d_types_1_1_a_i_t3_d_image.html" title="Implements 3D AIT Image SPECREF V03 Section 9.3.3.2, Table 48." alt="" coords="240,71,389,112"/>
-<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_c_t_types_1_1_c_t_image.html" title=" " alt="" coords="220,137,409,163"/>
-<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_d_x_types_1_1_d_x_image.html" title="Implements DX/X&#45;Ray Image SPECREF V03 Section 8.2.2.2, Table 35." alt="" coords="220,187,409,214"/>
-</map>

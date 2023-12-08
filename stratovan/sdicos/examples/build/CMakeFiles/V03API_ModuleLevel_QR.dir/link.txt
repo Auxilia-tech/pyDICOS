@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/V03API_ModuleLevel_QR.dir/V03API/ModuleLevel/QR/main.cpp.o  -o ../bin/V03API_ModuleLevel_QR /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

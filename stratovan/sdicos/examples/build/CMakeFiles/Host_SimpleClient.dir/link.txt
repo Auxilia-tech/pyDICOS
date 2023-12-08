@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/Host_SimpleClient.dir/Host/SimpleClient/main.cpp.o  -o ../bin/Host_SimpleClient /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

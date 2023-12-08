@@ -1,4 +1,0 @@
-<map id="SDICOS::DcsAge" name="SDICOS::DcsAge">
-<area shape="rect" id="node1" title="This string represents an age. The string has the format &quot;NNNT&quot;, where N is a number &#39;0&#39;&#45;&#39;9&#39; and T is..." alt="" coords="11,80,136,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="5,5,141,32"/>
-</map>

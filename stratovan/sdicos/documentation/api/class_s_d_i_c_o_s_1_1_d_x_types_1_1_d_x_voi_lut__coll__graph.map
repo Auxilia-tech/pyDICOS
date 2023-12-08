@@ -1,4 +1,0 @@
-<map id="SDICOS::DXTypes::DXVoiLut" name="SDICOS::DXTypes::DXVoiLut">
-<area shape="rect" id="node1" title="Implements DX specialization of the VOI LUT Module SPECREF V03 Section 8.2.2.2, Table 35 SPECREF V03 ..." alt="" coords="5,80,196,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_voi_lut.html" title="Implements VOI LUT Module." alt="" coords="43,5,159,32"/>
-</map>

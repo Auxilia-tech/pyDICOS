@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/Client_C-EchoManualSession.dir/Client/C-EchoManualSession/main.cpp.o  -o ../bin/Client_C-EchoManualSession /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

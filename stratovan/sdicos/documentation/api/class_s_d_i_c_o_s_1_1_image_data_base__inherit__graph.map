@@ -1,5 +1,0 @@
-<map id="SDICOS::ImageDataBase" name="SDICOS::ImageDataBase">
-<area shape="rect" id="node1" title=" " alt="" coords="60,5,231,32"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_image2_d.html" title=" " alt="" coords="5,80,136,107"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_volume.html" title="Stores 3D volume of any data type: float and 8&#45;, 16&#45;, 32&#45;, and 64&#45;bit." alt="" coords="160,80,283,107"/>
-</map>

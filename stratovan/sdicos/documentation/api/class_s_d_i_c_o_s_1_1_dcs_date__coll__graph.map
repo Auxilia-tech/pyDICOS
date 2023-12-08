@@ -1,4 +1,0 @@
-<map id="SDICOS::DcsDate" name="SDICOS::DcsDate">
-<area shape="rect" id="node1" title="This string represents a date. The string has the format &quot;YYYYMMDD&quot;, where YYYY = Year,..." alt="" coords="9,80,138,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="5,5,141,32"/>
-</map>

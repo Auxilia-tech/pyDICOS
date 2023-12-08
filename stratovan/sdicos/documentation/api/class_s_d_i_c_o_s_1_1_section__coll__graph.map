@@ -1,4 +1,0 @@
-<map id="SDICOS::Section" name="SDICOS::Section">
-<area shape="rect" id="node1" title="A section of a CT volume A CT Volume is composed of one or more Sections. The SDICOS::TemplateCT::CT ..." alt="" coords="31,80,154,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_section_common.html" title="Attributes Common to all types of scan data." alt="" coords="5,5,180,32"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="SDICOS::IconImage" name="SDICOS::IconImage">
-<area shape="rect" id="node1" title="Implements icon image, a single item sequence (0088, 0200) [optional] SPECREF V03 Section 14...." alt="" coords="25,80,164,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_image_pixel_macro.html" title="Implements image pixel macro SPECREF V03 Section 14.2.1, Table 86." alt="" coords="5,5,184,32"/>
-</map>

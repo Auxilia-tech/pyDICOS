@@ -1,8 +1,0 @@
-<map id="SDICOS::MemoryBlockFile_MethodA" name="SDICOS::MemoryBlockFile_MethodA">
-<area shape="rect" id="node1" title="Read only Only loads the minimum needed number of memory blocks." alt="" coords="112,336,292,377"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_i_file.html" title=" " alt="" coords="135,171,237,197"/>
-<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_file.html" title="Object for reading/writing a file on disk." alt="" coords="208,247,308,273"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_filename.html" title=" " alt="" coords="5,81,137,108"/>
-<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_folder.html" title=" " alt="" coords="14,5,129,32"/>
-<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_memory_buffer.html" title="A grow&#45;only buffer class." alt="" coords="161,81,320,108"/>
-</map>

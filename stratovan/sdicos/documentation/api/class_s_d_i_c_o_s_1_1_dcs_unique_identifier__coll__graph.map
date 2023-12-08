@@ -1,4 +1,0 @@
-<map id="SDICOS::DcsUniqueIdentifier" name="SDICOS::DcsUniqueIdentifier">
-<area shape="rect" id="node1" title="This string contains the following restrictions: &#45;64 bytes maximum &#45;Allows the characters &#39;0&#39;&#45;&#39;9&#39; and..." alt="" coords="5,80,196,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="33,5,169,32"/>
-</map>

@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/Client_C-EchoManualConnect.dir/Client/C-EchoManualConnect/main.cpp.o  -o ../bin/Client_C-EchoManualConnect /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

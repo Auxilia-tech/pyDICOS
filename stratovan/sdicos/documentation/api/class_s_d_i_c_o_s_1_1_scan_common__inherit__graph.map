@@ -1,9 +1,0 @@
-<map id="SDICOS::ScanCommon" name="SDICOS::ScanCommon">
-<area shape="rect" id="node1" title="This class contains data that is common to all modalities except TDR." alt="" coords="250,5,411,32"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_a_i_t2_d.html" title="AIT2D represents a single AIT 2D scan. The class is not thread safe." alt="" coords="5,80,120,107"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_a_i_t3_d.html" title="Represents a single series in a AIT3D scan with original pixel data." alt="" coords="144,80,259,107"/>
-<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_c_t.html" title="Represents a single CT scan with original pixel data." alt="" coords="283,80,378,107"/>
-<area shape="rect" id="node5" href="$class_s_d_i_c_o_s_1_1_d_x.html" title="DX represents a single DX/X&#45;Ray Scan. This class is not thread safe." alt="" coords="402,80,497,107"/>
-<area shape="rect" id="node6" href="$class_s_d_i_c_o_s_1_1_q_r.html" title="Represents a Quadrupole Resonance (QR)" alt="" coords="521,80,620,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="527,155,614,181"/>
-</map>

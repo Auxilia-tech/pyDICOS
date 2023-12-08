@@ -1,5 +1,0 @@
-<map id="SDICOS::Array2DLarge&lt; CType &gt;" name="SDICOS::Array2DLarge&lt; CType &gt;">
-<area shape="rect" id="node1" title="Use for large arrays i.e., those requiring more than 100MB of memory." alt="" coords="19,185,178,227"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title=" " alt="" coords="6,95,191,136"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_array1_d.html" title="Allocates memory on a single contiguous block for efficient access." alt="" coords="5,5,192,32"/>
-</map>

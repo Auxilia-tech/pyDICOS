@@ -1,4 +1,0 @@
-<map id="SDICOS::TDRModule" name="SDICOS::TDRModule">
-<area shape="rect" id="node1" title="Implements Threat Detection Report (TDR) Information Object Definition (IOD) SPECREF V03 Section 12,..." alt="" coords="21,80,168,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_scanner_common.html" title="Implements a common set of modules." alt="" coords="5,5,184,32"/>
-</map>

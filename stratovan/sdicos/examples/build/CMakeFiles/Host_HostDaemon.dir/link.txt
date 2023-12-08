@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/Host_HostDaemon.dir/Host/HostDaemon/main.cpp.o  -o ../bin/Host_HostDaemon /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

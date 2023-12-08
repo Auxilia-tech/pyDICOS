@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/UserLevel_Itinerary.dir/UserLevel/Itinerary/main.cpp.o  -o ../bin/UserLevel_Itinerary /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 

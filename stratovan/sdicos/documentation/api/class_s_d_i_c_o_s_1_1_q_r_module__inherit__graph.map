@@ -1,5 +1,0 @@
-<map id="SDICOS::QRModule" name="SDICOS::QRModule">
-<area shape="rect" id="node1" title="Implements QR IOD SPECREF V03 Section 10.2, Table 59." alt="" coords="25,80,165,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="31,155,159,181"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_scanner_common.html" title="Implements a common set of modules." alt="" coords="5,5,184,32"/>
-</map>

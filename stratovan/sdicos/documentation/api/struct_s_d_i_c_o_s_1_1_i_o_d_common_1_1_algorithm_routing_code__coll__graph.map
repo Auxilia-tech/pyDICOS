@@ -1,6 +1,0 @@
-<map id="SDICOS::IODCommon::AlgorithmRoutingCode" name="SDICOS::IODCommon::AlgorithmRoutingCode">
-<area shape="rect" id="node1" title=" " alt="" coords="99,185,260,227"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_short_string.html" title="This string has the following restrictions: &#45;16 character maximum &#45;Excludes all control characters,..." alt="" coords="5,81,172,108"/>
-<area shape="rect" id="node3" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="134,5,270,32"/>
-<area shape="rect" id="node4" href="$class_s_d_i_c_o_s_1_1_dcs_long_string.html" title="This string has a 64 character maximum." alt="" coords="196,81,360,108"/>
-</map>

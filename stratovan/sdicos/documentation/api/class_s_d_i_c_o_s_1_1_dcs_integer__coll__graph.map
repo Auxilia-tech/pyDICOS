@@ -1,4 +1,0 @@
-<map id="SDICOS::DcsInteger" name="SDICOS::DcsInteger">
-<area shape="rect" id="node1" title="This string represents an integer. The string has the following restrictions: &#45;12 bytes max &#45;Allows t..." alt="" coords="5,80,147,107"/>
-<area shape="rect" id="node2" href="$class_s_d_i_c_o_s_1_1_dcs_string.html" title="String class for char or wide char." alt="" coords="8,5,144,32"/>
-</map>

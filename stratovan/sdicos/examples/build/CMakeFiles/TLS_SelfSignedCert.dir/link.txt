@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/TLS_SelfSignedCert.dir/TLS/SelfSignedCert/main.cpp.o  -o ../bin/TLS_SelfSignedCert /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a -lpthread -ldl 
