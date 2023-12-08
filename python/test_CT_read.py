@@ -7,7 +7,6 @@ class CTLoader:
         self.height_size = 0
         self.width_size = 0
         self.section_size = 0
-        self.data_arrays = []
         if filename is not None and ct_object is not None:
             raise ValueError("Cannot set both filename and CT object simultaneously.")
         
@@ -30,6 +29,7 @@ class CTLoader:
         print("Using provided CT object")
 
     def get_data(self):
+        self.data_arrays = []
         sectionIt = self.ct_object.Begin()
 
         sectionCount = 0
@@ -61,8 +61,8 @@ def main():
     # Example 1: Load CT from a file
     filename = "SimpleCT/SimpleCT0000.dcs"
     ct_loader_file = CTLoader(filename=filename)
-    ct_loader_file.get_data()
-    for idx, data_array in enumerate(ct_loader_file.data_arrays):
+    data = ct_loader_file.get_data()
+    for idx, data_array in enumerate(data):
         print(f"Section {idx + 1}:\n{data_array}")
 
     # Example 2: Load CT from an existing CT object
@@ -70,8 +70,8 @@ def main():
     errorlog_ = ErrorLog()
     if CTObject.Read(Filename("SimpleCT/SimpleCT0000.dcs"), errorlog_, None):
         ct_loader_object = CTLoader(ct_object=CTObject)
-        ct_loader_object.get_data()
-        for idx, data_array in enumerate(ct_loader_object.data_arrays):
+        data = ct_loader_object.get_data()
+        for idx, data_array in enumerate(data):
             print(f"Section {idx + 1}:\n{data_array}")
     else:
         print("Failed to load CT")
