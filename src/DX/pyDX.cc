@@ -18,8 +18,9 @@
  #include "SDICOS/AcquisitionContextUser.h"
 
 namespace py = pybind11;
-
 using namespace SDICOS;
+
+PYBIND11_MAKE_OPAQUE(std::vector<DXModule*>);
 
 
 class PyDX : public DX {
@@ -46,32 +47,22 @@ public:
 
 void export_DX(py::module &m)
 {
-    py::enum_<DicosFile::TRANSFER_SYNTAX>(m, "TRANSFER_SYNTAX")
-        .value("enumLittleEndianExplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicit)
-        .value("enumLittleEndianExplicitExtended", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicitExtended)
-        .value("enumLittleEndianImplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianImplicit)
-        .value("enumLosslessJPEG", DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE);
-
     py::enum_<DXTypes::DXSeries::PRESENTATION_INTENT_TYPE>(m, "PRESENTATION_INTENT_TYPE")
         .value("enumUnknownPresentationIntentType", DXTypes::DXSeries::enumUnknownPresentationIntentType)
         .value("enumPresentation",  DXTypes::DXSeries::enumPresentation)
-        .value("enumProcessing",  DXTypes::DXSeries::enumProcessing);
+        .value("enumProcessing",  DXTypes::DXSeries::enumProcessing)
+        .export_values();
 
     py::enum_<ImageType::PIXEL_DATA_CHARACTERISTICS>(m, "PIXEL_DATA_CHARACTERISTICS")
         .value("enumUnknownPixelDataCharacteristics",  GeneralImageModule::enumUnknownPixelDataCharacteristics)
         .value("enumOriginal",   GeneralImageModule::enumOriginal)
-        .value("enumDerived",   GeneralImageModule::enumDerived);
+        .value("enumDerived",   GeneralImageModule::enumDerived)
+        .export_values();
 
-py::class_<ScanCommon>(m, "ScanCommon");
-    py::class_<XRayEquipmentUser>(m, "XRayEquipmentUser");
-    py::class_<ImageCommonUser>(m, "ImageCommonUser");
     py::class_<DXDetectorUser>(m, "DXDetectorUser");
     py::class_<DXPositioningUser>(m, "DXPositioningUser");
     py::class_<XRayGenerationUser>(m, "XRayGenerationUser");
     py::class_<XRayFiltrationUser>(m, "XRayFiltrationUser");
-    py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
-    py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
     py::class_<DX>(m, "SDICOS::DX");
     py::class_<PyDX, DX, ScanCommon, 
                          XRayEquipmentUser, 

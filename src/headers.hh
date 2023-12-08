@@ -23,9 +23,7 @@ void export_MEMORYBUFFER(py::module &);
 void export_ARRAY1D_PAIR_BOOL_MEMBUFF(py::module &m);
 void export_Volume(py::module &m);
 void export_DicosFileListing(py::module &m);
-
-
-//void export_DX(py::module &);
-//void export_TDR(py::module &);
+void export_DX(py::module &);
+void export_TDR(py::module &);
 
 #endif

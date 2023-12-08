@@ -7,13 +7,14 @@ from pyDICOS import DcsString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1DS_UINT16
 from pyDICOS import Array1DPairBoolMemBuff
+from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Volume
 import numpy as np
 
 np.set_printoptions(suppress=True, formatter={'float_kind':'{:0.2f}'.format}) 
 
 CTObject = CT()
-filename_ = Filename("/home/ahau/freelance/Louis/pyDICOS/pyDICOS/python/SimpleCT/SimpleCT0000.dcs")
+filename_ = Filename("SimpleCT/SimpleCT0000.dcs")
 print(filename_.GetFullPath())
 errorlog_ = ErrorLog()
 
@@ -73,5 +74,3 @@ if CTObject.Read(filename_, errorlog_, None):
         sectionCount += 1
 else:
     print("Failed to load CT")
-
-

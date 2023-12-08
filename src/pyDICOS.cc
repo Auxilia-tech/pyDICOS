@@ -39,6 +39,6 @@ PYBIND11_MODULE(pyDICOS, m)
    export_VECTOR3D<float>(m, "float");
    export_Volume(m);
    export_Array3DLarge<S_UINT16>(m, "S_UINT16");
-   //export_DX(m);
-   //export_TDR(m);
+   export_DX(m);
+   export_TDR(m);
 }
