@@ -10,7 +10,7 @@ import numpy as np
 
 DXObject = DX()
 
-filename_ = Filename("SimpleCT/SimpleCT0000.dcs")
+filename_ = Filename("SimpleDX/SimpleProcessingDX.dcs")
 errorlog_ = ErrorLog()
 
 if DXObject.Read(filename_, errorlog_, None):
