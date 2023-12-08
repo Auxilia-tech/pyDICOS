@@ -70,41 +70,44 @@ void export_DicosFileListing(py::module &m)
         .def("__deepcopy__", [](const DicosFileListing& self, py::dict) { return DicosFileListing(self); })
         .def(py::self == py::self)
         .def(py::self != py::self)
-        .def("FindDicosFiles", py::overload_cast<const Array1D<Filename>&, 
-                                           Array1D<std::pair<Filename, ErrorLog> >&,
-                                           const std::set<std::string>&,
-                                           const bool,
-                                           const bool,
-                                           PFN_PROGRESS_CALLBACK, 
-                                           void *>
-                                           (&DicosFileListing::FindDicosFiles),  
-                                           py::arg("arrayFilenames"), 
-                                           py::arg("arrayErrorLog"), 
-                                           py::arg("setIncludeFileExtensions") = std::set<std::string>(),
-                                           py::arg("bExcludeDicosVerification") = false,
-                                           py::arg("bFromOpticalDrive") = false,
-                                           py::arg("pfnProgress") = NULL,
-                                           py::arg("pHint") = NULL
+        .def("FindDicosFiles", py::overload_cast<
+                                            const Array1D<Filename>&, 
+                                            Array1D<std::pair<Filename, ErrorLog> >&,
+                                            const std::set<std::string>&,
+                                            const bool,
+                                            const bool,
+                                            PFN_PROGRESS_CALLBACK, 
+                                            void *>
+                                            (&DicosFileListing::FindDicosFiles),  
+                                            py::arg("arrayFilenames"), 
+                                            py::arg("arrayErrorLog"), 
+                                            py::arg("setIncludeFileExtensions") = std::set<std::string>(),
+                                            py::arg("bExcludeDicosVerification") = false,
+                                            py::arg("bFromOpticalDrive") = false,
+                                            py::arg("pfnProgress") = NULL, 
+                                            py::arg("pHint") = NULL
                                             )
         .def("FindDicosFiles", py::overload_cast<
-                                           const Folder&, 
-                                           const bool ,
-                                           Array1D<std::pair<Filename, ErrorLog> >&,
+                                            const Folder&, 
+                                            const bool ,
+                                            Array1D<std::pair<Filename, ErrorLog> >&,
                                             const std::set<std::string> &,
-                                           const bool,
-                                           const bool,
-                                           PFN_PROGRESS_CALLBACK, 
-                                           void *>
+                                            const bool,
+                                            const bool,
+                                            PFN_PROGRESS_CALLBACK, 
+                                            void *>
                                            (&DicosFileListing::FindDicosFiles),  
-                                           py::arg("folder"), 
-                                           py::arg("bSearchSubfolders"), 
-                                           py::arg("arrayErrorLog"), 
-                                           py::arg("setIncludeFileExtensions") = std::set<std::string>(),
-                                           py::arg("bExcludeDicosVerification") = false,
-                                           py::arg("bFromOpticalDrive") = false,
-                                           py::arg("pfnProgress") = NULL,
-                                           py::arg("pHint") = NULL
+                                            py::arg("folder"), 
+                                            py::arg("bSearchSubfolders"), 
+                                            py::arg("arrayErrorLog"), 
+                                            py::arg("setIncludeFileExtensions") = std::set<std::string>(),
+                                            py::arg("bExcludeDicosVerification") = false,
+                                            py::arg("bFromOpticalDrive") = false,
+                                            py::arg("pfnProgress") = NULL,
+                                            py::arg("pHint") = NULL
                                             )
+
+
         .def("__getitem__", (const DicosFileListing::ObjectOfInspection& (DicosFileListing::*)(S_UINT64) const) &DicosFileListing::operator[], py::arg("n"))
         .def("GetNumberOfFiles", &DicosFileListing::GetNumberOfFiles)
         .def("GetFileInfo", &DicosFileListing::GetFileInfo, py::arg("arrayFiles"))
