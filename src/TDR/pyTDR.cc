@@ -43,9 +43,6 @@ public:
 
 void export_TDR(py::module &m)
 {
-    py::class_<IODCommon>(m, "IODCommon");
-    py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
-
     py::enum_<TDRTypes::ThreatDetectionReport::TDR_TYPE>(m, "TDR_TYPE")
         .value("enumUnknownTDRType", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumUnknownTDRType)
         .value("enumMachine", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumMachine)
@@ -53,30 +50,24 @@ void export_TDR(py::module &m)
         .value("enumGroundTruth", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumGroundTruth)
         .value("enumAggregate", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumAggregate)
         .value("enumModAggregate", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumModAggregate)
-        .value("enumUndefined", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumUndefined);
+        .value("enumUndefined", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumUndefined)
+        .export_values();
 
     py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER>(m, "OBJECT_OF_INSPECTION_GENDER")
         .value("enumUnknownObjectOfInspectionGender", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumUnknownObjectOfInspectionGender)
         .value("enumGenderMale", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderMale)
         .value("enumGenderFemale", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderFemale)
         .value("enumGenderOther", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderOther)
-        .value("enumGenderUnknown", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderUnknown);
-
-    py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE>(m, "OBJECT_OF_INSPECTION_TYPE")
-        .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumUnknownObjectOfInspectionType)
-        .value("enumTypeBioSample", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBioSample)
-        .value("enumTypeCargo", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeCargo)
-        .value("enumTypeBaggage", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBaggage)
-        .value("enumTypeAnimal", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeAnimal)
-        .value("enumTypeOther", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeOther)
-        .value("enumTypePerson", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypePerson);
+        .value("enumGenderUnknown", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderUnknown)
+        .export_values();
 
     py::enum_<ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE>(m, "OBJECT_OF_INSPECTION_ID_TYPE")
         .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumUnknownObjectOfInspectionIdType)
         .value("enumTypeBioSample", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumText)
         .value("enumTypeCargo", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumRFID)
         .value("enumTypeBaggage", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumBarcode)
-        .value("enumTypeAnimal", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumMRP);
+        .value("enumTypeAnimal", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumMRP)
+        .export_values();
 
     py::class_<TDR>(m, "SDICOS::TDR");
     py::class_<PyTDR, TDR, IODCommon, 
