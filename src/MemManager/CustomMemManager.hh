@@ -34,12 +34,11 @@ public:
 	//to return MemoryBuffer::enumPolicy_DoesNotOwnData
 	virtual MemoryBuffer::MEMORY_POLICY OnGetSliceMemoryPolicy()const;
 
-	py::array_t<float> getData() {
+	float* getData() {
 		std::pair<bool, MemoryBuffer> *pBuffer(m_vBuffers.GetBuffer());
 		MemoryBuffer& MemBuf = pBuffer->second;
     	float* floatData = reinterpret_cast<float*>(MemBuf.GetData());
-   	 	py::array_t<float> array(100, floatData);
-    	return array;
+    	return floatData;
 	}
 
 };
