@@ -41,4 +41,5 @@ PYBIND11_MODULE(pyDICOS, m)
    export_Array3DLarge<S_UINT16>(m, "S_UINT16");
    export_DX(m);
    export_TDR(m);
+   export_Image2D(m);
 }

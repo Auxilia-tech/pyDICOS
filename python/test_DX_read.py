@@ -8,6 +8,7 @@ from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Volume
 import numpy as np
 
+
 DXObject = DX()
 
 filename_ = Filename("SimpleDX/SimpleProcessingDX.dcs")
@@ -15,6 +16,5 @@ errorlog_ = ErrorLog()
 
 if DXObject.Read(filename_, errorlog_, None):
     print("Loaded DX")
-    #sectionIt = DXObject.Begin()
 else:
     print("Failed to load CT")

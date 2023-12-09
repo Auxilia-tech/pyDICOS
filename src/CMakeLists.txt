@@ -13,7 +13,8 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     Volume/*.cc
     Array3DLarge/*.hh
     DX/*.cc
-    TDR/*.cc)
+    TDR/*.cc
+    Image2D/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
