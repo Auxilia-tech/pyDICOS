@@ -161,7 +161,19 @@ void export_DX(py::module &m)
                                     py::arg("fDirectionCosinesColumnX"), 
                                     py::arg("fDirectionCosinesColumnY"), 
                                     py::arg("fDirectionCosinesColumnZ"))
-        .def("SetImageOrientation", py::overload_cast<const Vector3D<float>&, const Vector3D<float>& >(&XRayGenerationUser::SetImageOrientation), 
+        .def("SetImageOrientation", py::overload_cast<const Vector3D<float>&, 
+                                                      const Vector3D<float>& >(&XRayGenerationUser::SetImageOrientation), 
                                     py::arg("ptRowOrientation"), py::arg("ptColumnOrientation"))
-        .def("SetXRayTubeCurrent", &XRayGenerationUser::SetXRayTubeCurrent, py::arg("fCurrent"));
+        .def("SetXRayTubeCurrent", &XRayGenerationUser::SetXRayTubeCurrent, py::arg("fCurrent"))
+        .def("SetWindowCenterAndWidth", py::overload_cast<const Array1D<float> &, 
+                                                          const Array1D<float> &>(&DX::SetWindowCenterAndWidth), 
+                                        py::arg("arrayCenter"), py::arg("arrayWidth"))
+        .def("SetWindowCenterAndWidth", py::overload_cast<const float, const float>(&DX::SetWindowCenterAndWidth), 
+                                        py::arg("fCenter"), py::arg("fWidth"))
+        .def("GetWindowCenterAndWidth", [](DX &self, Array1D<float> &arrayCenter, Array1D<float> &arrayWidth) {
+            return std::make_tuple(self.GetWindowCenterAndWidth(arrayCenter, arrayWidth), arrayCenter, arrayWidth);
+        }, py::arg("arrayCenter"), py::arg("arrayWidth"))
+        .def("GetWindowCenterAndWidth", [](DX &self, float &fCenter, float &fWidth) {
+            return std::make_tuple(self.GetWindowCenterAndWidth(fCenter, fWidth), fCenter, fWidth);
+        }, py::arg("fCenter"), py::arg("fWidth"));
 }
