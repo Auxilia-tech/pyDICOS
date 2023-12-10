@@ -63,9 +63,37 @@ def CreateDXForProcessingSimple():
         print(errorlog)
         return False
 
+def CreateDXForPresentationSimple():
+
+    dx = DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBioSample,
+            DX.PRESENTATION_INTENT_TYPE.enumPresentation,
+            DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
+            CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    
+    width = 256 
+    height = 128
+
+    dxData = dx.GetXRayData()
+    dxData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, width, height)
+    rawData = dxData.GetUnsigned16()
+
+    count = 0
+ 
+    for row in range(dxData.GetHeight()):
+        for col in range(dxData.GetWidth()):
+            rawData.Set(col, row, count)
+            count = count + 1
+       
+    dx.SetWindowCenterAndWidth(1234, 500)
+    windowCenter = 0
+    windowWidth = 0
+    result, windowCenter, windowWidth = dx.GetWindowCenterAndWidth(windowCenter,windowWidth)
+    print(windowCenter, windowWidth)
+    
 
 def main():
     CreateDXForProcessingSimple()
+    CreateDXForPresentationSimple()
 
 if __name__ == "__main__":
     main()
