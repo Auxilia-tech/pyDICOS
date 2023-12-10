@@ -1,5 +1,6 @@
 from pyDICOS import Section
 from pyDICOS import Filename
+from pyDICOS import Folder
 from pyDICOS import ErrorLog
 from pyDICOS import DX
 from pyDICOS import CT
@@ -13,7 +14,7 @@ import numpy as np
 
 def CreateDXForProcessingSimple():
     
-    DXObject =  DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
+    dx =  DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
                 DX.PRESENTATION_INTENT_TYPE.enumProcessing,
                 DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
                 CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
@@ -21,7 +22,7 @@ def CreateDXForProcessingSimple():
     width = 256 
     height = 128
 
-    dxData = DXObject.GetXRayData()
+    dxData = dx.GetXRayData()
     dxData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, width, height)
     rawData = dxData.GetUnsigned16()
 
@@ -32,10 +33,36 @@ def CreateDXForProcessingSimple():
             rawData.Set(col, row, count)
             count = count + 1
  
-    DXObject.SetKVP(1)
-    DXObject.SetImageOrientation(Vector3Dfloat(1, 0, 0), Vector3Dfloat(0, 1, 0))
-    DXObject.SetImagePosition(Point3Dfloat(0, 0, 1))
-    DXObject.SetXRayTubeCurrent(2.5)
+    dx.SetKVP(1)
+    dx.SetImageOrientation(Vector3Dfloat(1, 0, 0), Vector3Dfloat(0, 1, 0))
+    dx.SetImagePosition(Point3Dfloat(0, 0, 1))
+    dx.SetXRayTubeCurrent(2.5)
+
+    errorlog = ErrorLog()
+    dxFolder = Folder("DXFiles")
+    dxFilename = Filename(dxFolder, "SimpleProcessingDX.dcs") 
+
+    if dx.Write(dxFilename ,errorlog,  CT.TRANSFER_SYNTAX.enumLittleEndianExplicit) != True :
+        print("Simple DX Template Example unable to write DICOS File", dxFilename)
+        print(errorlog)
+        return False
+    else:
+        print("Wrote file to", dxFilename)
+        errorlog = ErrorLog()
+        dxRead =  DX()
+                
+    if dxRead.Read(dxFilename,errorlog, None):
+        if dxRead == dx: 
+            print("Successfully read and compared DX files")
+            return True 
+        else:
+            print("DX file loaded from", dxFilename, "does not match original.")
+            return False
+    else:
+        print("Unable to read DX file", dxFilename)
+        print(errorlog)
+        return False
+
 
 def main():
     CreateDXForProcessingSimple()
