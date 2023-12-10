@@ -41,7 +41,10 @@ public:
               override {PYBIND11_OVERRIDE(bool,  DX, Write, memfile, errorLog, nTransferSyntax);}  
 
     IODCommon::MODALITY GetModality() const
-              override {PYBIND11_OVERRIDE(IODCommon::MODALITY, DX, GetModality);}  
+              override {PYBIND11_OVERRIDE(IODCommon::MODALITY, DX, GetModality);} 
+
+    bool Validate(ErrorLog& errorlog) const
+              override {PYBIND11_OVERRIDE(bool, DX, Validate, errorlog);}
     
 };
 
@@ -73,6 +76,12 @@ void export_DX(py::module &m)
                          XRayFiltrationUser,
                          FrameOfReferenceUser,
                          AcquisitionContextUser>(m, "DX")
+        .def_property_readonly_static("PRESENTATION_INTENT_TYPE", [m](py::object) {
+            return m.attr("PRESENTATION_INTENT_TYPE");
+        }) 
+        .def_property_readonly_static("PIXEL_DATA_CHARACTERISTICS", [m](py::object) {
+            return m.attr("PIXEL_DATA_CHARACTERISTICS");
+        })   
         .def(py::init<>())
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
                       const DXTypes::DXSeries::PRESENTATION_INTENT_TYPE, 
@@ -135,5 +144,24 @@ void export_DX(py::module &m)
                      py::arg("memfile"), 
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .def("GetModality", py::overload_cast<>(&PyDX::DX::GetModality, py::const_));
+        .def("GetModality", py::overload_cast<>(&PyDX::DX::GetModality, py::const_))
+        .def("Validate", py::overload_cast<ErrorLog&>(&PyDX::DX::Validate, py::const_), py::arg("errorlog"))
+        .def("GetXRayData", py::overload_cast<>(&DX::GetXRayData),
+                                  py::return_value_policy::reference_internal)
+        .def("GetXRayData", py::overload_cast<>(&DX::GetXRayData, py::const_),  
+                                  py::return_value_policy::reference_internal)
+        .def("SetKVP", &XRayGenerationUser::SetKVP, py::arg("fKVP"))
+        .def("SetImagePosition", py::overload_cast<const float, const float, const float>(&XRayGenerationUser::SetImagePosition), 
+                                 py::arg("fX"), py::arg("fY"), py::arg("fZ"))
+        .def("SetImagePosition", py::overload_cast<const Point3D<float>& >(&XRayGenerationUser::SetImagePosition), py::arg("pos"))  
+        .def("SetImageOrientation", py::overload_cast<const float, const float, const float, const float, const float, const float>(&XRayGenerationUser::SetImageOrientation), 
+                                    py::arg("fDirectionCosinesRowX"), 
+                                    py::arg("fDirectionCosinesRowY"), 
+                                    py::arg("fDirectionCosinesRowZ"), 
+                                    py::arg("fDirectionCosinesColumnX"), 
+                                    py::arg("fDirectionCosinesColumnY"), 
+                                    py::arg("fDirectionCosinesColumnZ"))
+        .def("SetImageOrientation", py::overload_cast<const Vector3D<float>&, const Vector3D<float>& >(&XRayGenerationUser::SetImageOrientation), 
+                                    py::arg("ptRowOrientation"), py::arg("ptColumnOrientation"))
+        .def("SetXRayTubeCurrent", &XRayGenerationUser::SetXRayTubeCurrent, py::arg("fCurrent"));
 }
