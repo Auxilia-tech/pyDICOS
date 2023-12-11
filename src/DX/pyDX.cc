@@ -154,7 +154,12 @@ void export_DX(py::module &m)
         .def("SetImagePosition", py::overload_cast<const float, const float, const float>(&XRayGenerationUser::SetImagePosition), 
                                  py::arg("fX"), py::arg("fY"), py::arg("fZ"))
         .def("SetImagePosition", py::overload_cast<const Point3D<float>& >(&XRayGenerationUser::SetImagePosition), py::arg("pos"))  
-        .def("SetImageOrientation", py::overload_cast<const float, const float, const float, const float, const float, const float>(&XRayGenerationUser::SetImageOrientation), 
+        .def("SetImageOrientation", py::overload_cast<const float, 
+                                                      const float, 
+                                                      const float, 
+                                                      const float, 
+                                                      const float, 
+                                                      const float>(&XRayGenerationUser::SetImageOrientation), 
                                     py::arg("fDirectionCosinesRowX"), 
                                     py::arg("fDirectionCosinesRowY"), 
                                     py::arg("fDirectionCosinesRowZ"), 
@@ -175,5 +180,40 @@ void export_DX(py::module &m)
         }, py::arg("arrayCenter"), py::arg("arrayWidth"))
         .def("GetWindowCenterAndWidth", [](DX &self, float &fCenter, float &fWidth) {
             return std::make_tuple(self.GetWindowCenterAndWidth(fCenter, fWidth), fCenter, fWidth);
-        }, py::arg("fCenter"), py::arg("fWidth"));
+        }, py::arg("fCenter"), py::arg("fWidth"))
+        .def("SetWindowCenterAndWidthExplanation", 
+             py::overload_cast<const Array1D<DcsLongString> &>(&DX::SetWindowCenterAndWidthExplanation), py::arg("strExplanation"))
+        .def("SetWindowCenterAndWidthExplanation", 
+             py::overload_cast<const DcsLongString&>(&DX::SetWindowCenterAndWidthExplanation), py::arg("strExplanation"))
+        .def("SetLUTData", 
+             py::overload_cast<const Array1D<S_UINT16>&, 
+                               const S_UINT16, 
+                               const S_UINT16>(&DX::SetLUTData), 
+                               py::arg("lutData"), 
+                               py::arg("nFirstValueMapped"), 
+                               py::arg("nBitsPerEntry") = 16)
+        .def("SetLUTData", 
+             py::overload_cast<const Array1D<S_INT16>&, 
+                               const S_UINT16, 
+                               const S_UINT16>(&DX::SetLUTData), 
+                               py::arg("lutData"), 
+                               py::arg("nFirstValueMapped"), 
+                               py::arg("nBitsPerEntry") = 16)
+        .def("SetLUTData", 
+             py::overload_cast<const Array1D<S_UINT16>&, 
+                               const S_INT16, 
+                               const S_UINT16>(&DX::SetLUTData), 
+                               py::arg("lutData"), 
+                               py::arg("nFirstValueMapped"), 
+                               py::arg("nBitsPerEntry") = 16)
+        .def("SetLUTData", 
+             py::overload_cast<const Array1D<S_INT16>&, 
+                               const S_INT16, 
+                               const S_UINT16>(&DX::SetLUTData), 
+                               py::arg("lutData"), 
+                               py::arg("nFirstValueMapped"), 
+                               py::arg("nBitsPerEntry") = 16)
+
+        .def("GetLUTData", py::overload_cast<Array1D<S_UINT16>&>(&DX::GetLUTData, py::const_), py::arg("lutData"))
+        .def("GetLUTData", py::overload_cast<Array1D<S_INT16>&>(&DX::GetLUTData), py::arg("lutData"));
 }
