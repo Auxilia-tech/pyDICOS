@@ -175,9 +175,17 @@ def CreateDXWithColorPaletteForProcessingSimple():
     imgPixelData = dx.GetXRayData()
     imgPixelData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, nWidth, nHeight)
     vIndexData = imgPixelData.GetUnsigned16()
+    #data_array = np.zeros((imgPixelData.GetHeight(), imgPixelData.GetWidth()), dtype=np.uint16)
+    #for row in range(imgPixelData.GetHeight()):
+    #    for col in range(imgPixelData.GetWidth()):
+    #        vIndexData.Set(col, row, row)
+    #        data_array[row, col] = vIndexData.Get(col, row)
+    #print(data_array)
+    
+    array2d = np.array(vIndexData, copy = False)
     for row in range(imgPixelData.GetHeight()):
         for col in range(imgPixelData.GetWidth()):
-            vIndexData.Set(col, row, row)
+            array2d[row, col] = row
     
     dx.SetKVP(1.0)
     dx.SetImageOrientation(Vector3Dfloat(1, 0, 0), Vector3Dfloat(0, 1, 0))
