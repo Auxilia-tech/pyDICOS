@@ -44,7 +44,16 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
         .def("Zero", &Array3DLarge<T>::Zero, py::arg("zero"))
         .def("GetWidth", &Array3DLarge<T>::GetWidth)
         .def("GetHeight", &Array3DLarge<T>::GetHeight)
-        .def("GetDepth", &Array3DLarge<T>::GetDepth);
+        .def("GetDepth", &Array3DLarge<T>::GetDepth)
+        .def_buffer([](Array3DLarge<T> &m) -> py::buffer_info {  
+            return py::buffer_info(m.GetBuffer(), 
+                                   sizeof(T), 
+                                   py::format_descriptor<T>::format(), 
+                                   3, 
+                                   { m.GetDepth(), m.GetHeight(), m.GetWidth() },
+                                   { sizeof(T) * m.GetWidth() * m.GetHeight(), sizeof(T) * m.GetWidth(), sizeof(T) }
+            );
+        });
 }
 
 #endif
