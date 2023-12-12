@@ -105,8 +105,6 @@ def CreateDXForPresentationSimple():
     for i in range(lutSize):
         buff[i] = lutMinValue + (math.sqrt((i)))
 
-    print(buff)
-
     firstValueMapped = 2000
     dx.SetLUTData(lut, firstValueMapped)
 
@@ -162,11 +160,63 @@ def CreateDXWithColorPaletteForProcessingSimple():
     vGreen.SetSize(nHeight, False)
     vBlue.SetSize(nHeight, False)
 
+    pnRed = np.array(vRed, copy = False)
+    pnGreen = np.array(vGreen, copy = False)
+    pnBlue = np.array(vBlue, copy = False)
+
+    nColor = 0
+    for nIndex in range(nHeight):
+        pnRed[nIndex] = nColor
+        pnGreen[nIndex] = nColor/2
+        pnBlue[nIndex] = nColor
+        nColor = nColor + 1
+
+
+    imgPixelData = dx.GetXRayData()
+    imgPixelData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, nWidth, nHeight)
+    vIndexData = imgPixelData.GetUnsigned16()
+    for row in range(imgPixelData.GetHeight()):
+        for col in range(imgPixelData.GetWidth()):
+            vIndexData.Set(col, row, row)
+    
+    dx.SetKVP(1.0)
+    dx.SetImageOrientation(Vector3Dfloat(1, 0, 0), Vector3Dfloat(0, 1, 0))
+    dx.SetImagePosition(Point3Dfloat(0, 0, 1))
+    dx.SetXRayTubeCurrent(2.5)
+
+    errorlog = ErrorLog()
+    dxFolder = Folder("DXFiles")
+    dxFilename = Filename(dxFolder, "SimpleColorPaletteDX.dcs") 
+
+    if dx.Write(dxFilename ,errorlog) != True :
+        print("Simple DX Template Example unable to write DICOS File", dxFilename)
+        print(errorlog)
+        return False
+    else:
+        print("Wrote file to", dxFilename)
+        errorlog = ErrorLog()
+        dxRead =  DX()
+                
+    if dxRead.Read(dxFilename,errorlog, None):
+        if dxRead == dx: 
+            print("Successfully read and compared DX files")
+            return True 
+        else:
+            print("DX file loaded from", dxFilename, "does not match original.")
+            return False
+    else:
+        print("Unable to read DX file", dxFilename)
+        print(errorlog)
+        return False
+    
 
 def main():
-    CreateDXForProcessingSimple()
-    CreateDXForPresentationSimple()
-    CreateDXWithColorPaletteForProcessingSimple()
-
+    b = CreateDXForProcessingSimple()
+    b = CreateDXForPresentationSimple() and b
+    b = CreateDXWithColorPaletteForProcessingSimple() and b
+    if b == 1:
+        print("all tests passed")
+    else:
+        print("all tests are not passed!")
 if __name__ == "__main__":
     main()
