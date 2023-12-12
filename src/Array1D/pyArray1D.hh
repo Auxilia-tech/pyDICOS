@@ -25,15 +25,12 @@ void export_Array1D(py::module &m, const std::string & typestr){
         .def("GetCapacity", py::overload_cast<>(&Array1D<T>::GetCapacity, py::const_))
         .def("GetCapacity", py::overload_cast<S_UINT32&>(&Array1D<T>::GetCapacity, py::const_), py::arg("nCapacity"))
         .def("GetNumUnusedElements", &Array1D<T>::GetNumUnusedElements)
-        .def("__getitem__", [](const Array1D<T>& array, S_UINT32 index) { return array[index]; })
-        .def("__setitem__", [](Array1D<T>& array, S_UINT32 index, const T& value) { array[index] = value; })
-        .def("GetBuffer", (const T* (Array1D<T>::*)() const) &Array1D<T>::GetBuffer, py::return_value_policy::reference)
-        .def("GetBuffer", (T* (Array1D<T>::*)()) &Array1D<T>::GetBuffer, py::return_value_policy::reference)
-        //.def_buffer([](Array1D<T> &m) -> py::buffer_info {  
-        //    return py::buffer_info(m.GetBuffer(), sizeof(T), py::format_descriptor<T>::format(), 1,{m.GetSize()}, {sizeof(T)});
-        //});
-        .def("GetData", [](Array1D<T> &m) -> py::array_t<T> {
-            return py::array_t<T>({m.GetSize()}, {sizeof(T)}, m.GetBuffer());
+        .def("__getitem__", (const T& (Array1D<T>::*)(S_UINT32) const) &Array1D<T>::operator[], py::arg("n"))
+        .def("__getitem__", (T& (Array1D<T>::*)(S_UINT32)) &Array1D<T>::operator[], py::arg("n"))
+        .def("GetBuffer", (const T* (Array1D<T>::*)() const) &Array1D<T>::GetBuffer, py::return_value_policy::reference_internal)
+        .def("GetBuffer", (T* (Array1D<T>::*)()) &Array1D<T>::GetBuffer, py::return_value_policy::reference_internal)
+        .def_buffer([](Array1D<T> &m) -> py::buffer_info {  
+            return py::buffer_info(m.GetBuffer(), sizeof(T), py::format_descriptor<T>::format(), 1,{m.GetSize()}, {sizeof(T)});
         });
 }
 

@@ -19,6 +19,8 @@ PYBIND11_MODULE(pyDICOS, m)
    export_MEMORYBUFFER(m);
    export_Array1D<S_UINT16>(m, "S_UINT16");
    export_Array1D<S_INT16>(m, "S_INT16");
+   export_Array1D<S_UINT8>(m, "S_UINT8");
+   export_Array1D<S_INT8>(m, "S_INT8");
    export_Array1D<float>(m, "float");
 
    export_Array2D<S_UINT8>(m, "S_UINT8");

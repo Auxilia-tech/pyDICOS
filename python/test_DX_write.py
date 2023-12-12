@@ -101,9 +101,11 @@ def CreateDXForPresentationSimple():
     lutMinValue = 1000
     lut.SetSize(lutSize, False)
 
-    buff = lut.GetData()
+    buff = np.array(lut, copy = False)
     for i in range(lutSize):
         buff[i] = lutMinValue + (math.sqrt((i)))
+
+    print(buff)
 
     firstValueMapped = 2000
     dx.SetLUTData(lut, firstValueMapped)
@@ -148,6 +150,17 @@ def CreateDXWithColorPaletteForProcessingSimple():
     if dx.SetPresentationLUTShape(DX.PRESENTATION_LUT_SHAPE.enumIdentity) != True :
         print("Invalid Presentation LUT Shape")
         return False
+
+    nWidth = 256
+    nHeight = 128
+
+    vRed = dx.GetRedLUT()
+    vGreen = dx.GetGreenLUT()
+    vBlue = dx.GetBlueLUT()
+ 
+    vRed.SetSize(nHeight, False)
+    vGreen.SetSize(nHeight, False)
+    vBlue.SetSize(nHeight, False)
 
 
 def main():
