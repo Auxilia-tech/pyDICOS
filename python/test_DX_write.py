@@ -145,9 +145,9 @@ def CreateDXWithColorPaletteForProcessingSimple():
             DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
             CT.PHOTOMETRIC_INTERPRETATION.enumPaletteColor)
  
-    #if dx.SetPresentationLUTShape(enumIdentity) != True :
-    #    print("Invalid Presentation LUT Shape")
-    #    return False
+    if dx.SetPresentationLUTShape(DX.PRESENTATION_LUT_SHAPE.enumIdentity) != True :
+        print("Invalid Presentation LUT Shape")
+        return False
 
 
 def main():

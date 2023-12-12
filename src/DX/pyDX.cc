@@ -16,6 +16,7 @@
  #include "SDICOS/XRayFiltrationUser.h"
  #include "SDICOS/FrameOfReferenceUser.h"
  #include "SDICOS/AcquisitionContextUser.h"
+ #include "SDICOS/GeneralImageModule.h"
 
 namespace py = pybind11;
 using namespace SDICOS;
@@ -52,14 +53,20 @@ void export_DX(py::module &m)
 {
     py::enum_<DXTypes::DXSeries::PRESENTATION_INTENT_TYPE>(m, "PRESENTATION_INTENT_TYPE")
         .value("enumUnknownPresentationIntentType", DXTypes::DXSeries::enumUnknownPresentationIntentType)
-        .value("enumPresentation",  DXTypes::DXSeries::enumPresentation)
-        .value("enumProcessing",  DXTypes::DXSeries::enumProcessing)
+        .value("enumPresentation", DXTypes::DXSeries::enumPresentation)
+        .value("enumProcessing", DXTypes::DXSeries::enumProcessing)
         .export_values();
 
     py::enum_<ImageType::PIXEL_DATA_CHARACTERISTICS>(m, "PIXEL_DATA_CHARACTERISTICS")
         .value("enumUnknownPixelDataCharacteristics",  GeneralImageModule::enumUnknownPixelDataCharacteristics)
-        .value("enumOriginal",   GeneralImageModule::enumOriginal)
-        .value("enumDerived",   GeneralImageModule::enumDerived)
+        .value("enumOriginal", GeneralImageModule::enumOriginal)
+        .value("enumDerived", GeneralImageModule::enumDerived)
+        .export_values();
+
+    py::enum_<GeneralImageModule::PRESENTATION_LUT_SHAPE>(m, "PRESENTATION_LUT_SHAPE")
+        .value("enumUnknownPresentationLutShape",  GeneralImageModule::PRESENTATION_LUT_SHAPE::enumUnknownPresentationLutShape)
+        .value("enumIdentity", GeneralImageModule::PRESENTATION_LUT_SHAPE::enumIdentity)
+        .value("enumInverse", GeneralImageModule::PRESENTATION_LUT_SHAPE::enumInverse)
         .export_values();
 
     py::class_<DXDetectorUser>(m, "DXDetectorUser");
@@ -82,6 +89,9 @@ void export_DX(py::module &m)
         .def_property_readonly_static("PIXEL_DATA_CHARACTERISTICS", [m](py::object) {
             return m.attr("PIXEL_DATA_CHARACTERISTICS");
         })   
+        .def_property_readonly_static("PRESENTATION_LUT_SHAPE", [m](py::object) {
+            return m.attr("PRESENTATION_LUT_SHAPE");
+        }) 
         .def(py::init<>())
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
                       const DXTypes::DXSeries::PRESENTATION_INTENT_TYPE, 
@@ -216,7 +226,12 @@ void export_DX(py::module &m)
 
         .def("GetLUTData", py::overload_cast<Array1D<S_UINT16>&>(&DX::GetLUTData, py::const_), py::arg("lutData"))
         .def("GetLUTData", py::overload_cast<Array1D<S_INT16>&>(&DX::GetLUTData), py::arg("lutData"))
-        .def("GetRedLUT",(Array1D<S_UINT8>& (DX::*)())&DX::GetRedLUT)
-        .def("GetRedLUT",(const Array1D<S_UINT8>& (DX::*)() const)&DX::GetRedLUT);
-        
+        .def("GetRedLUT",(Array1D<S_UINT8>& (DX::*)())&DX::GetRedLUT, py::return_value_policy::reference)
+        .def("GetRedLUT",(const Array1D<S_UINT8>& (DX::*)() const)&DX::GetRedLUT, py::return_value_policy::reference)
+        .def("GetGreenLUT",(Array1D<S_UINT8>& (DX::*)())&DX::GetGreenLUT, py::return_value_policy::reference)
+        .def("GetGreenLUT",(const Array1D<S_UINT8>& (DX::*)() const)&DX::GetGreenLUT, py::return_value_policy::reference)
+        .def("GetBlueLUT",(Array1D<S_UINT8>& (DX::*)())&DX::GetBlueLUT, py::return_value_policy::reference)
+        .def("GetBlueLUT",(const Array1D<S_UINT8>& (DX::*)() const)&DX::GetBlueLUT, py::return_value_policy::reference)
+        .def("SetPresentationLUTShape", &DX::SetPresentationLUTShape, py::arg("nLutShape"))
+        .def("GetPresentationLUTShape", &DX::GetPresentationLUTShape);
 }
