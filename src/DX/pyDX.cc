@@ -215,5 +215,8 @@ void export_DX(py::module &m)
                                py::arg("nBitsPerEntry") = 16)
 
         .def("GetLUTData", py::overload_cast<Array1D<S_UINT16>&>(&DX::GetLUTData, py::const_), py::arg("lutData"))
-        .def("GetLUTData", py::overload_cast<Array1D<S_INT16>&>(&DX::GetLUTData), py::arg("lutData"));
+        .def("GetLUTData", py::overload_cast<Array1D<S_INT16>&>(&DX::GetLUTData), py::arg("lutData"))
+        .def("GetRedLUT",(Array1D<S_UINT8>& (DX::*)())&DX::GetRedLUT)
+        .def("GetRedLUT",(const Array1D<S_UINT8>& (DX::*)() const)&DX::GetRedLUT);
+        
 }
