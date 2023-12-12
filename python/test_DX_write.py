@@ -138,9 +138,22 @@ def CreateDXForPresentationSimple():
         print(errorlog)
         return False
 
+def CreateDXWithColorPaletteForProcessingSimple():
+
+    dx = DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
+            DX.PRESENTATION_INTENT_TYPE.enumProcessing,
+            DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
+            CT.PHOTOMETRIC_INTERPRETATION.enumPaletteColor)
+ 
+    #if dx.SetPresentationLUTShape(enumIdentity) != True :
+    #    print("Invalid Presentation LUT Shape")
+    #    return False
+
+
 def main():
     CreateDXForProcessingSimple()
     CreateDXForPresentationSimple()
+    CreateDXWithColorPaletteForProcessingSimple()
 
 if __name__ == "__main__":
     main()
