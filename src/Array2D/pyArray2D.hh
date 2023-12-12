@@ -36,7 +36,7 @@ template<typename T>
 void export_Array2D(py::module &m, const std::string & typestr){
     std::string pyclass_array2D_name = std::string("Array2D") + typestr;
 
-   py::class_<Array2D<T>>(m, pyclass_array2D_name.c_str())
+   py::class_<Array2D<T>>(m, pyclass_array2D_name.c_str(), py::buffer_protocol())
         .def(py::init<>())
         .def(py::init<const S_UINT32, 
                       const S_UINT32>(),   
@@ -71,7 +71,16 @@ void export_Array2D(py::module &m, const std::string & typestr){
         .def("At", &Array2D<T>::At, py::arg("i"), py::arg("j"))
         .def("Set", &Array2D<T>::Set, py::arg("i"), py::arg("j"), py::arg("obj"))
         .def("GetBuffer", (const T* (Array2D<T>::*)() const) &Array2D<T>::GetBuffer, py::return_value_policy::reference_internal)
-        .def("GetBuffer", (T* (Array2D<T>::*)()) &Array2D<T>::GetBuffer, py::return_value_policy::reference_internal);
+        .def("GetBuffer", (T* (Array2D<T>::*)()) &Array2D<T>::GetBuffer, py::return_value_policy::reference_internal)
+        .def_buffer([](Array2D<T> &m) -> py::buffer_info {  
+            return py::buffer_info(m.GetBuffer(), 
+                                   sizeof(T), 
+                                   py::format_descriptor<T>::format(), 
+                                   2, 
+                                   { m.GetHeight(), m.GetWidth() },
+                                   { sizeof(T) * m.GetWidth(), sizeof(T) }
+            );
+        });
 }
 
 #endif
