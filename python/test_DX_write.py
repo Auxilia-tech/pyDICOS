@@ -1,4 +1,3 @@
-from pyDICOS import Section
 from pyDICOS import Filename
 from pyDICOS import Folder
 from pyDICOS import ErrorLog
