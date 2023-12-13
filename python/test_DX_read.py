@@ -42,15 +42,25 @@ class DXLoader:
         imgPixelData = self.dx_object.GetXRayData()
         vIndexData = imgPixelData.GetUnsigned16()
         array2d = np.array(vIndexData, copy = False)
-        self.height_size = imgPixelData.GetHeight()
-        self.width_size = imgPixelData.GetWidth()
-        print(self.height_size, self.width_size)
-        for row in range(self.height_size):
-            for col in range(self.width_size):
-                array2d[row, col] = vIndexData.Get(col, row)
         return array2d
 
 def main():
+    # Example 1: Load DX from a file
+    filename = "DXFiles/SimpleProcessingDX.dcs"
+    dx_loader_file = DXLoader(filename=filename)
+    data = dx_loader_file.get_data()
+    print(data)
+
+    # Example 2: Load DX from an existing DX object
+    DXObject = DX()
+    errorlog_ = ErrorLog()
+    if DXObject.Read(Filename("DXFiles/SimpleProcessingDX.dcs"), errorlog_, None):
+        dx_loader_object = DXLoader(dx_object=DXObject)
+        data = dx_loader_object.get_data()
+        print(data)
+    else:
+        print("Failed to load DX")
+
     # Example 1: Load DX from a file
     filename = "DXFiles/SimplePresentationDX.dcs"
     dx_loader_file = DXLoader(filename=filename)
@@ -67,6 +77,22 @@ def main():
     else:
         print("Failed to load DX")
 
+
+    # Example 1: Load DX from a file
+    filename = "DXFiles/SimpleColorPaletteDX.dcs"
+    dx_loader_file = DXLoader(filename=filename)
+    data = dx_loader_file.get_data()
+    print(data)
+
+    # Example 2: Load DX from an existing DX object
+    DXObject = DX()
+    errorlog_ = ErrorLog()
+    if DXObject.Read(Filename("DXFiles/SimpleColorPaletteDX.dcs"), errorlog_, None):
+        dx_loader_object = DXLoader(dx_object=DXObject)
+        data = dx_loader_object.get_data()
+        print(data)
+    else:
+        print("Failed to load DX")
 
 if __name__ == "__main__":
     main()
