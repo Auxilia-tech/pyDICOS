@@ -70,16 +70,14 @@ void export_TDR(py::module &m)
         .export_values();
 
     py::class_<TDR>(m, "SDICOS::TDR");
-    py::class_<PyTDR, TDR, IODCommon, 
-                         FrameOfReferenceUser
-                         >(m, "TDR")
+    py::class_<PyTDR, TDR, IODCommon, FrameOfReferenceUser>(m, "TDR")
         .def(py::init<>())
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
                       const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
                       const S_INT32>(), 
-                       py::arg("OOIType"), 
-                       py::arg("tdrType"), 
-                       py::arg("instanceNumber"))
+                      py::arg("OOIType"), 
+                      py::arg("tdrType"), 
+                      py::arg("instanceNumber"))
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
                       const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
                       const S_INT32, 
@@ -177,5 +175,26 @@ void export_TDR(py::module &m)
                      py::arg("errorlog"),
                      py::arg("pMemMgr") = S_NULL)   
         .def("GetModality", py::overload_cast<>(&PyTDR::TDR::GetModality, py::const_))
-        ;
+        .def("SetInstanceNumber", &TDR::SetInstanceNumber, py::arg("nInstanceNumber"))
+        .def("GetInstanceNumber", &TDR::GetInstanceNumber)
+        .def("SetContentDateAndTime", &TDR::SetContentDateAndTime, py::arg("contentCreationDate"), py::arg("contentCreationTime"))
+        .def("GetContentDate", &TDR::GetContentDate)
+        .def("GetContentTime", &TDR::GetContentTime)
+        .def("SetTDRType", &TDR::SetTDRType, py::arg("tdrType"))
+        .def("GetTDRType", &TDR::GetTDRType)
+        .def("SetTDRTypeATR", &TDR::SetTDRTypeATR, py::arg("atrManufacturer"), 
+                                                   py::arg("atrVersion"), 
+                                                   py::arg("atrParameters") = Array1D<DcsLongString>())
+        .def("GetATRInfo", [](TDR &self, DcsLongString& atrManufacturer, 
+                                        DcsLongString& atrVersion, 
+                                        Array1D<DcsLongString>& atrParameters) {
+            return std::make_tuple(self.GetATRInfo(atrManufacturer, 
+                                                    atrVersion, 
+                                                    atrParameters), 
+                                                    atrManufacturer, 
+                                                    atrVersion, 
+                                                    atrParameters);
+                                        }, 
+            py::arg("atrManufacturer"), py::arg("atrVersion"), py::arg("atrParameters"));
+   
 }
