@@ -185,16 +185,23 @@ void export_TDR(py::module &m)
         .def("SetTDRTypeATR", &TDR::SetTDRTypeATR, py::arg("atrManufacturer"), 
                                                    py::arg("atrVersion"), 
                                                    py::arg("atrParameters") = Array1D<DcsLongString>())
-        .def("GetATRInfo", [](TDR &self, DcsLongString& atrManufacturer, 
-                                        DcsLongString& atrVersion, 
-                                        Array1D<DcsLongString>& atrParameters) {
-            return std::make_tuple(self.GetATRInfo(atrManufacturer, 
-                                                    atrVersion, 
-                                                    atrParameters), 
-                                                    atrManufacturer, 
-                                                    atrVersion, 
-                                                    atrParameters);
-                                        }, 
-            py::arg("atrManufacturer"), py::arg("atrVersion"), py::arg("atrParameters"));
-   
+        .def("GetATRInfo", [](TDR &self, DcsLongString& atrManufacturer, DcsLongString& atrVersion, Array1D<DcsLongString>& atrParameters) {
+            return std::make_tuple(self.GetATRInfo(atrManufacturer, atrVersion, atrParameters), atrManufacturer, atrVersion, atrParameters);
+            }, py::arg("atrManufacturer"), py::arg("atrVersion"),  py::arg("atrParameters"))       
+        .def("SetOperatorTDR", &TDR::SetOperatorTDR, py::arg("operatorId"), py::arg("IdIssuer"), py::arg("operatorFullName"), py::arg("IdType"))
+        .def("GetOperatorTDR", [](TDR &self, DcsLongString& operatorId, DcsLongString& IdIssuer, DcsPersonName& operatorFullName, IdentificationEncodingType::IDENTIFICATION_ENCODING_TYPE& IdType) {
+            return std::make_tuple(self.GetOperatorTDR(operatorId, IdIssuer, operatorFullName, IdType), operatorId, IdIssuer, operatorFullName, IdType);
+            }, py::arg("operatorId"), py::arg("IdIssuer"), py::arg("operatorFullName"), py::arg("IdType"))
+        .def("SetImageScaleRepresentation", &TDR::SetImageScaleRepresentation, py::arg("imageScale"))
+        .def("GetImageScaleRepresentation", &TDR::GetImageScaleRepresentation)
+        .def("SetAlarmDecision", &TDR::SetAlarmDecision, py::arg("alarmDecision"))
+        .def("GetAlarmDecision", &TDR::GetAlarmDecision)
+        .def("SetAlarmDecisionDateTime", &TDR::SetAlarmDecisionDateTime, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
+        .def("GetAlarmDecisionDateTime", [](TDR &self, DcsDate& alarmDecisionDate, DcsTime& alarmDecisionTime) {
+            return std::make_tuple(self.GetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime), alarmDecisionDate, alarmDecisionTime);
+            }, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
+        .def("SetAbortFlag", &TDR::SetAbortFlag, py::arg("abortFlag"), py::arg("abortReason") = TDRTypes::ThreatDetectionReport::enumUnknownAbortReason)
+        .def("GetAbortFlag", [](TDR &self,TDRTypes::ThreatDetectionReport::ABORT_FLAG& abortFlag,  TDRTypes::ThreatDetectionReport::ABORT_REASON& abortReason) {
+            return std::make_tuple(self.GetAbortFlag(abortFlag, abortReason), abortFlag, abortReason);
+            }, py::arg("abortFlag"), py::arg("abortReason"));
 }
