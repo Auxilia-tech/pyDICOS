@@ -190,6 +190,7 @@ void export_TDR(py::module &m)
         .def("GetContentTime", &TDR::GetContentTime)
         .def("SetTDRType", &TDR::SetTDRType, py::arg("tdrType"))
         .def("GetTDRType", &TDR::GetTDRType)
+        
         .def("SetTDRTypeATR", &TDR::SetTDRTypeATR, py::arg("atrManufacturer"), 
                                                    py::arg("atrVersion"), 
                                                    py::arg("atrParameters") = Array1D<DcsLongString>())
@@ -197,30 +198,63 @@ void export_TDR(py::module &m)
             return std::make_tuple(self.GetATRInfo(atrManufacturer, atrVersion, atrParameters), atrManufacturer, atrVersion, atrParameters);
             }, py::arg("atrManufacturer"), py::arg("atrVersion"),  py::arg("atrParameters"))       
         .def("SetOperatorTDR", &TDR::SetOperatorTDR, py::arg("operatorId"), py::arg("IdIssuer"), py::arg("operatorFullName"), py::arg("IdType"))
+        
         .def("GetOperatorTDR", [](TDR &self, DcsLongString& operatorId, DcsLongString& IdIssuer, DcsPersonName& operatorFullName, IdentificationEncodingType::IDENTIFICATION_ENCODING_TYPE& IdType) {
             return std::make_tuple(self.GetOperatorTDR(operatorId, IdIssuer, operatorFullName, IdType), operatorId, IdIssuer, operatorFullName, IdType);
             }, py::arg("operatorId"), py::arg("IdIssuer"), py::arg("operatorFullName"), py::arg("IdType"))
+        
         .def("SetImageScaleRepresentation", &TDR::SetImageScaleRepresentation, py::arg("imageScale"))
         .def("GetImageScaleRepresentation", &TDR::GetImageScaleRepresentation)
+        
         .def("SetAlarmDecision", &TDR::SetAlarmDecision, py::arg("alarmDecision"))
         .def("GetAlarmDecision", &TDR::GetAlarmDecision)
         .def("SetAlarmDecisionDateTime", &TDR::SetAlarmDecisionDateTime, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
+        
         .def("GetAlarmDecisionDateTime", [](TDR &self, DcsDate& alarmDecisionDate, DcsTime& alarmDecisionTime) {
             return std::make_tuple(self.GetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime), alarmDecisionDate, alarmDecisionTime);
             }, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
         .def("SetAbortFlag", &TDR::SetAbortFlag, py::arg("abortFlag"), py::arg("abortReason") = TDRTypes::ThreatDetectionReport::enumUnknownAbortReason)
+        
         .def("GetAbortFlag", [](TDR &self,TDRTypes::ThreatDetectionReport::ABORT_FLAG& abortFlag,  TDRTypes::ThreatDetectionReport::ABORT_REASON& abortReason) {
             return std::make_tuple(self.GetAbortFlag(abortFlag, abortReason), abortFlag, abortReason);
             }, py::arg("abortFlag"), py::arg("abortReason"))
-        .def("GetAbortFlag", [](TDR &self) {return std::make_tuple(self.GetAbortFlag());})
+        .def("GetAbortFlag", [](TDR &self) {return self.GetAbortFlag();})
+        
         .def("GetAbortReason", &TDR::GetAbortReason)
         .def("GetNumberOfObjects", [](TDR &self, S_UINT16& numPotentialThreatObjects, S_UINT16& numAlarmObjects) {
             return std::make_tuple(self.GetNumberOfObjects(numPotentialThreatObjects, numAlarmObjects), numPotentialThreatObjects, numAlarmObjects);
             }, py::arg("abortFlag"), py::arg("abortReason"))
         .def("GetNumPTOs", &TDR::GetNumPTOs)
         .def("GetNumAlarmObjects", &TDR::GetNumAlarmObjects)
+        
         .def("SetTotalProcessingTimeInMS", &TDR::SetTotalProcessingTimeInMS, py::arg("processingTime"))
-        .def("GetTotalProcessingTimeInMS", &TDR::GetTotalProcessingTimeInMS);
+        .def("GetTotalProcessingTimeInMS", &TDR::GetTotalProcessingTimeInMS)
+        
+        .def("SetAdditionalInspectionCriteria", py::overload_cast<const bool, 
+                                                                  const TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA,
+                                                                  const DcsShortString&, 
+                                                                  const DcsLongString&>
+                           (&TDR::SetAdditionalInspectionCriteria), 
+                           py::arg("additionalInspectionPerformed ") = false, 
+                           py::arg("selectionCriteria") = TDRTypes::AdditionalInspectionSelectionCriteria::enumUnknownAdditionalInspectionSelectionCriteria,
+                           py::arg("additionalInspectionMethod") = "",
+                           py::arg("inspectionMethodDescription") = "")
+        .def("SetAdditionalInspectionCriteria", py::overload_cast<const bool, 
+                                                                  const TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA, 
+                                                                  const Array1D<TDR::AdditionalInspectionData> &>
+                           (&TDR::SetAdditionalInspectionCriteria),
+                           py::arg("additionalInspectionPerformed"), 
+                           py::arg("selectionCriteria"), 
+                           py::arg("vAdditionalInspectionMethods")) 
 
-     
+        .def("GetAdditionalInspectionCriteria", [](TDR &self, TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA& selectionCriteria,
+                                                              DcsShortString& additionalInspectionMethod,
+                                                              DcsLongString& inspectionMethodDescription) {
+            return std::make_tuple(self.GetAdditionalInspectionCriteria(selectionCriteria, additionalInspectionMethod, inspectionMethodDescription), selectionCriteria, additionalInspectionMethod, inspectionMethodDescription);
+            }, py::arg("selectionCriteria"), py::arg("additionalInspectionMethod"), py::arg("inspectionMethodDescription"))
+        
+        .def("GetAdditionalInspectionCriteria", [](TDR &self, TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA& selectionCriteria,
+                                                              Array1D<TDR::AdditionalInspectionData>& vAdditionalInspectionMethods) {
+            return std::make_tuple(self.GetAdditionalInspectionCriteria(selectionCriteria, vAdditionalInspectionMethods), selectionCriteria, vAdditionalInspectionMethods);
+            }, py::arg("selectionCriteria"), py::arg("vAdditionalInspectionMethods"));
 }
