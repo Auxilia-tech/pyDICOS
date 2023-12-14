@@ -69,6 +69,14 @@ void export_TDR(py::module &m)
         .value("enumTypeAnimal", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumMRP)
         .export_values();
 
+    py::class_<TDR::AdditionalInspectionData>(m, "TDR::AdditionalInspectionData")
+        .def(py::init<>())
+        .def(py::init<const TDR::AdditionalInspectionData&>())
+        .def("__copy__", [](const TDR::AdditionalInspectionData &self) { return TDR::AdditionalInspectionData(self); })
+        .def("__deepcopy__", [](const TDR::AdditionalInspectionData &self, py::dict) { return TDR::AdditionalInspectionData(self); })
+        .def(py::self == py::self)
+        .def(py::self != py::self);
+
     py::class_<TDR>(m, "SDICOS::TDR");
     py::class_<PyTDR, TDR, IODCommon, FrameOfReferenceUser>(m, "TDR")
         .def(py::init<>())
@@ -203,5 +211,16 @@ void export_TDR(py::module &m)
         .def("SetAbortFlag", &TDR::SetAbortFlag, py::arg("abortFlag"), py::arg("abortReason") = TDRTypes::ThreatDetectionReport::enumUnknownAbortReason)
         .def("GetAbortFlag", [](TDR &self,TDRTypes::ThreatDetectionReport::ABORT_FLAG& abortFlag,  TDRTypes::ThreatDetectionReport::ABORT_REASON& abortReason) {
             return std::make_tuple(self.GetAbortFlag(abortFlag, abortReason), abortFlag, abortReason);
-            }, py::arg("abortFlag"), py::arg("abortReason"));
+            }, py::arg("abortFlag"), py::arg("abortReason"))
+        .def("GetAbortFlag", [](TDR &self) {return std::make_tuple(self.GetAbortFlag());})
+        .def("GetAbortReason", &TDR::GetAbortReason)
+        .def("GetNumberOfObjects", [](TDR &self, S_UINT16& numPotentialThreatObjects, S_UINT16& numAlarmObjects) {
+            return std::make_tuple(self.GetNumberOfObjects(numPotentialThreatObjects, numAlarmObjects), numPotentialThreatObjects, numAlarmObjects);
+            }, py::arg("abortFlag"), py::arg("abortReason"))
+        .def("GetNumPTOs", &TDR::GetNumPTOs)
+        .def("GetNumAlarmObjects", &TDR::GetNumAlarmObjects)
+        .def("SetTotalProcessingTimeInMS", &TDR::SetTotalProcessingTimeInMS, py::arg("processingTime"))
+        .def("GetTotalProcessingTimeInMS", &TDR::GetTotalProcessingTimeInMS);
+
+     
 }
