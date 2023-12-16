@@ -6,6 +6,8 @@ from pyDICOS import TDR
 from pyDICOS import CT
 from pyDICOS import Folder
 from pyDICOS import DcsString, DcsLongString
+from pyDICOS import DcsDate
+from pyDICOS import DcsTime
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1DS_UINT16
 from pyDICOS import Array1DArray2DS_UINT16
@@ -23,6 +25,10 @@ def CreateNoThreatTDRForBaggageSimple():
     tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               TDR.TDR_TYPE.enumMachine,
               TDRInstanceNumber)
+    
+    TDRCreationStartDate = DcsDate.Today()
+    TDRCreationStartTime = DcsTime.Now()
+
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
