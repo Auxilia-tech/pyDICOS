@@ -11,7 +11,7 @@ void export_Array3DLarge(py::module &m,  const std::string & typestr){
 
     std::string pyclass_array3d_large_name = std::string("Array3DLarge") + typestr;
 
-    py::class_<Array3DLarge<T>>(m, pyclass_array3d_large_name.c_str())
+    py::class_<Array3DLarge<T>>(m, pyclass_array3d_large_name.c_str(), py::buffer_protocol())
         .def(py::init<>())
         .def(py::init<const S_UINT32, 
                       const S_UINT32, 
