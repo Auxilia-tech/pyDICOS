@@ -3,6 +3,7 @@ from pyDICOS import ErrorLog
 from pyDICOS import CustomMemoryManager
 from pyDICOS import Section
 from pyDICOS import TDR
+from pyDICOS import CT
 from pyDICOS import Folder
 from pyDICOS import DcsString, DcsLongString
 from pyDICOS import MemoryBuffer
@@ -19,9 +20,8 @@ import numpy as np
 
 def CreateNoThreatTDRForBaggageSimple():
     TDRInstanceNumber = 1234
-    
-    tdr = TDR(TDR.ObjectOfInspectionModule.IdInfo.OBJECT_OF_INSPECTION_ID_TYPE.enumTypeBaggage,
-              TDR.TDRTypes.ThreatDetectionReport.TDR_TYPE.enumMachine,
+    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+              TDR.TDR_TYPE.enumMachine,
               TDRInstanceNumber)
 
 def main():
