@@ -8,8 +8,6 @@ from pyDICOS import DcsString, DcsLongString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1DS_UINT16
 from pyDICOS import Array1DArray2DS_UINT16
-from pyDICOS import Array1DPairBoolMemBuff
-from pyDICOS import Array1DPairFilenameErrorLog
 from pyDICOS import Array2DS_UINT16
 from pyDICOS import Vector3Dfloat
 from pyDICOS import Volume

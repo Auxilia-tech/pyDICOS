@@ -53,6 +53,19 @@ void export_TDR(py::module &m)
         .value("enumUndefined", TDRTypes::ThreatDetectionReport::TDR_TYPE::enumUndefined)
         .export_values();
 
+    py::enum_<TDRTypes::ThreatDetectionReport::ABORT_REASON>(m, "ABORT_REASON")
+        .value("enumUnknownTDRType", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumUnknownAbortReason)
+        .value("enumOversizeBag", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumOversizeBag)
+        .value("enumClippedBag", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumClippedBag)
+        .value("enumIncompleteScan", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumIncompleteScan)
+        .value("enumFailedRecon", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumFailedRecon)
+        .value("enumTimeout", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumTimeout)
+        .value("enumNotReviewed", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumNotReviewed)
+        .value("enumUnknownDataType", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumUnknownDataType)
+        .value("enumUserInterrupt", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumUserInterrupt)
+        .value("enumOutOfBounds", TDRTypes::ThreatDetectionReport::ABORT_REASON::enumOutOfBounds)
+        .export_values();
+
     py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER>(m, "OBJECT_OF_INSPECTION_GENDER")
         .value("enumUnknownObjectOfInspectionGender", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumUnknownObjectOfInspectionGender)
         .value("enumGenderMale", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_GENDER::enumGenderMale)
@@ -69,6 +82,16 @@ void export_TDR(py::module &m)
         .value("enumTypeAnimal", ObjectOfInspectionModule::IdInfo::OBJECT_OF_INSPECTION_ID_TYPE::enumMRP)
         .export_values();
 
+    py::enum_<TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA>(m, "ADDITIONAL_INSPECTION_SELECTION_CRITERIA")
+        .value("enumRandom", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumRandom)
+        .value("enumBehavioral", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumBehavioral)
+        .value("enumAll", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumAll)
+        .value("enumOwnerRisk", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumOwnerRisk)
+        .value("enumFlightRisk", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumFlightRisk)
+        .value("enumThreatLevel", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumThreatLevel)
+        .export_values();
+
+
     py::class_<TDR::AdditionalInspectionData>(m, "TDR::AdditionalInspectionData")
         .def(py::init<>())
         .def(py::init<const TDR::AdditionalInspectionData&>())
@@ -79,6 +102,24 @@ void export_TDR(py::module &m)
 
     py::class_<TDR>(m, "SDICOS::TDR");
     py::class_<PyTDR, TDR, IODCommon, FrameOfReferenceUser>(m, "TDR")
+        .def_property_readonly_static("OBJECT_OF_INSPECTION_ID_TYPE", [m](py::object) {
+            return m.attr("OBJECT_OF_INSPECTION_ID_TYPE");
+        }) 
+        .def_property_readonly_static("OBJECT_OF_INSPECTION_GENDER", [m](py::object) {
+            return m.attr("OBJECT_OF_INSPECTION_GENDER");
+        }) 
+        .def_property_readonly_static("TDR_TYPE", [m](py::object) {
+            return m.attr("TDR_TYPE");
+        }) 
+        .def_property_readonly_static("OBJECT_OF_INSPECTION_GENDER", [m](py::object) {
+            return m.attr("OBJECT_OF_INSPECTION_GENDER");
+        }) 
+        .def_property_readonly_static("ABORT_REASON", [m](py::object) {
+            return m.attr("ABORT_REASON");
+        }) 
+        .def_property_readonly_static("ADDITIONAL_INSPECTION_SELECTION_CRITERIA", [m](py::object) {
+            return m.attr("ADDITIONAL_INSPECTION_SELECTION_CRITERIA");
+        }) 
         .def(py::init<>())
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
                       const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
@@ -213,9 +254,12 @@ void export_TDR(py::module &m)
         .def("GetAlarmDecisionDateTime", [](TDR &self, DcsDate& alarmDecisionDate, DcsTime& alarmDecisionTime) {
             return std::make_tuple(self.GetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime), alarmDecisionDate, alarmDecisionTime);
             }, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
-        .def("SetAbortFlag", &TDR::SetAbortFlag, py::arg("abortFlag"), py::arg("abortReason") = TDRTypes::ThreatDetectionReport::enumUnknownAbortReason)
+
+        .def("SetAbortFlag", &TDR::SetAbortFlag, 
+                              py::arg("abortFlag"), 
+                              py::arg("abortReason") = TDRTypes::ThreatDetectionReport::enumUnknownAbortReason)
         
-        .def("GetAbortFlag", [](TDR &self,TDRTypes::ThreatDetectionReport::ABORT_FLAG& abortFlag,  TDRTypes::ThreatDetectionReport::ABORT_REASON& abortReason) {
+        .def("GetAbortFlag", [](TDR &self,TDRTypes::ThreatDetectionReport::ABORT_FLAG& abortFlag, TDRTypes::ThreatDetectionReport::ABORT_REASON& abortReason) {
             return std::make_tuple(self.GetAbortFlag(abortFlag, abortReason), abortFlag, abortReason);
             }, py::arg("abortFlag"), py::arg("abortReason"))
         .def("GetAbortFlag", [](TDR &self) {return self.GetAbortFlag();})
