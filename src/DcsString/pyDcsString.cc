@@ -4,6 +4,7 @@
 
 using namespace SDICOS;
 
+
 void export_DCSSTRING(py::module &m)
 {
     py::class_<DcsString>(m, "DcsString")
@@ -23,5 +24,8 @@ void export_DCSSTRING(py::module &m)
         .def(py::init<>())
         .def(py::init<const char*>(), py::arg("pstr"))
         .def(py::init<const wchar_t*>(), py::arg("pstr"))
-        .def(py::init<const DcsLongString&>(), py::arg("dcslongstring"));
+        .def(py::init<const DcsLongString&>(), py::arg("dcslongstring"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def("__copy__", [](const DcsString &self) { return DcsString(self); })
+        .def("__deepcopy__", [](const DcsString &self, py::dict) { return DcsString(self); });
 }

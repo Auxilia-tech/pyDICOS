@@ -8,8 +8,6 @@ from pyDICOS import DcsString, DcsLongString
 from pyDICOS import MemoryBuffer
 from pyDICOS import Array1DS_UINT16
 from pyDICOS import Array1DArray2DS_UINT16
-from pyDICOS import Array1DPairBoolMemBuff
-from pyDICOS import Array1DPairFilenameErrorLog
 from pyDICOS import Array2DS_UINT16
 from pyDICOS import Vector3Dfloat
 from pyDICOS import Volume
@@ -21,6 +19,10 @@ import numpy as np
 
 def CreateNoThreatTDRForBaggageSimple():
     TDRInstanceNumber = 1234
+    
+    tdr = TDR(TDR.ObjectOfInspectionModule.IdInfo.OBJECT_OF_INSPECTION_ID_TYPE.enumTypeBaggage,
+              TDR.TDRTypes.ThreatDetectionReport.TDR_TYPE.enumMachine,
+              TDRInstanceNumber)
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
