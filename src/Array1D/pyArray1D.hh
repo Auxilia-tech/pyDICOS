@@ -3,6 +3,7 @@
 
 #include "../headers.hh"
 #include "SDICOS/Array1D.h"
+#include "CustomArray1D.hh"
 
 using namespace SDICOS;
 
@@ -58,6 +59,30 @@ void export_Array1DDcsLongString(py::module &m){
         .def("GetBuffer", (DcsLongString* (Array1D<DcsLongString>::*)()) &Array1D<DcsLongString>::GetBuffer, py::return_value_policy::reference_internal);
 }
 
+
+void export_CustomArray1DDcsLongString(py::module &m){
+    py::class_<CustomArray1D<DcsLongString>, Array1D<DcsLongString>>(m, "CustomArray1DDcsLongString")
+        .def(py::init<>())
+        .def(py::init<const S_UINT32>(), py::arg("size"))
+        .def("Empty", &Array1D<DcsLongString>::Empty)
+        .def("Clear", &Array1D<DcsLongString>::Clear)
+        .def("SetSize", &Array1D<DcsLongString>::SetSize, py::arg("nSize"), py::arg("bAllocateExtraCapacity"))
+        .def("Reserve", &Array1D<DcsLongString>::Reserve, py::arg("reserveCapacity"))
+        .def("Extend", &Array1D<DcsLongString>::Extend, py::arg("numAdditionalElements"))
+        .def("SetOverlay", &Array1D<DcsLongString>::SetOverlay, py::arg("pBuf"), py::arg("nSize"))
+        .def("Zero", &Array1D<DcsLongString>::Zero, py::arg("zero"))
+        .def("GetSize", py::overload_cast<>(&Array1D<DcsLongString>::GetSize, py::const_))
+        .def("GetSize", py::overload_cast<S_UINT32&>(&Array1D<DcsLongString>::GetSize, py::const_), py::arg("nSize"))
+        .def("GetCapacity", py::overload_cast<>(&Array1D<DcsLongString>::GetCapacity, py::const_))
+        .def("GetCapacity", py::overload_cast<S_UINT32&>(&Array1D<DcsLongString>::GetCapacity, py::const_), py::arg("nCapacity"))
+        .def("GetNumUnusedElements", &Array1D<DcsLongString>::GetNumUnusedElements)
+        .def("__getitem__", (const DcsLongString& (Array1D<DcsLongString>::*)(S_UINT32) const) &Array1D<DcsLongString>::operator[], py::arg("n"))
+        .def("__getitem__", (DcsLongString& (Array1D<DcsLongString>::*)(S_UINT32)) &Array1D<DcsLongString>::operator[], py::arg("n"))
+        .def("GetBuffer", (const DcsLongString* (Array1D<DcsLongString>::*)() const) &Array1D<DcsLongString>::GetBuffer, py::return_value_policy::reference_internal)
+        .def("GetBuffer", (DcsLongString* (Array1D<DcsLongString>::*)()) &Array1D<DcsLongString>::GetBuffer, py::return_value_policy::reference_internal)
+        .def("SetBuffer", &CustomArray1D<DcsLongString>::SetBuffer, py::arg("i"), py::arg("value"));
+   
+   }
 
 template<typename T>
 void export_Array1DArray2D(py::module &m, const std::string & typestr){

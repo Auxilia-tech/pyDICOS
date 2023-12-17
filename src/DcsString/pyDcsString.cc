@@ -26,8 +26,8 @@ void export_DCSSTRING(py::module &m)
         .def(py::init<const wchar_t*>(), py::arg("pstr"))
         .def(py::init<const DcsLongString&>(), py::arg("dcslongstring"))
         .def(py::init<const DcsString&>(), py::arg("dcsstring"))
-        .def("__copy__", [](const DcsString &self) { return DcsString(self); })
-        .def("__deepcopy__", [](const DcsString &self, py::dict) { return DcsString(self); });
+        .def("__assign__", (DcsLongString& (DcsLongString::*)(const DcsLongString&)) &DcsLongString::operator=);
+
 
     py::class_<DcsDate, DcsString>(m, "DcsDate")
         .def(py::init<>())
