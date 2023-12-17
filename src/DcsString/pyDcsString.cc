@@ -29,6 +29,22 @@ void export_DCSSTRING(py::module &m)
         .def("__assign__", (DcsLongString& (DcsLongString::*)(const DcsLongString&)) &DcsLongString::operator=);
 
 
+    py::class_<DcsLongText, DcsString>(m, "DcsLongText")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsLongText&>(), py::arg("dcslongtext"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def("__assign__", (DcsLongText& (DcsLongText::*)(const DcsLongText&)) &DcsLongText::operator=)
+        .def("__eq__", (bool (DcsLongText::*)(const char*) const) &DcsLongText::operator==)
+        .def("__eq__", (bool (DcsLongText::*)(const wchar_t*) const) &DcsLongText::operator==)
+        .def("__eq__", (bool (DcsLongText::*)(const DcsString &) const) &DcsLongText::operator==)
+        .def("__eq__", (bool (DcsLongText::*)(const DcsLongText &) const) &DcsLongText::operator==)
+        .def("__ne__", (bool (DcsLongText::*)(const char*) const) &DcsLongText::operator!=)
+        .def("__ne__", (bool (DcsLongText::*)(const wchar_t*) const) &DcsLongText::operator!=)
+        .def("__ne__", (bool (DcsLongText::*)(const DcsString &) const) &DcsLongText::operator!=)
+        .def("__ne__", (bool (DcsLongText::*)(const DcsLongText &) const) &DcsLongText::operator!=);
+
     py::class_<DcsDate, DcsString>(m, "DcsDate")
         .def(py::init<>())
         .def(py::init<const S_UINT32, const S_UINT32, const S_UINT32>(), py::arg("nYear"), py::arg("nMonth"), py::arg("nDay"))
