@@ -19,6 +19,7 @@ from pyDICOS import Volume
 from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
 from pyDICOS import DicosFileListing
+from pyDICOS import DcsLongText
 
 import numpy as np
 
@@ -43,6 +44,32 @@ def CreateNoThreatTDRForBaggageSimple():
 
     ATR_Parameters.SetBuffer(0, item1)
     ATR_Parameters.SetBuffer(1, item2)
+
+    tdr.SetTDRTypeATR(atrManufacturer, atrVersion, ATR_Parameters)
+    tdr.SetImageScaleRepresentation(10.0)
+
+    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumAlarm)
+
+    alarmDecisionDate = DcsDate(1944, 6, 6) 
+    alarmDecisionTime = DcsTime(6, 30, 0, 0)
+    tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
+        
+    tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
+
+    tdr.SetTotalProcessingTimeInMS(500.0)
+        
+    PTOIdentifier0 = 9001
+    tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
+
+    threatDescription = DcsLongText("Flammable Liquid")
+
+    tdr.AddPTOAssessment(PTOIdentifier0, 
+                         TDR.ASSESSMENT_FLAG.enumThreat, 
+                         TDR.THREAT_CATEGORY.enumProhibitedItem, 
+                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
+                         threatDescription, 
+                         -1.0
+    )
 
 
 def main():
