@@ -6,6 +6,8 @@ from pyDICOS import TDR
 from pyDICOS import CT
 from pyDICOS import Folder
 from pyDICOS import DcsString, DcsLongString
+from pyDICOS import Array1DDcsLongString
+from pyDICOS import CustomArray1DDcsLongString
 from pyDICOS import DcsDate
 from pyDICOS import DcsTime
 from pyDICOS import MemoryBuffer
@@ -28,6 +30,19 @@ def CreateNoThreatTDRForBaggageSimple():
     
     TDRCreationStartDate = DcsDate.Today()
     TDRCreationStartTime = DcsTime.Now()
+
+    tdr.SetContentDateAndTime(TDRCreationStartDate,TDRCreationStartTime)
+
+    atrManufacturer = DcsLongString("Alchemy")
+    atrVersion = DcsLongString("0.999")
+
+    ATR_Parameters = CustomArray1DDcsLongString(2)
+
+    item1 = DcsLongString("-random=true")
+    item2 = DcsLongString("-magic=true")
+
+    ATR_Parameters.SetBuffer(0, item1)
+    ATR_Parameters.SetBuffer(1, item2)
 
 
 def main():
