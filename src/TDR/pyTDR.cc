@@ -91,6 +91,47 @@ void export_TDR(py::module &m)
         .value("enumThreatLevel", TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA::enumThreatLevel)
         .export_values();
 
+    py::enum_<TDRTypes::ThreatDetectionReport::ALARM_DECISION>(m, "ALARM_DECISION")
+        .value("enumUnknownAlarmDecision", TDRTypes::ThreatDetectionReport::ALARM_DECISION::enumUnknownAlarmDecision)
+        .value("enumAlarm", TDRTypes::ThreatDetectionReport::ALARM_DECISION::enumAlarm)
+        .value("enumClear", TDRTypes::ThreatDetectionReport::ALARM_DECISION::enumClear)
+        .export_values();
+
+    py::enum_<TDRTypes::ThreatDetectionReport::ABORT_FLAG>(m, "ABORT_FLAG")
+        .value("enumUnknownAbortFlag", TDRTypes::ThreatDetectionReport::ABORT_FLAG::enumUnknownAbortFlag)
+        .value("enumAbort", TDRTypes::ThreatDetectionReport::ABORT_FLAG::enumAbort)
+        .value("enumSuccess", TDRTypes::ThreatDetectionReport::ABORT_FLAG::enumSuccess)
+        .export_values();
+
+    py::enum_<TDR::ThreatType>(m, "ThreatType")
+        .value("enumThreatTypeUnknown", TDR::ThreatType::enumThreatTypeUnknown)
+        .value("enumThreatTypePerson", TDR::ThreatType::enumThreatTypePerson)
+        .value("enumThreatTypeBaggage", TDR::ThreatType::enumThreatTypeBaggage)
+        .export_values();
+
+    py::enum_<TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY>(m, "THREAT_CATEGORY")
+        .value("enumUnknownThreatCategory", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumUnknownThreatCategory)
+        .value("enumExplosive", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumExplosive)
+        .value("enumProhibitedItem", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumProhibitedItem)
+        .value("enumContraband", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumContraband)
+        .value("enumAnomaly", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumAnomaly)
+        .value("enumLaptop", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumLaptop)
+        .value("enumOther", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumOther)
+        .value("enumPharmaceutical", TDRTypes::AssessmentSequence::AssessmentItem::THREAT_CATEGORY::enumPharmaceutical)
+        .export_values();
+
+    py::enum_<TDRTypes::AssessmentSequence::AssessmentItem::ABILITY_ASSESSMENT>(m, "ABILITY_ASSESSMENT")
+        .value("enumUnknownAbilityAssessment", TDRTypes::AssessmentSequence::AssessmentItem::ABILITY_ASSESSMENT::enumUnknownAbilityAssessment)
+        .value("enumNoInterference", TDRTypes::AssessmentSequence::AssessmentItem::ABILITY_ASSESSMENT::enumNoInterference)
+        .value("enumShield", TDRTypes::AssessmentSequence::AssessmentItem::ABILITY_ASSESSMENT::enumShield)
+        .export_values();
+
+    py::enum_<TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG>(m, "ASSESSMENT_FLAG")
+        .value("enumUnknownAssessmentFlag", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumUnknownAssessmentFlag)
+        .value("enumThreat", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumThreat)
+        .value("enumNoThreat", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumNoThreat)
+        .value("enumUnknown", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumUnknown)
+        .export_values();
 
     py::class_<TDR::AdditionalInspectionData>(m, "TDR::AdditionalInspectionData")
         .def(py::init<>())
@@ -120,6 +161,25 @@ void export_TDR(py::module &m)
         .def_property_readonly_static("ADDITIONAL_INSPECTION_SELECTION_CRITERIA", [m](py::object) {
             return m.attr("ADDITIONAL_INSPECTION_SELECTION_CRITERIA");
         }) 
+        .def_property_readonly_static("ALARM_DECISION", [m](py::object) {
+            return m.attr("ALARM_DECISION");
+        }) 
+        .def_property_readonly_static("ABORT_FLAG", [m](py::object) {
+            return m.attr("ABORT_FLAG");
+        }) 
+        .def_property_readonly_static("ThreatType", [m](py::object) {
+            return m.attr("ThreatType");
+        }) 
+        .def_property_readonly_static("THREAT_CATEGORY", [m](py::object) {
+            return m.attr("THREAT_CATEGORY");
+        }) 
+        .def_property_readonly_static("ABILITY_ASSESSMENT", [m](py::object) {
+            return m.attr("ABILITY_ASSESSMENT");
+        }) 
+        .def_property_readonly_static("ASSESSMENT_FLAG", [m](py::object) {
+            return m.attr("ASSESSMENT_FLAG");
+        }) 
+
         .def(py::init<>())
         .def(py::init<const ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE, 
                       const TDRTypes::ThreatDetectionReport::TDR_TYPE, 
@@ -300,5 +360,18 @@ void export_TDR(py::module &m)
         .def("GetAdditionalInspectionCriteria", [](TDR &self, TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA& selectionCriteria,
                                                               Array1D<TDR::AdditionalInspectionData>& vAdditionalInspectionMethods) {
             return std::make_tuple(self.GetAdditionalInspectionCriteria(selectionCriteria, vAdditionalInspectionMethods), selectionCriteria, vAdditionalInspectionMethods);
-            }, py::arg("selectionCriteria"), py::arg("vAdditionalInspectionMethods"));
+            }, py::arg("selectionCriteria"), py::arg("vAdditionalInspectionMethods"))
+
+        .def("AddPotentialThreatObject", &TDR::AddPotentialThreatObject, 
+                                          py::arg("PTOIdentifier"), 
+                                          py::arg("threatType"),  
+                                          py::arg("nNumPTORepresentations") = 1)
+
+        .def("AddPTOAssessment", &TDR::AddPTOAssessment, 
+                                  py::arg("PTOIdentifier"), 
+                                  py::arg("assessmentFlag") = TDRTypes::AssessmentSequence::AssessmentItem::enumUnknown,  
+                                  py::arg("threatCategory") = TDRTypes::AssessmentSequence::AssessmentItem::enumAnomaly,
+                                  py::arg("ability") = TDRTypes::AssessmentSequence::AssessmentItem::enumNoInterference, 
+                                  py::arg("threatDescription") = "",
+                                  py::arg("assessmentProbability") = -10.f);
 }
