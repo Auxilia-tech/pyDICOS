@@ -20,7 +20,8 @@ from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
 from pyDICOS import DicosFileListing
 from pyDICOS import DcsLongText
-from pyDIVOS import Point3DFloat
+from pyDICOS import Point3Dfloat
+from pyDICOS import Bitmap
 
 import numpy as np
 
@@ -57,6 +58,12 @@ def CreateNoThreatTDRForBaggageSimple():
         
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
 
+    #const SDICOS::DcsUniqueIdentifier uidSopInstanceCT(SDICOS::DcsGUID::GenerateAsDecimalString()); 
+    #const SDICOS::DcsUniqueIdentifier uidSopClassCT(SDICOS::SOPClassUID::GetCT());
+    #tdr.AddReferencedSopInstance(uidSopInstanceCT, uidSopClassCT);
+
+
+"""
     tdr.SetTotalProcessingTimeInMS(500.0)
         
     PTOIdentifier0 = 9001
@@ -73,10 +80,9 @@ def CreateNoThreatTDRForBaggageSimple():
     
     tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
 
-    ptoDims = Point3DFloat(50,50,100)
- 
-    SDICOS::Bitmap ptoMask(50,50,100);
-    
+    ptoDims = Point3Dfloat(50,50,100)
+    ptoMask = Bitmap(50,50,100)
+"""    
     
 
 def main():

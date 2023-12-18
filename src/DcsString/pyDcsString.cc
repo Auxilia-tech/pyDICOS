@@ -80,41 +80,40 @@ void export_DCSSTRING(py::module &m)
         }, py::arg("nYear"), py::arg("nMonth"), py::arg("nDay"))
         .def("Today", &DcsDate::Today);
 
-    py::class_<DcsTime, DcsString>(m, "DcsTime")
+    py::class_<DcsUniqueIdentifier, DcsString>(m, "DcsUniqueIdentifier")
         .def(py::init<>())
-        .def(py::init<const S_UINT32, const S_UINT32, const S_UINT32, const S_UINT32>(), 
-                      py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
         .def(py::init<const char*>(), py::arg("pstr"))
         .def(py::init<const wchar_t*>(), py::arg("pstr"))
-        .def(py::init<const DcsTime&>(), py::arg("dcstime"))
+        .def(py::init<const DcsUniqueIdentifier&>(), py::arg("dcsuniqueidentifier"))
         .def(py::init<const DcsString&>(), py::arg("dcsstring"))
-        .def("__assign__", (DcsTime& (DcsTime::*)(const char*)) &DcsTime::operator=)
-        .def("__assign__", (DcsTime& (DcsTime::*)(const wchar_t*)) &DcsTime::operator=)
-        .def("__assign__", (DcsTime& (DcsTime::*)(const DcsTime &)) &DcsTime::operator=)
-        .def("__eq__", (bool (DcsTime::*)(const char*) const) &DcsTime::operator==)
-        .def("__eq__", (bool (DcsTime::*)(const wchar_t*) const) &DcsTime::operator==)
-        .def("__eq__", (bool (DcsTime::*)(const DcsString &) const) &DcsTime::operator==)
-        .def("__eq__", (bool (DcsTime::*)(const DcsTime &) const) &DcsTime::operator==)
-        .def("__ne__", (bool (DcsTime::*)(const char*) const) &DcsTime::operator!=)
-        .def("__ne__", (bool (DcsTime::*)(const wchar_t*) const) &DcsTime::operator!=)
-        .def("__ne__", (bool (DcsTime::*)(const DcsString &) const) &DcsTime::operator!=)
-        .def("__ne__", (bool (DcsTime::*)(const DcsTime &) const) &DcsTime::operator!=)
+        .def("__assign__", (DcsUniqueIdentifier& (DcsUniqueIdentifier::*)(const DcsUniqueIdentifier&)) &DcsUniqueIdentifier::operator=)
+        .def("__eq__", (bool (DcsUniqueIdentifier::*)(const char*) const) &DcsUniqueIdentifier::operator==)
+        .def("__eq__", (bool (DcsUniqueIdentifier::*)(const wchar_t*) const) &DcsUniqueIdentifier::operator==)
+        .def("__eq__", (bool (DcsUniqueIdentifier::*)(const DcsString &) const) &DcsUniqueIdentifier::operator==)
+        .def("__eq__", (bool (DcsUniqueIdentifier::*)(const DcsUniqueIdentifier &) const) &DcsUniqueIdentifier::operator==)
+        .def("__ne__", (bool (DcsUniqueIdentifier::*)(const char*) const) &DcsUniqueIdentifier::operator!=)
+        .def("__ne__", (bool (DcsUniqueIdentifier::*)(const wchar_t*) const) &DcsUniqueIdentifier::operator!=)
+        .def("__ne__", (bool (DcsUniqueIdentifier::*)(const DcsString &) const) &DcsUniqueIdentifier::operator!=)
+        .def("__ne__", (bool (DcsUniqueIdentifier::*)(const DcsUniqueIdentifier &) const) &DcsUniqueIdentifier::operator!=)
+        .def("SetGUID", &DcsUniqueIdentifier::SetGUID)
+        .def("CreateGUID", &DcsUniqueIdentifier::CreateGUID);
         
-        .def("Set", &DcsTime::Set, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"),  py::arg("nSecondFraction"))
-        .def("Get", [](DcsTime &self, S_UINT32& nHour, S_UINT32& nMinute, S_UINT32& nSecond, S_UINT32& nSecondFraction) {
-            return std::make_tuple(self.Get(nHour, nMinute, nSecond, nSecondFraction), nHour, nMinute, nSecond, nSecondFraction);
-        }, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
-        
-        .def("SetStart", &DcsTime::Set, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"),  py::arg("nSecondFraction"))
-        .def("GetStart", [](DcsTime &self, S_UINT32& nHour, S_UINT32& nMinute, S_UINT32& nSecond, S_UINT32& nSecondFraction) {
-            return std::make_tuple(self.Get(nHour, nMinute, nSecond, nSecondFraction), nHour, nMinute, nSecond, nSecondFraction);
-        }, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
 
-        .def("SetEnd", &DcsTime::Set, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
-        .def("GetEnd", [](DcsTime &self, S_UINT32& nHour, S_UINT32& nMinute, S_UINT32& nSecond, S_UINT32& nSecondFraction) {
-            return std::make_tuple(self.Get(nHour, nMinute, nSecond, nSecondFraction), nHour, nMinute, nSecond, nSecondFraction);
-        }, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
-        .def("Now", &DcsTime::Now);
+        py::class_<DcsLongText, DcsString>(m, "DcsLongText")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsLongText&>(), py::arg("dcslongtext"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def("__assign__", (DcsLongText& (DcsLongText::*)(const DcsLongText&)) &DcsLongText::operator=)
+        .def("__eq__", (bool (DcsLongText::*)(const char*) const) &DcsLongText::operator==)
+        .def("__eq__", (bool (DcsLongText::*)(const wchar_t*) const) &DcsLongText::operator==)
+        .def("__eq__", (bool (DcsLongText::*)(const DcsString &) const) &DcsLongText::operator==)
+        .def("__eq__", (bool (DcsLongText::*)(const DcsLongText &) const) &DcsLongText::operator==)
+        .def("__ne__", (bool (DcsLongText::*)(const char*) const) &DcsLongText::operator!=)
+        .def("__ne__", (bool (DcsLongText::*)(const wchar_t*) const) &DcsLongText::operator!=)
+        .def("__ne__", (bool (DcsLongText::*)(const DcsString &) const) &DcsLongText::operator!=)
+        .def("__ne__", (bool (DcsLongText::*)(const DcsLongText &) const) &DcsLongText::operator!=);
 
 }
 
