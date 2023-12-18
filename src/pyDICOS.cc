@@ -46,4 +46,5 @@ PYBIND11_MODULE(pyDICOS, m)
    export_DX(m);
    export_TDR(m);
    export_Image2D(m);
+   export_BITMAP(m);
 }
