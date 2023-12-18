@@ -386,7 +386,11 @@ void export_TDR(py::module &m)
                                                    float& PTODensity, 
                                                    const S_UINT16 nRepresentation) {
             return std::make_tuple(self.GetBaggagePTODetails(PTOIdentifier, PTOMass, PTODensity, nRepresentation), PTOMass, PTODensity);
-            }, py::arg("PTOIdentifier"), py::arg("PTOMass"), py::arg("PTODensity"), py::arg("nRepresentation"));
-}
+            }, py::arg("PTOIdentifier"), py::arg("PTOMass"), py::arg("PTODensity"), py::arg("nRepresentation"))
 
-  
+        .def("AddReferencedSopInstance", &IODCommon::AddReferencedSopInstance, 
+                                          py::arg("strSopInstanceUID"), 
+                                          py::arg("strSopClassUID"));
+
+
+}

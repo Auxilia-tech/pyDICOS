@@ -22,6 +22,9 @@ from pyDICOS import DicosFileListing
 from pyDICOS import DcsLongText
 from pyDICOS import Point3Dfloat
 from pyDICOS import Bitmap
+from pyDICOS import DcsUniqueIdentifier
+from pyDICOS import DcsGUID
+import pyDICOS
 
 import numpy as np
 
@@ -58,9 +61,9 @@ def CreateNoThreatTDRForBaggageSimple():
         
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
 
-    #const SDICOS::DcsUniqueIdentifier uidSopInstanceCT(SDICOS::DcsGUID::GenerateAsDecimalString()); 
-    #const SDICOS::DcsUniqueIdentifier uidSopClassCT(SDICOS::SOPClassUID::GetCT());
-    #tdr.AddReferencedSopInstance(uidSopInstanceCT, uidSopClassCT);
+    uidSopInstanceCT = DcsUniqueIdentifier(DcsGUID.GenerateAsDecimalString())
+    uidSopClassCT = DcsUniqueIdentifier(pyDICOS.GetCT())
+    tdr.AddReferencedSopInstance(uidSopInstanceCT, uidSopClassCT)
 
 
 """
