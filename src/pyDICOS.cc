@@ -48,4 +48,5 @@ PYBIND11_MODULE(pyDICOS, m)
    export_Image2D(m);
    export_BITMAP(m);
    export_DCSGUID(m);
+   export_SopClassUID(m);
 }
