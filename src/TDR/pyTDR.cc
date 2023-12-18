@@ -373,5 +373,20 @@ void export_TDR(py::module &m)
                                   py::arg("threatCategory") = TDRTypes::AssessmentSequence::AssessmentItem::enumAnomaly,
                                   py::arg("ability") = TDRTypes::AssessmentSequence::AssessmentItem::enumNoInterference, 
                                   py::arg("threatDescription") = "",
-                                  py::arg("assessmentProbability") = -10.f);
+                                  py::arg("assessmentProbability") = -10.f)
+        
+        .def("SetBaggagePTODetails", &TDR::SetBaggagePTODetails, 
+                              py::arg("PTOIdentifier"), 
+                              py::arg("PTOMassInGrams"),
+                              py::arg("PTODensityInGramsPerCC"),
+                              py::arg("nRepresentation"))
+
+        .def("GetBaggagePTODetails", [](TDR &self, S_UINT16 PTOIdentifier, 
+                                                   float& PTOMass, 
+                                                   float& PTODensity, 
+                                                   const S_UINT16 nRepresentation) {
+            return std::make_tuple(self.GetBaggagePTODetails(PTOIdentifier, PTOMass, PTODensity, nRepresentation), PTOMass, PTODensity);
+            }, py::arg("PTOIdentifier"), py::arg("PTOMass"), py::arg("PTODensity"), py::arg("nRepresentation"));
 }
+
+  
