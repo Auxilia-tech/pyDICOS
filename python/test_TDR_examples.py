@@ -20,6 +20,7 @@ from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
 from pyDICOS import DicosFileListing
 from pyDICOS import DcsLongText
+from pyDIVOS import Point3DFloat
 
 import numpy as np
 
@@ -68,9 +69,15 @@ def CreateNoThreatTDRForBaggageSimple():
                          TDR.THREAT_CATEGORY.enumProhibitedItem, 
                          TDR.ABILITY_ASSESSMENT.enumNoInterference,
                          threatDescription, 
-                         -1.0
-    )
+                         -1.0)
+    
+    tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
 
+    ptoDims = Point3DFloat(50,50,100)
+ 
+    SDICOS::Bitmap ptoMask(50,50,100);
+    
+    
 
 def main():
     CreateNoThreatTDRForBaggageSimple()

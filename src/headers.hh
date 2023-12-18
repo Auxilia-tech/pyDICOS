@@ -27,5 +27,6 @@ void export_DicosFileListing(py::module &m);
 void export_DX(py::module &);
 void export_TDR(py::module &);
 void export_Image2D(py::module &);
+void export_BITMAP(py::module &);
 
 #endif
