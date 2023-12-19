@@ -36,14 +36,12 @@ def CreateNoThreatTDRForBaggageSimple():
     
     TDRCreationStartDate = DcsDate.Today()
     TDRCreationStartTime = DcsTime.Now()
-
     tdr.SetContentDateAndTime(TDRCreationStartDate,TDRCreationStartTime)
 
     atrManufacturer = DcsLongString("Alchemy")
     atrVersion = DcsLongString("0.999")
 
     ATR_Parameters = CustomArray1DDcsLongString(2)
-
     item1 = DcsLongString("-random=true")
     item2 = DcsLongString("-magic=true")
     ATR_Parameters.SetBuffer(0, item1)
@@ -89,16 +87,41 @@ def CreateNoThreatTDRForBaggageSimple():
     return True       
 
 
+def CreateTDRForBaggageSimple():
+    TDRInstanceNumber = 1234
+    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+              TDR.TDR_TYPE.enumMachine,
+              TDRInstanceNumber)
+    
+    TDRCreationStartDate = DcsDate.Today()
+    TDRCreationStartTime = DcsTime.Now()
+    tdr.SetContentDateAndTime(TDRCreationStartDate,TDRCreationStartTime)
 
+    atrManufacturer = DcsLongString("Alchemy")
+    atrVersion = DcsLongString("0.999")
+    
+    ATR_Parameters = CustomArray1DDcsLongString(2)
+    item1 = DcsLongString("-random=true")
+    item2 = DcsLongString("-magic=true")
+    ATR_Parameters.SetBuffer(0, item1)
+    ATR_Parameters.SetBuffer(1, item2)
+    tdr.SetTDRTypeATR(atrManufacturer, atrVersion, ATR_Parameters)
+    
+    tdr.SetImageScaleRepresentation(10.0)
 
-"""
+    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumClear)
+    alarmDecisionDate = DcsDate(1944, 6, 6) 
+    alarmDecisionTime = DcsTime(6, 30, 0, 0)
+    tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
+        
+    tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
+
     tdr.SetTotalProcessingTimeInMS(500.0)
         
     PTOIdentifier0 = 9001
     tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
 
     threatDescription = DcsLongText("Flammable Liquid")
-
     tdr.AddPTOAssessment(PTOIdentifier0, 
                          TDR.ASSESSMENT_FLAG.enumThreat, 
                          TDR.THREAT_CATEGORY.enumProhibitedItem, 
@@ -110,8 +133,7 @@ def CreateNoThreatTDRForBaggageSimple():
 
     ptoDims = Point3Dfloat(50,50,100)
     ptoMask = Bitmap(50,50,100)
-"""    
-    
+  
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
