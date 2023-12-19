@@ -133,9 +133,36 @@ def CreateTDRForBaggageSimple():
 
     ptoDims = Point3Dfloat(50,50,100)
     ptoMask = Bitmap(50,50,100)
-  
+
+    for d in range(int(ptoDims.z)):
+        if d > 30 and d < 70:
+            continue
+        for h in range(int(ptoDims.y)):
+            if h > 10 and d < 40:
+                continue
+            for w in range(int(ptoDims.x)):
+                index = w + h*int(ptoDims.x) + d*int(ptoDims.x*ptoDims.y)
+                value = None
+                if w > 10 and w < 20:
+                    value = False
+                else:
+                    value = True
+                ptoMask.SetBit(w, h, d, value)
+                if value != ptoMask.GetBit(index):
+                    print("Failed to validate threat bitmask(", w, ",", h, ",", d, ")")
+
+    tdr.SetThreatRegionOfInterest(PTOIdentifier0,
+                                  Point3Dfloat(12,23,45),
+                                  ptoDims,
+                                  ptoMask,
+                                  0)
+    
+    dateTime = DcsTime.SetNow()
+    tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, float(0.0))
+
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
+    CreateTDRForBaggageSimple()
 if __name__ == "__main__":
     main()
