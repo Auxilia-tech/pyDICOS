@@ -333,6 +333,23 @@ void export_TDR(py::module &m)
         
         .def("SetTotalProcessingTimeInMS", &TDR::SetTotalProcessingTimeInMS, py::arg("processingTime"))
         .def("GetTotalProcessingTimeInMS", &TDR::GetTotalProcessingTimeInMS)
+
+
+        .def("SetThreatRegionOfInterest", &TDR::SetThreatRegionOfInterest, 
+                                          py::arg("PTOIdentifier"), 
+                                          py::arg("ptoBase"),
+                                          py::arg("ptoExtents"), 
+                                          py::arg("ptoMask"), 
+                                          py::arg("nRepresentation"))
+        
+        .def("GetThreatRegionOfInterest", [](TDR &self, const S_UINT16 PTOIdentifier, 
+                                                        Point3D<float>& PTOBase, 
+                                                        Point3D<float>& PTOExtents, 
+                                                        Bitmap& bitmap, 
+                                                        const S_UINT16 nRepresentation) {
+            return std::make_tuple(self.GetThreatRegionOfInterest(PTOIdentifier, PTOBase, PTOExtents, bitmap, nRepresentation), PTOBase, PTOExtents, bitmap);
+            }, py::arg("PTOIdentifier"), py::arg("PTOBase"), py::arg("PTOExtents"), py::arg("bitmap"), py::arg("nRepresentation"))
+  
         
         .def("SetAdditionalInspectionCriteria", py::overload_cast<const bool, 
                                                                   const TDRTypes::AdditionalInspectionSelectionCriteria::ADDITIONAL_INSPECTION_SELECTION_CRITERIA,

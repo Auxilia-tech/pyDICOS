@@ -99,6 +99,49 @@ void export_DCSSTRING(py::module &m)
         }, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
         .def("Now", &DcsTime::Now);
 
+
+    py::class_<DcsDateTime>(m, "DcsDateTime")
+        .def(py::init<>())
+        .def(py::init<const DcsDate&, const DcsTime&>(), py::arg("dcsDate"), py::arg("dcsTime"))
+        .def(py::init<const DcsDateTime&>(), py::arg("dcsdatetime"))
+        .def("__assign__", (DcsDateTime& (DcsDateTime::*)(const DcsDateTime&)) &DcsDateTime::operator=)
+        .def("__eq__", (bool (DcsDateTime::*)(const DcsDateTime&) const) &DcsDateTime::operator==)
+        .def("__ne__", (bool (DcsDateTime::*)(const DcsDateTime&) const) &DcsDateTime::operator!=)
+        .def("SetNow", &DcsDateTime::SetNow)
+             
+        .def("Set", py::overload_cast<const DcsDate&, const DcsTime&, const S_INT16>(&DcsDateTime::Set), 
+                    py::arg("dcsdate"), 
+                    py::arg("dcsTime"), 
+                    py::arg("nOffset"))
+        .def("Set", py::overload_cast<const DcsDate&, const DcsTime&>(&DcsDateTime::Set), 
+                    py::arg("dcsdate"), 
+                    py::arg("dcsTime"))  
+        .def("Set", py::overload_cast<const DcsDate&, const S_INT16>(&DcsDateTime::Set), 
+                    py::arg("dcsdate"), 
+                    py::arg("nOffset"))  
+        .def("Set", py::overload_cast<const DcsDate&>(&DcsDateTime::Set), 
+                    py::arg("dcsdate")) 
+
+        .def("SetRangeStart", py::overload_cast<const DcsDate&, const DcsTime&, const S_INT16>(&DcsDateTime::Set), 
+                    py::arg("dcsDateStart"), 
+                    py::arg("dcsTimeStart"), 
+                    py::arg("nOffsetStart"))      
+        .def("SetRangeStart", py::overload_cast<const DcsDate&, const DcsTime&>(&DcsDateTime::Set), 
+                    py::arg("dcsDateStart"), 
+                    py::arg("dcsTimeStart"))   
+
+        .def("SetRangeEnd", py::overload_cast<const DcsDate&, const DcsTime&, const S_INT16>(&DcsDateTime::Set), 
+                    py::arg("dcsDateEnd"), 
+                    py::arg("dcsTimeEnd"), 
+                    py::arg("nOffsetEnd"))      
+        .def("SetRangeEnd", py::overload_cast<const DcsDate&, const DcsTime&>(&DcsDateTime::Set), 
+                    py::arg("dcsDateEnd"), 
+                    py::arg("dcsTimeEnd"))   
+
+        .def("Get", [](DcsDateTime &self, DcsDate& strDate, DcsTime& strTime, S_INT16& strOffsetFromUTC) {
+            return std::make_tuple(self.Get(strDate, strTime, strOffsetFromUTC), strDate, strTime, strOffsetFromUTC);
+        }, py::arg("strDate"), py::arg("strTime"), py::arg("strOffsetFromUTC"));
+
     py::class_<DcsUniqueIdentifier, DcsString>(m, "DcsUniqueIdentifier")
         .def(py::init<>())
         .def(py::init<const char*>(), py::arg("pstr"))
