@@ -21,6 +21,10 @@ void export_BITMAP(py::module &m)
         .def("GetBitmap", py::overload_cast<>(&Bitmap::GetBitmap, py::const_))
         .def("SetBitmapData", py::overload_cast<MemoryBuffer&, const bool>(&Bitmap::SetBitmapData), py::arg("mb"), py::arg("move") = false)
         .def("SetBitmapData", py::overload_cast<const MemoryBuffer&>(&Bitmap::SetBitmapData), py::arg("mb"))
+        
+        .def("SetBit", py::overload_cast<const S_UINT64, bool>(&Bitmap::SetBit), py::arg("bitIndex"),  py::arg("bit"))
+        .def("SetBit", py::overload_cast<const S_UINT64, const S_UINT64, const S_UINT64, bool>(&Bitmap::SetBit), 
+                                         py::arg("x"),  py::arg("y"),  py::arg("z"), py::arg("bit"))
 
         .def("GetBit", py::overload_cast<const S_UINT64, bool&>(&Bitmap::GetBit, py::const_), py::arg("bitIndex"),  py::arg("bit"))
         .def("GetBit", py::overload_cast<const S_UINT64, const S_UINT64, const S_UINT64, bool&>(&Bitmap::GetBit, py::const_), 
