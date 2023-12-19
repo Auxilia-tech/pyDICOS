@@ -46,24 +46,49 @@ def CreateNoThreatTDRForBaggageSimple():
 
     item1 = DcsLongString("-random=true")
     item2 = DcsLongString("-magic=true")
-
     ATR_Parameters.SetBuffer(0, item1)
     ATR_Parameters.SetBuffer(1, item2)
-
     tdr.SetTDRTypeATR(atrManufacturer, atrVersion, ATR_Parameters)
+    
     tdr.SetImageScaleRepresentation(10.0)
 
-    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumAlarm)
-
+    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumClear)
     alarmDecisionDate = DcsDate(1944, 6, 6) 
     alarmDecisionTime = DcsTime(6, 30, 0, 0)
     tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
         
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
-
     uidSopInstanceCT = DcsUniqueIdentifier(DcsGUID.GenerateAsDecimalString())
     uidSopClassCT = DcsUniqueIdentifier(pyDICOS.GetCT())
     tdr.AddReferencedSopInstance(uidSopInstanceCT, uidSopClassCT)
+
+    errorlog = ErrorLog()
+    tdrFolder = Folder("TDRFiles")
+    tdrFilename = Filename(tdrFolder,"SimpleBaggageNoThreatTDR.dcs")
+
+    if tdr.Write(tdrFilename, errorlog) != True :
+        print("Simple TDR Template Example unable to write DICOS File : ", tdrFilename)
+        print(errorlog.GetErrorLog().Get())
+        return False
+    else:
+        print("Wrote file to", tdrFilename)
+        tdrRead = TDR()
+        errorlog = ErrorLog()
+
+        if tdrRead.Read(tdrFilename, errorlog, None): 
+            if tdrRead == tdr:
+                print("Successfully read and compared TDR files")
+                return True 
+            else:
+                print("TDR file loaded from", tdrFilename, "does not match original.")
+                return False 
+        else:
+            print("Unable to read TDR file", tdrFilename)
+            print(errorlog)
+            return False
+    return True       
+
+
 
 
 """
