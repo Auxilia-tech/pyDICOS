@@ -128,6 +128,7 @@ void export_TDR(py::module &m)
 
     py::enum_<TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG>(m, "ASSESSMENT_FLAG")
         .value("enumUnknownAssessmentFlag", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumUnknownAssessmentFlag)
+        .value("enumHighThreat", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumHighThreat)
         .value("enumThreat", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumThreat)
         .value("enumNoThreat", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumNoThreat)
         .value("enumUnknown", TDRTypes::AssessmentSequence::AssessmentItem::ASSESSMENT_FLAG::enumUnknown)
