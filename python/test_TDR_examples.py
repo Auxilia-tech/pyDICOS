@@ -20,6 +20,7 @@ from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
 from pyDICOS import DicosFileListing
 from pyDICOS import DcsLongText
+from pyDICOS import DcsDateTime
 from pyDICOS import Point3Dfloat
 from pyDICOS import Bitmap
 from pyDICOS import DcsUniqueIdentifier
@@ -157,7 +158,8 @@ def CreateTDRForBaggageSimple():
                                   ptoMask,
                                   0)
     
-    dateTime = DcsTime.SetNow()
+    dateTime = DcsDateTime()
+    dateTime.SetNow()
     tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, float(0.0))
 
 
