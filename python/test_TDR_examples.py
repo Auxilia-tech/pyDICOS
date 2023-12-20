@@ -190,11 +190,26 @@ def CreateTDRForBaggageSimple():
             print("Unable to read TDR file", tdrFilename)
             print(errorlog)
             return False
-    return True         
+    return True        
+
+def CreateTDRWithMultiplePTOS():
+
+
+    TDRInstanceNumber = 1234
+    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+              TDR.TDR_TYPE.enumMachine,
+              TDRInstanceNumber)
+    
+    OOIIdentifier = DcsLongString("12345-35345324-6326342-345")
+    tdr.SetOOIID(OOIIdentifier)
+    tdr.SetOOIIDAssigningAuthority(DcsLongString("TSA"))
+    tdr.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
+
 
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
     CreateTDRForBaggageSimple()
+    CreateTDRWithMultiplePTOS()
 if __name__ == "__main__":
     main()
