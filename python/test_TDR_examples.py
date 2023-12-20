@@ -257,6 +257,24 @@ def CreateTDRWithMultiplePTOS():
     PTOIdentifier1 = 2002
     tdr.AddPotentialThreatObject(PTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage)
 
+    tdr.AddPTOAssessment(PTOIdentifier1, 
+                        TDR.ASSESSMENT_FLAG.enumNoThreat,
+                        TDR.THREAT_CATEGORY.enumAnomaly, 
+                        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+                        DcsLongText(""), 
+                        float(-10))
+ 
+    tdr.SetBaggagePTODetails(PTOIdentifier1, float(100.0), float(40.0), 0)
+
+    tdr.SetThreatRegionOfInterest(PTOIdentifier1, 
+                                  Point3Dfloat(1,23,95),
+                                  Point3Dfloat(22,33,444),
+                                  Bitmap(),
+                                  0)
+    
+    tdr.SetPTOProcessingTime(PTOIdentifier1, dateTime, dateTime, float(0.0))
+    
+
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
