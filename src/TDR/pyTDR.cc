@@ -426,7 +426,16 @@ void export_TDR(py::module &m)
                               py::arg("PTOIdentifier"), 
                               py::arg("referencedSopClassUID"),
                               py::arg("referencedSopInstanceUID"),
-                              py::arg("nRepresentation"));
+                              py::arg("nRepresentation"))
 
-  
+
+        .def("SetOOIID", &TDR::SetOOIID, py::arg("strID"))
+        .def("GetOOIID", &TDR::GetOOIID)
+
+        .def("SetOOIIDAssigningAuthority", &TDR::SetOOIIDAssigningAuthority, py::arg("strAssigningAuthority"))
+        .def("GetOOIIDAssigningAuthority", &TDR::GetOOIIDAssigningAuthority)
+
+        .def("SetOOIIDType", &TDR::SetOOIIDType, py::arg("nType"))
+        .def("GetOOIIDType", &TDR::GetOOIIDType);
+
 }
