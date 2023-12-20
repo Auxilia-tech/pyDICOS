@@ -437,6 +437,7 @@ void export_TDR(py::module &m)
         .def("GetOOIIDAssigningAuthority", &TDR::GetOOIIDAssigningAuthority)
 
         .def("SetOOIIDType", &TDR::SetOOIIDType, py::arg("nType"))
-        .def("GetOOIIDType", &TDR::GetOOIIDType);
+        .def("GetOOIIDType", &TDR::GetOOIIDType)
 
+        .def("SetThreatBoundingPolygon", &TDR::SetThreatBoundingPolygon, py::arg("PTOIdentifier"), py::arg("controlPoints"), py::arg("nRepresentation"));
 }

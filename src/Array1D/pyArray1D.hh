@@ -35,6 +35,31 @@ void export_Array1D(py::module &m, const std::string & typestr){
         });
 }
 
+template<typename T>
+void export_Array1DPoint3D(py::module &m, const std::string & typestr){
+    std::string pyclass_array1D_name = std::string("Array1DPoint3D") + typestr;
+    py::class_<Array1D<Point3D<T>>>(m, pyclass_array1D_name.c_str(), py::buffer_protocol())
+        .def(py::init<>())
+        .def(py::init<const S_UINT32>(), py::arg("size"))
+        .def(py::init<const Array1D<Point3D<T>>&>())
+        .def("Empty", &Array1D<Point3D<T>>::Empty)
+        .def("Clear", &Array1D<Point3D<T>>::Clear)
+        .def("SetSize", &Array1D<Point3D<T>>::SetSize, py::arg("nSize"), py::arg("bAllocateExtraCapacity"))
+        .def("Reserve", &Array1D<Point3D<T>>::Reserve, py::arg("reserveCapacity"))
+        .def("Extend", &Array1D<Point3D<T>>::Extend, py::arg("numAdditionalElements"))
+        .def("SetOverlay", &Array1D<Point3D<T>>::SetOverlay, py::arg("pBuf"), py::arg("nSize"))
+        .def("Zero", &Array1D<Point3D<T>>::Zero, py::arg("zero"))
+        .def("GetSize", py::overload_cast<>(&Array1D<Point3D<T>>::GetSize, py::const_))
+        .def("GetSize", py::overload_cast<S_UINT32&>(&Array1D<Point3D<T>>::GetSize, py::const_), py::arg("nSize"))
+        .def("GetCapacity", py::overload_cast<>(&Array1D<Point3D<T>>::GetCapacity, py::const_))
+        .def("GetCapacity", py::overload_cast<S_UINT32&>(&Array1D<Point3D<T>>::GetCapacity, py::const_), py::arg("nCapacity"))
+        .def("GetNumUnusedElements", &Array1D<Point3D<T>>::GetNumUnusedElements)
+        .def("__getitem__", (const Point3D<T>& (Array1D<Point3D<T>>::*)(S_UINT32) const) &Array1D<Point3D<T>>::operator[], py::arg("n"))
+        .def("__getitem__", (Point3D<T>& (Array1D<Point3D<T>>::*)(S_UINT32)) &Array1D<Point3D<T>>::operator[], py::arg("n"))
+        .def("GetBuffer", (const Point3D<T>* (Array1D<Point3D<T>>::*)() const) &Array1D<Point3D<T>>::GetBuffer, py::return_value_policy::reference_internal)
+        .def("GetBuffer", (Point3D<T>* (Array1D<Point3D<T>>::*)()) &Array1D<Point3D<T>>::GetBuffer, py::return_value_policy::reference_internal);
+}
+
 
 void export_Array1DDcsLongString(py::module &m){
     py::class_<Array1D<DcsLongString>>(m, "Array1DDcsLongString", py::buffer_protocol())
