@@ -420,6 +420,13 @@ void export_TDR(py::module &m)
                                                   SDICOS::DcsDateTime &dtEnd,
                                                   float &fTotalTimeMS) {
             return std::make_tuple(self.GetPTOProcessingTime(PTOIdentifier, dtStart, dtEnd, fTotalTimeMS), dtStart, dtEnd);
-            }, py::arg("PTOIdentifier"), py::arg("dtStart"), py::arg("dtEnd"), py::arg("fTotalTimeMS"));
+            }, py::arg("PTOIdentifier"), py::arg("dtStart"), py::arg("dtEnd"), py::arg("fTotalTimeMS"))
+
+        .def("AddReferencedInstance", &TDR::AddReferencedInstance, 
+                              py::arg("PTOIdentifier"), 
+                              py::arg("referencedSopClassUID"),
+                              py::arg("referencedSopInstanceUID"),
+                              py::arg("nRepresentation"));
+
   
 }
