@@ -407,7 +407,19 @@ void export_TDR(py::module &m)
 
         .def("AddReferencedSopInstance", &IODCommon::AddReferencedSopInstance, 
                                           py::arg("strSopInstanceUID"), 
-                                          py::arg("strSopClassUID"));
+                                          py::arg("strSopClassUID"))
 
+        .def("SetPTOProcessingTime", &TDR::SetPTOProcessingTime, 
+                              py::arg("PTOIdentifier"), 
+                              py::arg("dtStart"),
+                              py::arg("dtEnd"),
+                              py::arg("fTotalTimeMS"))
 
+        .def("GetPTOProcessingTime", [](TDR &self,const S_UINT16 PTOIdentifier,
+                                                  SDICOS::DcsDateTime &dtStart,
+                                                  SDICOS::DcsDateTime &dtEnd,
+                                                  float &fTotalTimeMS) {
+            return std::make_tuple(self.GetPTOProcessingTime(PTOIdentifier, dtStart, dtEnd, fTotalTimeMS), dtStart, dtEnd);
+            }, py::arg("PTOIdentifier"), py::arg("dtStart"), py::arg("dtEnd"), py::arg("fTotalTimeMS"));
+  
 }
