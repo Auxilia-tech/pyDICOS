@@ -222,14 +222,14 @@ def CreateTDRWithMultiplePTOS():
     
     tdr.SetImageScaleRepresentation(10.0)
 
-    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumClear)
+    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumAlarm)
     alarmDecisionDate = DcsDate(1944, 6, 6) 
     alarmDecisionTime = DcsTime(6, 30, 0, 0)
     tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
         
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
 
-    tdr.SetTotalProcessingTimeInMS(500.0)
+    tdr.SetTotalProcessingTimeInMS(float(500.0))
 
     PTOIdentifier0 = 9001
     tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
@@ -242,7 +242,7 @@ def CreateTDRWithMultiplePTOS():
                          threatDescription, 
                          -1.0)
     
-    tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
+    tdr.SetBaggagePTODetails(PTOIdentifier0, float(50.0), float(7000.0), 0)
 
 
     tdr.SetThreatRegionOfInterest(PTOIdentifier0,
@@ -286,6 +286,7 @@ def CreateTDRWithMultiplePTOS():
     CTReferenceUID = DcsUniqueIdentifier("1235.23456.568678.34546")
     uidSopClassCT = DcsUniqueIdentifier(pyDICOS.GetCT())
     tdr.AddReferencedInstance(PTOIdentifier0, uidSopClassCT, CTReferenceUID, 0)
+    tdr.AddReferencedInstance(PTOIdentifier1, uidSopClassCT, CTReferenceUID, 0)
 
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
