@@ -194,7 +194,6 @@ def CreateTDRForBaggageSimple():
 
 def CreateTDRWithMultiplePTOS():
 
-
     TDRInstanceNumber = 1234
     tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               TDR.TDR_TYPE.enumMachine,
@@ -205,6 +204,58 @@ def CreateTDRWithMultiplePTOS():
     tdr.SetOOIIDAssigningAuthority(DcsLongString("TSA"))
     tdr.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
 
+
+    TDRCreationStartDate = DcsDate.Today()
+    TDRCreationStartTime = DcsTime.Now()
+    tdr.SetContentDateAndTime(TDRCreationStartDate,TDRCreationStartTime)
+
+    atrManufacturer = DcsLongString("Alchemy")
+    atrVersion = DcsLongString("0.999")
+    
+    ATR_Parameters = CustomArray1DDcsLongString(2)
+    item1 = DcsLongString("-random=true")
+    item2 = DcsLongString("-magic=true")
+    ATR_Parameters.SetBuffer(0, item1)
+    ATR_Parameters.SetBuffer(1, item2)
+    tdr.SetTDRTypeATR(atrManufacturer, atrVersion, ATR_Parameters)
+    
+    tdr.SetImageScaleRepresentation(10.0)
+
+    tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumClear)
+    alarmDecisionDate = DcsDate(1944, 6, 6) 
+    alarmDecisionTime = DcsTime(6, 30, 0, 0)
+    tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
+        
+    tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
+
+    tdr.SetTotalProcessingTimeInMS(500.0)
+
+    PTOIdentifier0 = 9001
+    tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
+
+    threatDescription = DcsLongText("Flammable Liquid")
+    tdr.AddPTOAssessment(PTOIdentifier0, 
+                         TDR.ASSESSMENT_FLAG.enumHighThreat, 
+                         TDR.THREAT_CATEGORY.enumProhibitedItem, 
+                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
+                         threatDescription, 
+                         -1.0)
+    
+    tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
+
+
+    tdr.SetThreatRegionOfInterest(PTOIdentifier0,
+                                  Point3Dfloat(12,23,45),
+                                  Point3Dfloat(50,50,100),
+                                  Bitmap(),
+                                  0)
+    
+    dateTime = DcsDateTime()
+    dateTime.SetNow()
+    tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, float(0.0))
+
+    PTOIdentifier1 = 2002
+    tdr.AddPotentialThreatObject(PTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage)
 
 
 def main():
