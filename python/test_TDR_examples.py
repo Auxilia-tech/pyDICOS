@@ -25,6 +25,7 @@ from pyDICOS import Point3Dfloat
 from pyDICOS import Bitmap
 from pyDICOS import DcsUniqueIdentifier
 from pyDICOS import DcsGUID
+from pyDICOS import Array1DPoint3Dfloat
 import pyDICOS
 
 import numpy as np
@@ -273,6 +274,44 @@ def CreateTDRWithMultiplePTOS():
                                   0)
     
     tdr.SetPTOProcessingTime(PTOIdentifier1, dateTime, dateTime, float(0.0))
+
+    bp = Array1DPoint3Dfloat()
+    bp.SetSize(3, False)
+
+    bp[0].Set(1,2,3)
+    bp[1].Set(3,4,5)
+    bp[2].Set(5,6,7)
+    tdr.SetThreatBoundingPolygon(PTOIdentifier1, bp, 0)
+
+    CTReferenceUID = DcsUniqueIdentifier("1235.23456.568678.34546")
+    uidSopClassCT = DcsUniqueIdentifier(pyDICOS.GetCT())
+    tdr.AddReferencedInstance(PTOIdentifier0, uidSopClassCT, CTReferenceUID, 0)
+
+    errorlog = ErrorLog()
+    tdrFolder = Folder("TDRFiles")
+    tdrFilename = Filename(tdrFolder,"MultiplePTOsTDR.dcs")
+
+    if tdr.Write(tdrFilename, errorlog) != True :
+        print("Simple TDR Template Example unable to write DICOS File : ", tdrFilename)
+        print(errorlog.GetErrorLog().Get())
+        return False
+    else:
+        print("Wrote file to", tdrFilename)
+        tdrRead = TDR()
+        errorlog = ErrorLog()
+
+        if tdrRead.Read(tdrFilename, errorlog, None): 
+            if tdrRead == tdr:
+                print("Successfully read and compared TDR files")
+                return True 
+            else:
+                print("TDR file loaded from", tdrFilename, "does not match original.")
+                return False 
+        else:
+            print("Unable to read TDR file", tdrFilename)
+            print(errorlog)
+            return False
+    return True        
     
 
 
