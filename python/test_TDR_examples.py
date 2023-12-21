@@ -5,7 +5,7 @@ from pyDICOS import Section
 from pyDICOS import TDR
 from pyDICOS import CT
 from pyDICOS import Folder
-from pyDICOS import DcsString, DcsLongString
+from pyDICOS import DcsString, DcsLongString, DcsShortString
 from pyDICOS import Array1DDcsLongString
 from pyDICOS import CustomArray1DDcsLongString
 from pyDICOS import DcsDate
@@ -19,7 +19,7 @@ from pyDICOS import Volume
 from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
 from pyDICOS import DicosFileListing
-from pyDICOS import DcsLongText
+from pyDICOS import DcsLongText, DcsShortText
 from pyDICOS import DcsDateTime
 from pyDICOS import Point3Dfloat
 from pyDICOS import Bitmap
@@ -330,8 +330,16 @@ def CreateCTAndLinkItToTDR():
     ct.GenerateScanInstanceUID()
     ct.GenerateSeriesInstanceUID()
     bRes = bRes and ct.SetImageAcquisitionDateAndTime(strDate, strTime)
-    ct.SetBurnedInAnnotation(False);                    
+    ct.SetBurnedInAnnotation(False);  
 
+    bRes = bRes and ct.SetPhotometricInterpretation(CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    bRes = bRes and ct.SetImageType(CT.OOI_IMAGE_CHARACTERISTICS.enumPhotoelectric)
+    bRes = bRes and ct.SetImageAcquisitionDuration(5000)
+    bRes = bRes and ct.SetContentDateAndTime(strDate, strTime)
+    bRes = bRes and ct.SetOOIIDAssigningAuthority(DcsLongString("OOI ID Assigning Authority"))
+    bRes = bRes and ct.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
+    bRes = bRes and ct.SetOOIType(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage)
+    bRes = bRes and ct.SetScanID(DcsShortString("Scan ID"))
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
