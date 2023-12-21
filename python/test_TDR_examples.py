@@ -314,11 +314,22 @@ def CreateTDRWithMultiplePTOS():
             return False
     return True        
     
+def CreateCTAndLinkItToTDR():
+    bRes = True
+    ct = CT()
+    tdr = TDR()
+    strDate = DcsDate(DcsDate.Today())
+    strTime = DcsTime(DcsTime.Now())
+    vecRowOrientation = Vector3Dfloat()
+    vecColumnOrientation = Vector3Dfloat()
+    nPTOIdentifier1 = 0
+    nPTOIdentifier2 = 1
 
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
     CreateTDRForBaggageSimple()
     CreateTDRWithMultiplePTOS()
+    CreateCTAndLinkItToTDR()
 if __name__ == "__main__":
     main()
