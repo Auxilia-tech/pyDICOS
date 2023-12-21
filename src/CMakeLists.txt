@@ -17,7 +17,8 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     Image2D/*.cc
     Bitmap/*.cc
     DcsGUID/*.cc
-    SopClassUID/*.cc)
+    SopClassUID/*.cc
+    GeneralSeriesModule/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 

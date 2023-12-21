@@ -493,5 +493,8 @@ void export_CT(py::module &m)
         .def("SetOOIIDAssigningAuthority", &IODCommon::SetOOIIDAssigningAuthority, py::arg("strAssigningAuthority"))
         .def("GetOOIIDAssigningAuthority", &IODCommon::GetOOIIDAssigningAuthority)
         .def("SetScanID", &IODCommon::SetScanID, py::arg("strID"))
-        .def("GetScanID", &IODCommon::GetScanID);
+        .def("GetScanID", &IODCommon::GetScanID)
+        .def("SetSeriesDateAndTime", &IODCommon::SetSeriesDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
+        .def("SetDeviceCalibrationDateAndTime", &IODCommon::SetDeviceCalibrationDateAndTime, py::arg("strDate"), py::arg("strTime"));
 }

@@ -26,6 +26,7 @@ from pyDICOS import Bitmap
 from pyDICOS import DcsUniqueIdentifier
 from pyDICOS import DcsGUID
 from pyDICOS import Array1DPoint3Dfloat
+from pyDICOS import GeneralSeriesModule
 import pyDICOS
 
 import numpy as np
@@ -340,7 +341,33 @@ def CreateCTAndLinkItToTDR():
     bRes = bRes and ct.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
     bRes = bRes and ct.SetOOIType(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage)
     bRes = bRes and ct.SetScanID(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetSeriesDateAndTime(strDate, strTime)
+    bRes = bRes and ct.SetSeriesAcquisitionStatus(GeneralSeriesModule.ACQUISITION_STATUS.enumSuccessful)
+ 
+"""bRes = bRes and ct.SetDeviceCalibrationDateAndTime(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetDeviceSerialNumber(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetMachineAddress(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetMachineLocation(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetMachineID(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetDeviceManufacturer(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetDeviceManufacturerModelName(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetDeviceSoftwareVersion(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetScanID(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetSopInstanceCreationDateAndTime(DcsShortString("Scan ID"))
+    
 
+
+    bRes = bRes && ct.SetSeriesAcquisitionStatus(SDICOS::GeneralSeriesModule::enumSuccessful); //Acquisition was successfully captured
+    bRes = bRes && ct.SetDeviceCalibrationDateAndTime(strDate, strTime); //Date and time of device calibration
+    bRes = bRes && ct.SetDeviceSerialNumber("123456987");   //Device serial number
+    bRes = bRes && ct.SetMachineAddress("Machine Address"); //Machine address (Physical address)
+    bRes = bRes && ct.SetMachineLocation("Machine Location");//Machine location (Location on site)
+    bRes = bRes && ct.SetMachineID("Machine ID"); //Machine ID
+    bRes = bRes && ct.SetDeviceManufacturer("Device Manufacturer"); //Device manufacturer
+    bRes = bRes && ct.SetDeviceManufacturerModelName("Device Manufacturer Model Name"); //Model name
+    bRes = bRes && ct.SetDeviceSoftwareVersion("Device Software Version"); //Device's software version
+    bRes = bRes && ct.SetSopInstanceCreationDateAndTime(strDate, strTime); //Date and time of SOP instance creation
+"""
 def main():
     CreateNoThreatTDRForBaggageSimple()
     CreateTDRForBaggageSimple()
