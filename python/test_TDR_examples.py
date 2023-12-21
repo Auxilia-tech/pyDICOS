@@ -365,6 +365,14 @@ def CreateCTAndLinkItToTDR():
     vecColumnOrientation.Set(0,1,0)
 
     psection.SetPlaneOrientation(vecRowOrientation, vecColumnOrientation)
+
+    psection.GetPixelData().Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 500, 500, 500)
+    psection.GetPixelData().GetUnsigned16().Zero(0)
+
+    ptFirstFrameTopLeft = Point3Dfloat(-250,-250,-250)
+
+    psection.SetPositionInMM(ptFirstFrameTopLeft)
+    psection.SetSpacingInMM(float(1.0), float(1.0), float(1.0))
  
     
 
