@@ -496,5 +496,13 @@ void export_CT(py::module &m)
         .def("GetScanID", &IODCommon::GetScanID)
         .def("SetSeriesDateAndTime", &IODCommon::SetSeriesDateAndTime, py::arg("strDate"), py::arg("strTime"))
         .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
-        .def("SetDeviceCalibrationDateAndTime", &IODCommon::SetDeviceCalibrationDateAndTime, py::arg("strDate"), py::arg("strTime"));
+        .def("SetDeviceCalibrationDateAndTime", &IODCommon::SetDeviceCalibrationDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("SetSopInstanceCreationDateAndTime", &IODCommon::SetSopInstanceCreationDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("SetDeviceSerialNumber", &IODCommon::SetDeviceSerialNumber, py::arg("strSerialNumber"))
+        .def("SetMachineAddress", &IODCommon::SetMachineAddress, py::arg("strMachineAddress"))
+        .def("SetMachineLocation", &IODCommon::SetMachineLocation, py::arg("strMachineLocation"))
+        .def("SetMachineID", &IODCommon::SetMachineID, py::arg("strMachineID"))
+        .def("SetDeviceManufacturer", &IODCommon::SetDeviceManufacturer, py::arg("strManufacturer"))
+        .def("SetDeviceSoftwareVersion", &IODCommon::SetDeviceSoftwareVersion, py::arg("strSoftwareVersion"))
+        .def("SetDeviceManufacturerModelName", &IODCommon::SetDeviceManufacturerModelName, py::arg("strModelName"));
 }
