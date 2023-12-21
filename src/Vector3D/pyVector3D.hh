@@ -15,5 +15,6 @@ void export_VECTOR3D(py::module &m,  const std::string & typestr) {
         .def(py::init<const Point3D<T> &>())
         .def("__copy__", [](const Point3D<T> &self) { return Point3D<T>(self); })
         .def(py::self == py::self)
-        .def(py::self != py::self);
+        .def(py::self != py::self)
+        .def("Set", &Point3D<T>::Set, py::arg("cx"), py::arg("cy"), py::arg("cz"));
 }
