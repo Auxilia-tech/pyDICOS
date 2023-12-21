@@ -483,7 +483,15 @@ void export_CT(py::module &m)
 
         .def("SetOOIID", &IODCommon::SetOOIID, py::arg("strID"))
         .def("GetOOIID", &IODCommon::GetOOIID)
+        .def("SetOOIIDType", &IODCommon::SetOOIIDType, py::arg("nType"))
+        .def("GetOOIIDType", &IODCommon::GetOOIIDType)
+        .def("SetOOIType", &IODCommon::SetOOIType, py::arg("nType"))
+        .def("GetOOIType", &IODCommon::GetOOIType)
         .def("GenerateSopInstanceUID", &IODCommon::GenerateSopInstanceUID)
         .def("GenerateScanInstanceUID", &IODCommon::GenerateScanInstanceUID)
-        .def("GenerateSeriesInstanceUID", &IODCommon::GenerateSeriesInstanceUID);
+        .def("GenerateSeriesInstanceUID", &IODCommon::GenerateSeriesInstanceUID)
+        .def("SetOOIIDAssigningAuthority", &IODCommon::SetOOIIDAssigningAuthority, py::arg("strAssigningAuthority"))
+        .def("GetOOIIDAssigningAuthority", &IODCommon::GetOOIIDAssigningAuthority)
+        .def("SetScanID", &IODCommon::SetScanID, py::arg("strID"))
+        .def("GetScanID", &IODCommon::GetScanID);
 }

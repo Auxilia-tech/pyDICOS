@@ -177,6 +177,38 @@ void export_DCSSTRING(py::module &m)
         .def("__ne__", (bool (DcsLongText::*)(const DcsString &) const) &DcsLongText::operator!=)
         .def("__ne__", (bool (DcsLongText::*)(const DcsLongText &) const) &DcsLongText::operator!=);
 
+
+    py::class_<DcsShortText, DcsString>(m, "DcsShortText")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsShortText&>(), py::arg("dcsshorttext"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def("__assign__", (DcsShortText& (DcsShortText::*)(const DcsShortText&)) &DcsShortText::operator=)
+        .def("__eq__", (bool (DcsShortText::*)(const char*) const) &DcsShortText::operator==)
+        .def("__eq__", (bool (DcsShortText::*)(const wchar_t*) const) &DcsShortText::operator==)
+        .def("__eq__", (bool (DcsShortText::*)(const DcsShortText &) const) &DcsShortText::operator==)
+        .def("__ne__", (bool (DcsShortText::*)(const char*) const) &DcsShortText::operator!=)
+        .def("__ne__", (bool (DcsShortText::*)(const wchar_t*) const) &DcsShortText::operator!=)
+        .def("__ne__", (bool (DcsShortText::*)(const DcsShortText &) const) &DcsShortText::operator!=);
+
+
+       py::class_<DcsShortString, DcsString>(m, "DcsShortString")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsShortString&>(), py::arg("dcsshortstring"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def("__assign__", (DcsShortString& (DcsShortString::*)(const DcsShortString&)) &DcsShortString::operator=)
+        .def("__eq__", (bool (DcsShortString::*)(const char*) const) &DcsShortString::operator==)
+        .def("__eq__", (bool (DcsShortString::*)(const wchar_t*) const) &DcsShortString::operator==)
+        .def("__eq__", (bool (DcsShortString::*)(const DcsString &) const) &DcsShortString::operator==)
+        .def("__eq__", (bool (DcsShortString::*)(const DcsShortString &) const) &DcsShortString::operator==)
+        .def("__ne__", (bool (DcsShortString::*)(const char*) const) &DcsShortString::operator!=)
+        .def("__ne__", (bool (DcsShortString::*)(const wchar_t*) const) &DcsShortString::operator!=)
+        .def("__ne__", (bool (DcsShortString::*)(const DcsString &) const) &DcsShortString::operator!=)
+        .def("__ne__", (bool (DcsShortString::*)(const DcsShortString &) const) &DcsShortString::operator!=);
+
 }
 
 
