@@ -479,6 +479,11 @@ void export_CT(py::module &m)
                                   py::return_value_policy::reference_internal)
 
         .def("Begin", &CT::Begin)
-        .def("End", &CT::End);
+        .def("End", &CT::End)
 
+        .def("SetOOIID", &IODCommon::SetOOIID, py::arg("strID"))
+        .def("GetOOIID", &IODCommon::GetOOIID)
+        .def("GenerateSopInstanceUID", &IODCommon::GenerateSopInstanceUID)
+        .def("GenerateScanInstanceUID", &IODCommon::GenerateScanInstanceUID)
+        .def("GenerateSeriesInstanceUID", &IODCommon::GenerateSeriesInstanceUID);
 }
