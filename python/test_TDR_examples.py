@@ -352,6 +352,20 @@ def CreateCTAndLinkItToTDR():
     bRes = bRes and ct.SetDeviceManufacturerModelName(DcsLongString("Device Manufacturer Model Name"))
     bRes = bRes and ct.SetDeviceSoftwareVersion(DcsLongString("Device Software Version"))
     bRes = bRes and ct.SetSopInstanceCreationDateAndTime(strDate, strTime)
+
+    ct.SetNumberOfSections(1)
+    psection = ct.GetSectionByIndex(0)
+
+
+    psection.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum); 
+    psection.SetFocalSpotSizeInMM(10)
+    psection.SetKVP(7000); 
+ 
+    vecRowOrientation.Set(1,0,0)
+    vecColumnOrientation.Set(0,1,0)
+
+    psection.SetPlaneOrientation(vecRowOrientation, vecColumnOrientation)
+ 
     
 
 def main():
