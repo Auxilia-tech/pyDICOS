@@ -325,6 +325,13 @@ def CreateCTAndLinkItToTDR():
     nPTOIdentifier1 = 0
     nPTOIdentifier2 = 1
 
+    bRes = bRes and ct.SetOOIID(DcsLongString("10"))
+    ct.GenerateSopInstanceUID()
+    ct.GenerateScanInstanceUID()
+    ct.GenerateSeriesInstanceUID()
+    bRes = bRes and ct.SetImageAcquisitionDateAndTime(strDate, strTime)
+    ct.SetBurnedInAnnotation(False);                    
+
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
