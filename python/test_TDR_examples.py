@@ -402,6 +402,11 @@ def CreateCTAndLinkItToTDR():
         return 10
  
     bRes = True
+    
+    bRes = bRes and tdr.SetOOIID(ct.GetOOIID())                         
+    bRes = bRes and tdr.SetScanInstanceUID(ct.GetScanInstanceUID())
+    bRes = bRes and tdr.SetSeriesInstanceUID(ct.GetSeriesInstanceUID())
+ 
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
