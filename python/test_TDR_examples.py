@@ -416,7 +416,25 @@ def CreateCTAndLinkItToTDR():
 
     bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier1, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
     bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier2, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
+
+    bRes = bRes and tdr.AddPTOAssessment(nPTOIdentifier1, 
+                                        TDR.ASSESSMENT_FLAG.enumThreat, 
+                                        TDR.THREAT_CATEGORY.enumProhibitedItem, 
+                                        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+                                        DcsLongText("Weapon"), 
+                                        float(98.0 / 100.0))
+    
+    bRes = bRes and tdr.AddPTOAssessment(nPTOIdentifier2, 
+                                        TDR.ASSESSMENT_FLAG.enumNoThreat,  
+                                        TDR.THREAT_CATEGORY.enumAnomaly, 
+                                        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+                                        DcsLongText(""), 
+                                        float(-10))
  
+    bounds = Array1DPoint3Dfloat()
+    bounds.SetSize(2, False)
+    bounds[0].Set(-250, -250, -250)
+    bounds[1].Set(-200, -230, -50)
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
