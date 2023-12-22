@@ -447,5 +447,8 @@ void export_TDR(py::module &m)
         .def("GenerateSopInstanceUID", &IODCommon::GenerateSopInstanceUID)
         .def("SetFrameOfReferenceUID", &FrameOfReferenceUser::SetFrameOfReferenceUID, py::arg("strFrameOfReferenceUID"))
         .def("GetFrameOfReferenceUID", &FrameOfReferenceUser::GetFrameOfReferenceUID)
-        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID);
+        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID)
+        .def("SetBaggagePTOLocationDescription", &TDR::SetBaggagePTOLocationDescription, py::arg("PTOIdentifier"), py::arg("dsDescription"), py::arg("nRepresentation"))
+        .def("SetProcessingStartTime", &TDR::SetProcessingStartTime, py::arg("PTOIdentifier"), py::arg("startTime"))
+        .def("SetProcessingEndTime", &TDR::SetProcessingStartTime, py::arg("PTOIdentifier"), py::arg("endTime"));
 }
