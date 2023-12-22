@@ -504,5 +504,9 @@ void export_CT(py::module &m)
         .def("SetMachineID", &IODCommon::SetMachineID, py::arg("strMachineID"))
         .def("SetDeviceManufacturer", &IODCommon::SetDeviceManufacturer, py::arg("strManufacturer"))
         .def("SetDeviceSoftwareVersion", &IODCommon::SetDeviceSoftwareVersion, py::arg("strSoftwareVersion"))
-        .def("SetDeviceManufacturerModelName", &IODCommon::SetDeviceManufacturerModelName, py::arg("strModelName"));
+        .def("SetDeviceManufacturerModelName", &IODCommon::SetDeviceManufacturerModelName, py::arg("strModelName"))
+        .def("SetScanInstanceUID", &IODCommon::SetScanInstanceUID, py::arg("strScanUID"))
+        .def("GetScanInstanceUID", &IODCommon::GetScanInstanceUID)
+        .def("SetSeriesInstanceUID", &IODCommon::SetSeriesInstanceUID, py::arg("strUID"))
+        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID);
 }

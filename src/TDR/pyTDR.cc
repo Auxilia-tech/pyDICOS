@@ -439,5 +439,9 @@ void export_TDR(py::module &m)
         .def("SetOOIIDType", &TDR::SetOOIIDType, py::arg("nType"))
         .def("GetOOIIDType", &TDR::GetOOIIDType)
 
-        .def("SetThreatBoundingPolygon", &TDR::SetThreatBoundingPolygon, py::arg("PTOIdentifier"), py::arg("controlPoints"), py::arg("nRepresentation"));
+        .def("SetThreatBoundingPolygon", &TDR::SetThreatBoundingPolygon, py::arg("PTOIdentifier"), py::arg("controlPoints"), py::arg("nRepresentation"))
+        .def("SetScanInstanceUID", &IODCommon::SetScanInstanceUID, py::arg("strScanUID"))
+        .def("GetScanInstanceUID", &IODCommon::GetScanInstanceUID)
+        .def("SetSeriesInstanceUID", &IODCommon::SetSeriesInstanceUID, py::arg("strUID"))
+        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID);
 }
