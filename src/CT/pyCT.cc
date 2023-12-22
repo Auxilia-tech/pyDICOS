@@ -508,5 +508,7 @@ void export_CT(py::module &m)
         .def("SetScanInstanceUID", &IODCommon::SetScanInstanceUID, py::arg("strScanUID"))
         .def("GetScanInstanceUID", &IODCommon::GetScanInstanceUID)
         .def("SetSeriesInstanceUID", &IODCommon::SetSeriesInstanceUID, py::arg("strUID"))
-        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID);
+        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID)
+        .def("GetFrameOfReferenceUID", &FrameOfReferenceUser::GetFrameOfReferenceUID)
+        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID);
 }
