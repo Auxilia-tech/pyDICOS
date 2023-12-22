@@ -436,6 +436,35 @@ def CreateCTAndLinkItToTDR():
     bounds[0].Set(-250, -250, -250)
     bounds[1].Set(-200, -230, -50)
 
+    bRes = bRes and tdr.SetThreatBoundingPolygon(0, bounds, 0)
+
+    bounds[0].Set(-40, -40, -40)
+    bounds[1].Set(40, 40, 40)
+
+    bRes = bRes and tdr.SetThreatBoundingPolygon(1, bounds, 0)
+
+    ptBase = Point3Dfloat()
+    ptExtents = Point3Dfloat()
+ 
+    ptBase.Set(1, 2, 3)
+    ptExtents.Set(50, 20, 200)
+
+    bRes = bRes and tdr.SetThreatRegionOfInterest(nPTOIdentifier1, ptBase, ptExtents, Bitmap(), 0)
+    bRes = bRes and tdr.SetBaggagePTODetails(nPTOIdentifier1, 1000, 5000, 0)
+    bRes = bRes and tdr.SetBaggagePTOLocationDescription(nPTOIdentifier1, DcsShortText("Corner Object"), 0)
+
+    ptBase.Set(210, 210, 210)
+    ptExtents.Set(81, 81, 81)
+
+    bRes = bRes and tdr.SetThreatRegionOfInterest(nPTOIdentifier2, ptBase, ptExtents, Bitmap(), 0)
+    bRes = bRes and tdr.SetBaggagePTODetails(nPTOIdentifier2, 20, 2, 0)
+    bRes = bRes and tdr.SetBaggagePTOLocationDescription(nPTOIdentifier2, DcsShortText("Corner Object"), 0)
+
+    bRes = bRes and tdr.SetProcessingStartTime(nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
+    bRes = bRes and tdr.SetProcessingEndTime(nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
+    bRes = bRes and tdr.SetProcessingStartTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
+    bRes = bRes and tdr.SetProcessingEndTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
+
 def main():
     CreateNoThreatTDRForBaggageSimple()
     CreateTDRForBaggageSimple()
