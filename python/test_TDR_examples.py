@@ -356,7 +356,6 @@ def CreateCTAndLinkItToTDR():
     ct.SetNumberOfSections(1)
     psection = ct.GetSectionByIndex(0)
 
-
     psection.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum); 
     psection.SetFocalSpotSizeInMM(10)
     psection.SetKVP(7000); 
@@ -373,8 +372,36 @@ def CreateCTAndLinkItToTDR():
 
     psection.SetPositionInMM(ptFirstFrameTopLeft)
     psection.SetSpacingInMM(float(1.0), float(1.0), float(1.0))
+
+    ptCenter = Point3DS_UINT16(250,250,250)
+
+    nWhite = 0xFFFF
+    vVolume = psection.GetPixelData().GetUnsigned16()
+    ptPos = Point3DS_UINT16()
+
+    for ptPos.z in range(200):
+        pSlice = vVolume.GetSlice(ptPos.z)
+        for ptPos.y in range(20):
+            for ptPos.x in range(50):
+                 pSlice.Set(ptPos.y, ptPos.x , nWhite)
+
+    for ptPos.z in range(ptCenter.z - 40, ptCenter.z + 40):
+        pSlice = vVolume.GetSlice(ptPos.z)
+        for ptPos.y in range(ptCenter.y - 40, ptCenter.y + 40):
+            for ptPos.x in range(ptCenter.x - 40, ptCenter.x + 40):
+                pSlice.Set(ptPos.y, ptPos.x , nWhite)
+
+    for ptPos.z in range(ptCenter.z - 5, ptCenter.z + 5):
+        pSlice = vVolume.GetSlice(ptPos.z)
+        for ptPos.y in range(ptCenter.y - 5, ptCenter.y + 5):
+            for ptPos.x in range(ptCenter.x + 41, ptCenter.x + 51):
+                pSlice.Set(ptPos.y, ptPos.x , nWhite)
+
+    if (bRes == False):
+        print("Error setting CT values")
+        return 10
  
-    
+    bRes = True
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
