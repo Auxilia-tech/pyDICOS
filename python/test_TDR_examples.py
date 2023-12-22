@@ -402,10 +402,20 @@ def CreateCTAndLinkItToTDR():
         return 10
  
     bRes = True
-    
+
     bRes = bRes and tdr.SetOOIID(ct.GetOOIID())                         
     bRes = bRes and tdr.SetScanInstanceUID(ct.GetScanInstanceUID())
     bRes = bRes and tdr.SetSeriesInstanceUID(ct.GetSeriesInstanceUID())
+
+    tdr.GenerateSopInstanceUID()
+
+    bRes = bRes and tdr.SetFrameOfReferenceUID(ct.GetFrameOfReferenceUID())
+
+    bRes = bRes and tdr.AddPotentialThreatObject(nPTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage)
+    bRes = bRes and tdr.AddPotentialThreatObject(nPTOIdentifier2, TDR.ThreatType.enumThreatTypeBaggage)
+
+    bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier1, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
+    bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier2, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
  
 
 def main():

@@ -443,5 +443,9 @@ void export_TDR(py::module &m)
         .def("SetScanInstanceUID", &IODCommon::SetScanInstanceUID, py::arg("strScanUID"))
         .def("GetScanInstanceUID", &IODCommon::GetScanInstanceUID)
         .def("SetSeriesInstanceUID", &IODCommon::SetSeriesInstanceUID, py::arg("strUID"))
-        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID);
+        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID)
+        .def("GenerateSopInstanceUID", &IODCommon::GenerateSopInstanceUID)
+        .def("SetFrameOfReferenceUID", &FrameOfReferenceUser::SetFrameOfReferenceUID, py::arg("strFrameOfReferenceUID"))
+        .def("GetFrameOfReferenceUID", &FrameOfReferenceUser::GetFrameOfReferenceUID)
+        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID);
 }
