@@ -6,7 +6,6 @@ using namespace SDICOS;
 
 void export_GeneralSeriesModule(py::module &m)
 {
-
     py::enum_<GeneralSeriesModule::MODALITY>(m, "MODALITY")
         .value("enumUnknownModality", GeneralSeriesModule::MODALITY::enumUnknownModality)
         .value("enumCT", GeneralSeriesModule::MODALITY::enumCT)

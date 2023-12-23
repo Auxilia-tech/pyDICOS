@@ -465,6 +465,37 @@ def CreateCTAndLinkItToTDR():
     bRes = bRes and tdr.SetProcessingStartTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
     bRes = bRes and tdr.SetProcessingEndTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
 
+    bRes = bRes and tdr.SetInstanceNumber(0)
+    bRes = tdr.SetContentDateAndTime(strDate, strTime)
+    bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
+    bRes = bRes and tdr.SetTDRTypeATR(DcsLongString("ATR Manufacturer"), DcsLongString("ATR Version"))
+    bRes = bRes and tdr.SetImageScaleRepresentation(1) 
+
+
+    bRes = bRes and tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumAlarm)
+    bRes = bRes and tdr.SetAlarmDecisionDateTime(strDate, strTime)
+    bRes = bRes and tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
+    bRes = bRes and tdr.SetTotalProcessingTimeInMS(50)
+    bRes = bRes and tdr.SetOOIIDAssigningAuthority(ct.GetOOIIDAssigningAuthority())
+    bRes = bRes and tdr.SetOOIIDType(ct.GetOOIIDType())
+    bRes = bRes and tdr.SetOOIType(ct.GetOOIType())
+    bRes = bRes and tdr.SetScanID(ct.GetScanID())
+    bRes = bRes and tdr.SetScanStartDateAndTime(ct.GetScanStartDate(), ct.GetScanStartTime())
+    bRes = bRes and tdr.SetScanType(ct.GetScanType())
+    bRes = bRes and tdr.SetSeriesDateAndTime(ct.GetSeriesDate(), ct.GetSeriesTime())
+    bRes = bRes and tdr.SetSeriesAcquisitionStatus(ct.GetSeriesAcquisitionStatus())
+    bRes = bRes and tdr.SetDeviceCalibrationDateAndTime(strDate, strTime)
+    bRes = bRes and tdr.SetDeviceSerialNumber(DcsLongString("TDR Serial Number"))
+    bRes = bRes and tdr.SetMachineAddress(DcsShortText("TDR machine address"))
+    bRes = bRes and tdr.SetMachineLocation(DcsLongString("TDR machine location"))
+    bRes = bRes and tdr.SetMachineID(DcsShortString("TDR machine ID"))
+    bRes = bRes and tdr.SetDeviceManufacturer(DcsLongString("TDR device manufacturer"))
+    bRes = bRes and tdr.SetDeviceManufacturerModelName(DcsLongString("TDR model name"))
+    bRes = bRes and tdr.SetDeviceSoftwareVersion(DcsLongString("TDR software version"))
+    bRes = bRes and tdr.SetSopInstanceCreationDateAndTime(strDate, strTime)
+
+ 
+
 def main():
     CreateNoThreatTDRForBaggageSimple()
     CreateTDRForBaggageSimple()
