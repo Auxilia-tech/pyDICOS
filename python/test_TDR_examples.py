@@ -330,10 +330,12 @@ def CreateCTAndLinkItToTDR():
     ct.GenerateSopInstanceUID()
     ct.GenerateScanInstanceUID()
     ct.GenerateSeriesInstanceUID()
+
     bRes = bRes and ct.SetImageAcquisitionDateAndTime(strDate, strTime)
     ct.SetBurnedInAnnotation(False);  
 
     bRes = bRes and ct.SetPhotometricInterpretation(CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+
     bRes = bRes and ct.SetImageType(CT.OOI_IMAGE_CHARACTERISTICS.enumPhotoelectric)
     bRes = bRes and ct.SetImageAcquisitionDuration(5000)
     bRes = bRes and ct.SetContentDateAndTime(strDate, strTime)
@@ -341,12 +343,14 @@ def CreateCTAndLinkItToTDR():
     bRes = bRes and ct.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
     bRes = bRes and ct.SetOOIType(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage)
     bRes = bRes and ct.SetScanID(DcsShortString("Scan ID"))
+    bRes = bRes and ct.SetScanStartDateAndTime(strDate, strTime)
+    bRes = bRes and ct.SetScanType(CT.SCAN_TYPE.enumOperational)
     bRes = bRes and ct.SetSeriesDateAndTime(strDate, strTime)
     bRes = bRes and ct.SetSeriesAcquisitionStatus(GeneralSeriesModule.ACQUISITION_STATUS.enumSuccessful)
     bRes = bRes and ct.SetDeviceCalibrationDateAndTime(strDate, strTime)
-    bRes = bRes and ct.SetDeviceSerialNumber(DcsLongString("123456987 ID"))
-    bRes = bRes and ct.SetMachineAddress(DcsShortText("Scan ID"))
-    bRes = bRes and ct.SetMachineLocation(DcsLongString("Machine Address"))
+    bRes = bRes and ct.SetDeviceSerialNumber(DcsLongString("123456987"))
+    bRes = bRes and ct.SetMachineAddress(DcsShortText("Machine Address"))
+    bRes = bRes and ct.SetMachineLocation(DcsLongString("Machine Location"))
     bRes = bRes and ct.SetMachineID(DcsShortString("Machine ID"))
     bRes = bRes and ct.SetDeviceManufacturer(DcsLongString("Device Manufacturer"))
     bRes = bRes and ct.SetDeviceManufacturerModelName(DcsLongString("Device Manufacturer Model Name"))
@@ -438,8 +442,8 @@ def CreateCTAndLinkItToTDR():
 
     bRes = bRes and tdr.SetThreatBoundingPolygon(0, bounds, 0)
 
-    bounds[0].Set(-40, -40, -40)
-    bounds[1].Set(40, 40, 40)
+    bounds[0].Set(float(-40), float(-40), float(-40))
+    bounds[1].Set(float(40), float(40), float(40))
 
     bRes = bRes and tdr.SetThreatBoundingPolygon(1, bounds, 0)
 
@@ -469,8 +473,8 @@ def CreateCTAndLinkItToTDR():
     bRes = tdr.SetContentDateAndTime(strDate, strTime)
     bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
     bRes = bRes and tdr.SetTDRTypeATR(DcsLongString("ATR Manufacturer"), DcsLongString("ATR Version"))
+    
     bRes = bRes and tdr.SetImageScaleRepresentation(1) 
-
 
     bRes = bRes and tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumAlarm)
     bRes = bRes and tdr.SetAlarmDecisionDateTime(strDate, strTime)
@@ -494,7 +498,34 @@ def CreateCTAndLinkItToTDR():
     bRes = bRes and tdr.SetDeviceSoftwareVersion(DcsLongString("TDR software version"))
     bRes = bRes and tdr.SetSopInstanceCreationDateAndTime(strDate, strTime)
 
+    if bRes == False:
+       print("Error setting TDR values")
+
+    folder = Folder("CTwithTDR")
+    filenameCT = Filename(folder,"CT.dcs")
+    filenameTDR = Filename(folder,"TDR.dcs")
+
+    errorlogCT = ErrorLog()
+    errorlogTDR = ErrorLog()
  
+    if ct.Write(filenameCT, errorlogCT) != True :
+        print("Failed writing CT (CTwithTDR): ", filenameCT)
+        print(errorlogCT.GetErrorLog().Get())
+        return 1
+    else:
+        print("CT write completed (CTwithTDR)")
+ 
+
+    if tdr.Write(filenameTDR, errorlogTDR,  CT.TRANSFER_SYNTAX.enumLittleEndianExplicit) != True:
+        print("Failed writing TDR (CTwithTDR)")
+        print(errorlogTDR.GetErrorLog().Get())
+        return 2
+
+    else:
+        print("TDR write completed (CTwithTDR)")
+ 
+    if bRes == 0:
+        return 3
 
 def main():
     CreateNoThreatTDRForBaggageSimple()
