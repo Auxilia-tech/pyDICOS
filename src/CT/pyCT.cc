@@ -126,6 +126,13 @@ void export_CT(py::module &m)
         .value("ITERATION_END", ITERATION_DIRECTION::ITERATION_END)
         .export_values();
 
+    py::enum_<GeneralScanModule::SCAN_TYPE>(m, "SCAN_TYPE")
+        .value("enumUnknownScanType", GeneralScanModule::enumUnknownScanType)
+        .value("enumOperational", GeneralScanModule::enumOperational)
+        .value("enumNonOperational", GeneralScanModule::enumNonOperational)
+        .export_values();
+
+
     py::class_<CT::Iterator>(m, "Iterator")
         .def_property_readonly_static("ITERATION_DIRECTION", [m](py::object) {
             return m.attr("ITERATION_DIRECTION");
@@ -191,6 +198,9 @@ void export_CT(py::module &m)
         .def_property_readonly_static("TRANSFER_SYNTAX", [m](py::object) {
             return m.attr("TRANSFER_SYNTAX");
         })     
+        .def_property_readonly_static("SCAN_TYPE", [m](py::object) {
+            return m.attr("SCAN_TYPE");
+        })   
         .def("__copy__", [](const CT &self) { return CT(self); })
         .def("__deepcopy__", [](const CT &self, py::dict) { return CT(self); })
         .def(py::self == py::self)
@@ -510,5 +520,15 @@ void export_CT(py::module &m)
         .def("SetSeriesInstanceUID", &IODCommon::SetSeriesInstanceUID, py::arg("strUID"))
         .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID)
         .def("GetFrameOfReferenceUID", &FrameOfReferenceUser::GetFrameOfReferenceUID)
-        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID);
+        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID)
+        .def("SetScanStartDateAndTime", &IODCommon::SetScanStartDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("GetScanStartDate", &IODCommon::GetScanStartDate)
+        .def("GetScanStartTime", &IODCommon::GetScanStartTime)
+        .def("SetScanType", &IODCommon::SetScanType, py::arg("nType"))
+        .def("GetScanType", &IODCommon::GetScanType)
+        .def("SetSeriesDateAndTime", &IODCommon::SetSeriesDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("GetSeriesDate", &IODCommon::GetSeriesDate)
+        .def("GetSeriesTime", &IODCommon::GetSeriesTime)
+        .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
+        .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus);
 }
