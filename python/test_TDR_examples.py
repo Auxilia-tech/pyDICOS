@@ -515,12 +515,10 @@ def CreateCTAndLinkItToTDR():
     else:
         print("CT write completed (CTwithTDR)")
  
-
     if tdr.Write(filenameTDR, errorlogTDR,  CT.TRANSFER_SYNTAX.enumLittleEndianExplicit) != True:
         print("Failed writing TDR (CTwithTDR)")
         print(errorlogTDR.GetErrorLog().Get())
         return 2
-
     else:
         print("TDR write completed (CTwithTDR)")
  
