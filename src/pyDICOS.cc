@@ -41,8 +41,12 @@ PYBIND11_MODULE(pyDICOS, m)
    export_Point3D<float>(m, "float");
    export_Point3D<S_UINT16>(m, "S_UINT16");
 
+   export_VECTOR3D<S_UINT16>(m, "S_UINT16");
    export_VECTOR3D<float>(m, "float");
+
    export_Volume(m);
+
+   export_Array3DLarge<float>(m, "float");
    export_Array3DLarge<S_UINT16>(m, "S_UINT16");
    
    export_DX(m);

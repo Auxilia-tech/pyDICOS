@@ -1,11 +1,11 @@
 from distutils.core import setup
 
 setup(
-    name='pydicos',
-    packages=['pydicos'],
+    name='pyDICOS',
+    packages=['pyDICOS'],
     version='0.1.0',
     license='MIT',
-    description='pydicos is a python package for working with DICOS files.',
+    description='pyDICOS is a python package for working with DICOS files.',
     author='Louis Combaldieu',
     author_email='louis.combaldieu@auxilia-tech.com',
     url='https://github.com/Auxilia-tech/pydicos',

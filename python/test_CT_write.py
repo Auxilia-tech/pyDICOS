@@ -1,22 +1,16 @@
 from pyDICOS import Filename
 from pyDICOS import ErrorLog
-from pyDICOS import CustomMemoryManager
 from pyDICOS import Section
 from pyDICOS import CT
 from pyDICOS import Folder
-from pyDICOS import DcsString, DcsLongString
-from pyDICOS import MemoryBuffer
-from pyDICOS import Array1DS_UINT16
-from pyDICOS import Array1DArray2DS_UINT16
-from pyDICOS import Array2DS_UINT16
+from pyDICOS import DcsLongString
 from pyDICOS import Vector3Dfloat
 from pyDICOS import Volume
 from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
-from pyDICOS import DicosFileListing
 
 import numpy as np
-import ctypes
+
 
 def GenerateCTSection(ct):
     ct.SetNumberOfSections(1)
@@ -107,8 +101,6 @@ userData = np.zeros(volume.GetWidth() * volume.GetHeight(), dtype=np.uint16)
 # Fill userData array
 for i in range(volume.GetSliceSize()):
     userData[i] = i & 0xFFFF
-
-
 
 for i in range(volume.GetDepth()):
      xyPlane = sectionData[i]
