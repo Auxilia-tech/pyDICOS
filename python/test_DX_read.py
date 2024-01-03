@@ -1,15 +1,7 @@
 from pyDICOS import Filename
-from pyDICOS import Folder
 from pyDICOS import ErrorLog
 from pyDICOS import DX
-from pyDICOS import CT
-from pyDICOS import Vector3Dfloat
-from pyDICOS import Point3Dfloat
-from pyDICOS import Array2DS_UINT16
-from pyDICOS import Array1DS_UINT16
-from pyDICOS import Array1DS_INT16
-from pyDICOS import Volume
-from pyDICOS import DcsLongString
+
 import numpy as np
 
 class DXLoader:
