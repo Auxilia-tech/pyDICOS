@@ -1,46 +1,22 @@
-#ifndef MY_HEADER_FILE_H
-#define MY_HEADER_FILE_H
-
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/operators.h>
-#include <map>
-
-#include "SDICOS/DICOS.h"
-#include "SDICOS/UserCT.h"
-#include "SDICOS/ModuleCT.h"
-#include "SDICOS/Array1D.h"
-#include "SDICOS/Point3D.h"
-#include "SDICOS/TemplateCommon.h"
-#include "SDICOS/TemplateBase.h"
-#include "SDICOS/ClientManager.h"
-#include "SDICOS/MemoryPolicy.h"
-#include "SDICOS/AcquisitionContextUser.h"
-#include "SDICOS/ImageBaseUser.h"
-#include "SDICOS/XRayEquipmentUser.h"
-#include "SDICOS/FrameOfReferenceUser.h"
+#include "../headers.hh"
 
 
-namespace py = pybind11;
-
+ #include "SDICOS/UserCT.h"
+ #include "SDICOS/ModuleCT.h"
+ #include "SDICOS/Array1D.h"
+ #include "SDICOS/Point3D.h"
+ #include "SDICOS/TemplateCommon.h"
+ #include "SDICOS/TemplateBase.h"
+ #include "SDICOS/ClientManager.h"
+ #include "SDICOS/MemoryPolicy.h"
+ #include "SDICOS/AcquisitionContextUser.h"
+ #include "SDICOS/ImageBaseUser.h"
+ #include "SDICOS/XRayEquipmentUser.h"
+ #include "SDICOS/FrameOfReferenceUser.h"
+ 
 using namespace SDICOS;
 
 PYBIND11_MAKE_OPAQUE(std::vector<CTModule*>);
-
-class PySection : public Section {
-public:
-    using Section::Section;
-    void FreeMemory() override { PYBIND11_OVERRIDE(void,  Section, FreeMemory); }
-};
-
-float GetFocalSpotSizeFloat(const Section &self) {
-    return self.GetFocalSpotSize();
-}
-
-void GetFocalSpotSizePair(const Section &self, float &fSmallSize, float &fLargeSize) {
-    self.GetFocalSpotSize(fSmallSize, fLargeSize);
-}
-
 
 class PyCT : public CT {
 public:
@@ -72,52 +48,11 @@ public:
 
     DcsUniqueIdentifier GetSopClassUID() const
               override {PYBIND11_OVERRIDE(DcsUniqueIdentifier, CT, GetSopClassUID);}
-    
 };
 
 
-void export_ct(py::module &m)
+void export_CT(py::module &m)
 {
-    py::class_<SectionCommon>(m, "SectionCommon");
-    py::class_<PySection, Section, SectionCommon>(m, "Section")
-        .def(py::init<>())
-        .def(py::init<const S_UINT32>(), py::arg("sectionId"))
-        .def("__copy__", [](const Section &self) { return Section(self); })
-        .def("__deepcopy__", [](const Section &self, py::dict) { return Section(self); })
-        .def(py::self == py::self)
-        .def(py::self != py::self)
-        .def("SetImagePixelPresentation", &Section::SetImagePixelPresentation)
-        .def("SetImagePixelPresentation", &Section::SetImagePixelPresentation, py::arg("nPresentation"))
-        .def("GetImagePixelPresentation", &Section::GetImagePixelPresentation)
-        .def("SetImageVolumeBasedCalculationTechnique", &Section::SetImageVolumeBasedCalculationTechnique, py::arg("nTechnique"))
-        .def("GetImageVolumeBasedCalculationTechnique", &Section::GetImageVolumeBasedCalculationTechnique)
-        .def("SetImageVolumetricProperties", &Section::SetImageVolumetricProperties,  py::arg("nProperties"))
-        .def("GetImageVolumetricProperties", &Section::GetImageVolumetricProperties)
-        .def("SetRescaleSlope", &Section::SetRescaleSlope,  py::arg("fSlope"))
-        .def("GetRescaleSlope", &Section::GetRescaleSlope)
-        .def("SetRescaleIntercept", &Section::SetRescaleIntercept,  py::arg("fIntercept"))
-        .def("GetRescaleIntercept", &Section::GetRescaleIntercept)
-        .def("SetRescaleType", &Section::SetRescaleType, py::arg("strType"))
-        .def("GetRescaleType", &Section::GetRescaleType, py::return_value_policy::reference)
-        .def("SetFilterMaterial", &Section::SetFilterMaterial,  py::arg("nFilterMaterial"))
-        .def("GetFilterMaterial", &Section::GetFilterMaterial)
-        .def("SetFilterMaterials", &Section::SetFilterMaterials,  py::arg("vFilterMaterial"))
-        .def("GetFilterMaterials", &Section::GetFilterMaterials)
-        .def("SetFilterType", &Section::SetFilterType,  py::arg("nFilterType"))
-        .def("GetFilterType", &Section::GetFilterType)
-        .def("SetFocalSpotSizeInMM", &Section::SetFocalSpotSizeInMM,  py::arg("fNominalDimension"))
-        .def("GetFocalSpotSize", &GetFocalSpotSizeFloat, "Get the focal spot size")
-        .def("HasOneFocalSpotSize", &Section::HasOneFocalSpotSize)
-        .def("SetFocalSpotSizesInMM", &Section::SetFocalSpotSizesInMM, py::arg("fSmallSize"), py::arg("fLargeSize"))
-        .def("GetFocalSpotSize", &GetFocalSpotSizePair, "Get the focal spot size as a pair of small and large sizes")
-        .def("GetFocalSpotSmallSize", &Section::GetFocalSpotSmallSize)
-        .def("GetFocalSpotLargeSize", &Section::GetFocalSpotLargeSize)
-        .def("HasTwoFocalSpotSizes", &Section::HasTwoFocalSpotSizes)
-        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
-        .def("GetKVP", &Section::GetKVP)
-        .def("ApplyRescaleToImage", &Section::ApplyRescaleToImage)
-        .def("FreeMemory", &PySection::FreeMemory);
-
     py::enum_<ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE>(m, "OBJECT_OF_INSPECTION_TYPE")
         .value("enumUnknownObjectOfInspectionType", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumUnknownObjectOfInspectionType)
         .value("enumTypeBioSample", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBioSample)
@@ -125,7 +60,8 @@ void export_ct(py::module &m)
         .value("enumTypeBaggage", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeBaggage)
         .value("enumTypeAnimal", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeAnimal)
         .value("enumTypeOther", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypeOther)
-        .value("enumTypePerson", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypePerson);
+        .value("enumTypePerson", ObjectOfInspectionModule::OBJECT_OF_INSPECTION_TYPE::enumTypePerson)
+        .export_values();
 
     py::enum_<CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS>(m, "OOI_IMAGE_CHARACTERISTICS")
         .value("enumUnknownOOIImageCharacteristics", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumUnknownOOIImageCharacteristics)
@@ -139,12 +75,14 @@ void export_ct(py::module &m)
         .value("enumDensity", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumDensity)
         .value("enumIntensity", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumIntensity)
         .value("enumMu", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumMu)
-        .value("enumMultiEnergy", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumMultiEnergy);
+        .value("enumMultiEnergy", CTTypes::CTImage::OOI_IMAGE_CHARACTERISTICS::enumMultiEnergy)
+        .export_values();
 
     py::enum_<CTTypes::CTImage::IMAGE_FLAVOR>(m, "IMAGE_FLAVOR")
         .value("enumUnknownImageFlavor", CTTypes::CTImage::IMAGE_FLAVOR::enumUnknownImageFlavor)
         .value("enumProjection", CTTypes::CTImage::IMAGE_FLAVOR::enumProjection)
-        .value("enumVolume", CTTypes::CTImage::IMAGE_FLAVOR::enumVolume);  
+        .value("enumVolume", CTTypes::CTImage::IMAGE_FLAVOR::enumVolume)
+        .export_values();
 
     py::enum_<ImagePixelMacro::PHOTOMETRIC_INTERPRETATION>(m, "PHOTOMETRIC_INTERPRETATION")
         .value("enumUnknownPhotometricInterpretation", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumUnknownPhotometricInterpretation)
@@ -157,16 +95,68 @@ void export_ct(py::module &m)
         .value("enumYBR_Partial_422", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_Partial_422)
         .value("enumYBR_Partial_420", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_Partial_420)
         .value("enumYBR_ICT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_ICT)
-        .value("enumYBR_RCT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_RCT);  
+        .value("enumYBR_RCT", ImagePixelMacro::PHOTOMETRIC_INTERPRETATION::enumYBR_RCT)
+        .export_values();
 
     py::enum_<DicosFile::TRANSFER_SYNTAX>(m, "TRANSFER_SYNTAX")
         .value("enumLittleEndianExplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicit)
         .value("enumLittleEndianExplicitExtended", DicosFile::TRANSFER_SYNTAX::enumLittleEndianExplicitExtended)
         .value("enumLittleEndianImplicit", DicosFile::TRANSFER_SYNTAX::enumLittleEndianImplicit)
         .value("enumLosslessJPEG", DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
-        .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE);
+        .value("enumLosslessRLE", DicosFile::TRANSFER_SYNTAX::enumLosslessRLE)
+        .export_values();
+
+    py::enum_<MemoryPolicy::VOLUME_MEMORY_POLICY>(m, "VOLUME_MEMORY_POLICY")
+        .value("DOES_NOT_OWN_SLICES", MemoryPolicy::VOLUME_MEMORY_POLICY::DOES_NOT_OWN_SLICES)
+        .value("OWNS_SLICES", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_SLICES)
+        .value("DOES_NOT_OWN_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::DOES_NOT_OWN_DATA)
+        .value("OWNS_DATA", MemoryPolicy::VOLUME_MEMORY_POLICY::OWNS_DATA)
+        .value("MEMORY_POLICY_UNKNOWN", MemoryPolicy::VOLUME_MEMORY_POLICY::MEMORY_POLICY_UNKNOWN)
+        .export_values();
+    
+    py::enum_<Array3DLargeBase::ADD_SLICE_FAILURE_POLICY>(m, "ADD_SLICE_FAILURE_POLICY")
+        .value("EARLY_OUT", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::EARLY_OUT)
+        .value("SKIP_AND_CONTINUE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::SKIP_AND_CONTINUE)
+        .value("ADD_DEBUG_SLICE", Array3DLargeBase::ADD_SLICE_FAILURE_POLICY::ADD_DEBUG_SLICE)
+        .export_values();
+
+    py::enum_<ITERATION_DIRECTION>(m, "ITERATION_DIRECTION")
+        .value("ITERATION_DIRECTION_FORWARD", ITERATION_DIRECTION::ITERATION_DIRECTION_FORWARD)
+        .value("ITERATION_DIRECTION_BACKWARD", ITERATION_DIRECTION::ITERATION_DIRECTION_BACKWARD)
+        .value("ITERATION_END", ITERATION_DIRECTION::ITERATION_END)
+        .export_values();
+
+    py::enum_<GeneralScanModule::SCAN_TYPE>(m, "SCAN_TYPE")
+        .value("enumUnknownScanType", GeneralScanModule::enumUnknownScanType)
+        .value("enumOperational", GeneralScanModule::enumOperational)
+        .value("enumNonOperational", GeneralScanModule::enumNonOperational)
+        .export_values();
 
 
+    py::class_<CT::Iterator>(m, "Iterator")
+        .def_property_readonly_static("ITERATION_DIRECTION", [m](py::object) {
+            return m.attr("ITERATION_DIRECTION");
+        })  
+        .def(py::init<>())
+        .def(py::init<const CT&, const ITERATION_DIRECTION>(), 
+                      py::arg("ct"), 
+                      py::arg("dir") = ITERATION_DIRECTION::ITERATION_DIRECTION_FORWARD)
+        .def("__copy__", [](const CT::Iterator &self) { return CT::Iterator(self); })
+        .def("__deepcopy__", [](const CT::Iterator &self, py::dict) { return CT::Iterator(self); })
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        .def("__next__", (CT::Iterator& (CT::Iterator::*)()) &CT::Iterator::operator++, py::return_value_policy::reference_internal)
+        .def("deref", (const Section* (CT::Iterator::*)() const) &CT::Iterator::operator*, py::return_value_policy::reference_internal)
+        .def("deref", (Section* (CT::Iterator::*)()) &CT::Iterator::operator*, py::return_value_policy::reference_internal)
+        .def("GetIndex", &CT::Iterator::GetIndex);
+
+    py::class_<IODCommon>(m, "IODCommon");
+    py::class_<ScanCommon>(m, "ScanCommon");
+    py::class_<AcquisitionContextUser>(m, "AcquisitionContextUser");
+    py::class_<XRayEquipmentUser>(m, "XRayEquipmentUser");
+    py::class_<ImageCommonUser>(m, "ImageCommonUser");
+    py::class_<FrameOfReferenceUser>(m, "FrameOfReferenceUser");
+    py::class_<CT>(m, "SDICOS::CT");
     py::class_<PyCT, CT, IODCommon, 
                          ScanCommon, 
                          AcquisitionContextUser, 
@@ -183,6 +173,34 @@ void export_ct(py::module &m)
                        py::arg("nFlavor") = CTTypes::CTImage::enumVolume, 
                        py::arg("nPI") = ImagePixelMacro::enumMonochrome2)
 
+        .def_property_readonly_static("OBJECT_OF_INSPECTION_TYPE", [m](py::object) {
+            return m.attr("OBJECT_OF_INSPECTION_TYPE");
+        })  
+
+        .def_property_readonly_static("OOI_IMAGE_CHARACTERISTICS", [m](py::object) {
+            return m.attr("OOI_IMAGE_CHARACTERISTICS");
+        }) 
+
+        .def_property_readonly_static("IMAGE_FLAVOR", [m](py::object) {
+            return m.attr("IMAGE_FLAVOR");
+        }) 
+
+        .def_property_readonly_static("PHOTOMETRIC_INTERPRETATION", [m](py::object) {
+            return m.attr("PHOTOMETRIC_INTERPRETATION");
+        })   
+
+        .def_property_readonly_static("ADD_SLICE_FAILURE_POLICY", [m](py::object) {
+            return m.attr("ADD_SLICE_FAILURE_POLICY");
+        })  
+        .def_property_readonly_static("VOLUME_MEMORY_POLICY", [m](py::object) {
+            return m.attr("VOLUME_MEMORY_POLICY");
+        })        
+        .def_property_readonly_static("TRANSFER_SYNTAX", [m](py::object) {
+            return m.attr("TRANSFER_SYNTAX");
+        })     
+        .def_property_readonly_static("SCAN_TYPE", [m](py::object) {
+            return m.attr("SCAN_TYPE");
+        })   
         .def("__copy__", [](const CT &self) { return CT(self); })
         .def("__deepcopy__", [](const CT &self, py::dict) { return CT(self); })
         .def(py::self == py::self)
@@ -205,24 +223,21 @@ void export_ct(py::module &m)
                            py::arg("bMoveData"))
         .def("Read", py::overload_cast<const DicosFileListing::SopInstance&, 
                                              Array1D< std::pair<Filename, ErrorLog> >&, 
-                                             IMemoryManager*
-                                      >
+                                             IMemoryManager*>
                      (&PyCT::Read), 
                      py::arg("sopinstance"), 
                      py::arg("vErrorlogs"),
                      py::arg("pMemMgr") = S_NULL)
         .def("Read", py::overload_cast<const Filename&, 
                                        ErrorLog&, 
-                                       IMemoryManager*
-                                       >
+                                       IMemoryManager*>
                      (&PyCT::CT::Read),
                      py::arg("filename"), 
                      py::arg("errorlog"),
                      py::arg("pMemMgr") = S_NULL)
         .def("Read", py::overload_cast<MemoryFile&, 
                                        ErrorLog& , 
-                                       IMemoryManager*
-                                       >
+                                       IMemoryManager*>
                      (&PyCT::CT::Read),
                      py::arg("memfile"), 
                      py::arg("errorlog"),
@@ -230,30 +245,30 @@ void export_ct(py::module &m)
 
         .def("Write", py::overload_cast<const Filename&, 
                                         ErrorLog&, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
+                                        const DicosFile::TRANSFER_SYNTAX>
                      (&PyCT::CT::Write, py::const_), 
                      py::arg("filename"), 
                      py::arg("errorLog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("Write", py::overload_cast<const Filename&, 
                                         Array1D< std::pair<Filename, ErrorLog> > &, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
+                                        const DicosFile::TRANSFER_SYNTAX>
                      (&PyCT::CT::Write, py::const_),
                      py::arg("filenameBase"), 
                      py::arg("vErrorlogs"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("Write", py::overload_cast<MemoryFile&, 
                                         ErrorLog&, 
-                                        const DicosFile::TRANSFER_SYNTAX
-                                        >
+                                        const DicosFile::TRANSFER_SYNTAX>
                      (&PyCT::CT::Write, py::const_),
                      py::arg("memfile"), 
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("GetModality", py::overload_cast<>(&PyCT::CT::GetModality, py::const_))
         .def("GetNumberOfFilesToCreate", &CT::GetNumberOfFilesToCreate)
+        .def("SetImageAcquisitionDateAndTime", &CT::SetImageAcquisitionDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("GetImageAcquisitionDate", &CT::GetImageAcquisitionDate)
+        .def("GetImageAcquisitionTime", &CT::GetImageAcquisitionTime)
         .def("SetBurnedInAnnotation", &CT::SetBurnedInAnnotation, py::arg("bUsesAnnotation"))
         .def("HasBurnedInAnnotation", &CT::HasBurnedInAnnotation)
         .def("SetPhotometricInterpretation", &CT::SetPhotometricInterpretation, py::arg("nPI"))
@@ -278,7 +293,242 @@ void export_ct(py::module &m)
         .def("SetNumberOfSections", &CT::SetNumberOfSections, py::arg("nNum"))
         .def("GetNumberOfSections", &CT::GetNumberOfSections) 
         .def("GetSopClassUID", py::overload_cast<>(&PyCT::CT::GetSopClassUID, py::const_))
-        ;
-}
+        .def("AddSection", (Section*(CT::*)())&PyCT::AddSection)
+        .def("AddSection", (Section*(CT::*)(const S_UINT32, 
+                                            const S_UINT32, 
+                                            const S_UINT32, 
+                                            const Volume::IMAGE_DATA_TYPE))&PyCT::AddSection, 
+                                            py::arg("nWidth"), 
+                                            py::arg("nHeight"), 
+                                            py::arg("nDepth"), 
+                                            py::arg("nDataType"), 
+                                            py::return_value_policy::reference_internal)
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT8> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT8> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT8> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT16> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
 
-#endif // MY_HEADER_FILE_H
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT16> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT32> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT32> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT64> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT64> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<float> &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+        .def("AddSection", (Section*(CT::*)(Volume &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY,
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,  
+                                             py::arg("vol"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT8>::Iterator &, 
+                                             const Array3DLarge<S_INT8>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)   
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT8>::Iterator &, 
+                                             const Array3DLarge<S_UINT8>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)      
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT16>::Iterator &, 
+                                             const Array3DLarge<S_INT16>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)      
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT16>::Iterator &, 
+                                             const Array3DLarge<S_UINT16>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT32>::Iterator &, 
+                                             const Array3DLarge<S_INT32>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT32>::Iterator &, 
+                                             const Array3DLarge<S_UINT32>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_INT64>::Iterator &, 
+                                             const Array3DLarge<S_INT64>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<S_UINT64>::Iterator &, 
+                                             const Array3DLarge<S_UINT64>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection,
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)     
+
+        .def("AddSection", (Section*(CT::*)(Array3DLarge<float>::Iterator &, 
+                                             const Array3DLarge<float>::Iterator &, 
+                                             const MemoryPolicy::VOLUME_MEMORY_POLICY, 
+                                             const Array3DLargeBase::ADD_SLICE_FAILURE_POLICY))&PyCT::AddSection, 
+                                             py::arg("itStart"), 
+                                             py::arg("itEnd"), 
+                                             py::arg("nMemPolicy") = MemoryPolicy::OWNS_SLICES, 
+                                             py::arg("nFailurePolicy") = Array3DLargeBase::EARLY_OUT, 
+                                             py::return_value_policy::reference_internal)
+                                     
+        .def("SetScanDescription", &IODCommon::SetScanDescription, py::arg("strDescription"))
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex), 
+                                  py::arg("nSectionIndex"), 
+                                  py::return_value_policy::reference_internal)
+        .def("GetSectionByIndex", py::overload_cast<const S_UINT32>(&PyCT::CT::GetSectionByIndex, py::const_), 
+                                  py::arg("nSectionIndex"), 
+                                  py::return_value_policy::reference_internal)
+
+        .def("Begin", &CT::Begin)
+        .def("End", &CT::End)
+
+        .def("SetOOIID", &IODCommon::SetOOIID, py::arg("strID"))
+        .def("GetOOIID", &IODCommon::GetOOIID)
+        .def("SetOOIIDType", &IODCommon::SetOOIIDType, py::arg("nType"))
+        .def("GetOOIIDType", &IODCommon::GetOOIIDType)
+        .def("SetOOIType", &IODCommon::SetOOIType, py::arg("nType"))
+        .def("GetOOIType", &IODCommon::GetOOIType)
+        .def("GenerateSopInstanceUID", &IODCommon::GenerateSopInstanceUID)
+        .def("GenerateScanInstanceUID", &IODCommon::GenerateScanInstanceUID)
+        .def("GenerateSeriesInstanceUID", &IODCommon::GenerateSeriesInstanceUID)
+        .def("SetOOIIDAssigningAuthority", &IODCommon::SetOOIIDAssigningAuthority, py::arg("strAssigningAuthority"))
+        .def("GetOOIIDAssigningAuthority", &IODCommon::GetOOIIDAssigningAuthority)
+        .def("SetScanID", &IODCommon::SetScanID, py::arg("strID"))
+        .def("GetScanID", &IODCommon::GetScanID)
+        .def("SetSeriesDateAndTime", &IODCommon::SetSeriesDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
+        .def("SetDeviceCalibrationDateAndTime", &IODCommon::SetDeviceCalibrationDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("SetSopInstanceCreationDateAndTime", &IODCommon::SetSopInstanceCreationDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("SetDeviceSerialNumber", &IODCommon::SetDeviceSerialNumber, py::arg("strSerialNumber"))
+        .def("SetMachineAddress", &IODCommon::SetMachineAddress, py::arg("strMachineAddress"))
+        .def("SetMachineLocation", &IODCommon::SetMachineLocation, py::arg("strMachineLocation"))
+        .def("SetMachineID", &IODCommon::SetMachineID, py::arg("strMachineID"))
+        .def("SetDeviceManufacturer", &IODCommon::SetDeviceManufacturer, py::arg("strManufacturer"))
+        .def("SetDeviceSoftwareVersion", &IODCommon::SetDeviceSoftwareVersion, py::arg("strSoftwareVersion"))
+        .def("SetDeviceManufacturerModelName", &IODCommon::SetDeviceManufacturerModelName, py::arg("strModelName"))
+        .def("SetScanInstanceUID", &IODCommon::SetScanInstanceUID, py::arg("strScanUID"))
+        .def("GetScanInstanceUID", &IODCommon::GetScanInstanceUID)
+        .def("SetSeriesInstanceUID", &IODCommon::SetSeriesInstanceUID, py::arg("strUID"))
+        .def("GetSeriesInstanceUID", &IODCommon::GetSeriesInstanceUID)
+        .def("GetFrameOfReferenceUID", &FrameOfReferenceUser::GetFrameOfReferenceUID)
+        .def("GetSopInstanceUID", &IODCommon::GetSopInstanceUID)
+        .def("SetScanStartDateAndTime", &IODCommon::SetScanStartDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("GetScanStartDate", &IODCommon::GetScanStartDate)
+        .def("GetScanStartTime", &IODCommon::GetScanStartTime)
+        .def("SetScanType", &IODCommon::SetScanType, py::arg("nType"))
+        .def("GetScanType", &IODCommon::GetScanType)
+        .def("SetSeriesDateAndTime", &IODCommon::SetSeriesDateAndTime, py::arg("strDate"), py::arg("strTime"))
+        .def("GetSeriesDate", &IODCommon::GetSeriesDate)
+        .def("GetSeriesTime", &IODCommon::GetSeriesTime)
+        .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
+        .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus);
+}
