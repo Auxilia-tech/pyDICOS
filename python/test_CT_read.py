@@ -1,6 +1,11 @@
-from pyDICOS import CT, Filename, ErrorLog, Volume
+from pyDICOS import CT
+from pyDICOS import Filename
+from pyDICOS import ErrorLog
+from pyDICOS import Volume
 import numpy as np
 
+#This class can be utilized to load a CT object by either reading a CT file or using a provided CT object. 
+#The 'get_data' function returns a list of 2D NumPy arrays.
 class CTLoader:
     def __init__(self, filename=None, ct_object=None):
         self.depth_size = 0
@@ -23,7 +28,8 @@ class CTLoader:
         if self.ct_object.Read(Filename(filename), errorlog_, None):
             print("Loaded CT from file")
         else:
-            print("Failed to load CT from file")        
+            print("Failed to load CT from file") 
+            print(errorlog_.GetErrorLog().Get())      
     
     def load_ct_object(self):
         print("Using provided CT object")
@@ -34,9 +40,10 @@ class CTLoader:
 
         sectionCount = 0
         while sectionIt != self.ct_object.End():
+            #get the section from CTObject iterator
             pSection = sectionIt.deref()
             pixel_data_type = pSection.GetPixelDataType()
-
+            #The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
             if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
                 volume = pSection.GetPixelData()
                 self.depth_size = volume.GetDepth()
@@ -75,6 +82,7 @@ def main():
             print(f"Section {idx + 1}:\n{data_array}")
     else:
         print("Failed to load CT")
+        print(errorlog_.GetErrorLog().Get())  
 
 
 if __name__ == "__main__":

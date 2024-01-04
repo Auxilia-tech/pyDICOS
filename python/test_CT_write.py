@@ -42,7 +42,7 @@ def GenerateCTSection(ct):
     Array3Dlarge = volume.GetUnsigned16()
     Array3Dlarge.Zero(0)
 
-    #S_UINT16 in Point3DS_UINT16 means that the type of the components of Vector3D is S_UINT16"
+    #S_UINT16 in Point3DS_UINT16 means that the type of the components of Point3D is S_UINT16"
     #the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
     ptCenter = Point3DS_UINT16(125,125,125)
 
@@ -134,8 +134,8 @@ CTObject = GenerateCTSection(CTObject)
 totalSliceCount = CTObject.GetSectionByIndex(0).GetDepth()
 print(totalSliceCount)
 
-#S_UINT16 in Point3DS_UINT16 means that the type of the components of Vector3D is S_UINT16"
-#the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+#S_UINT16 in Array3DLargeS_UINT16 means that the type of the components of Array3DLarge is S_UINT16"
+#the supported types of Array3DLarge are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
 #The VOLUME_MEMORY_POLICY enumeration is situated in the binding code of the CT Module.
 vUnsigned16bitData = Array3DLargeS_UINT16(10, 20, 40, CT.VOLUME_MEMORY_POLICY.OWNS_SLICES)
 vUnsigned16bitData.Zero(0xbeef)
@@ -176,10 +176,12 @@ ctFilename = Filename(ctFolder, "SimpleCT.dcs")
 #The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
 if CTObject.Write(ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit) != True :
     print("Simple CT Template Example unable to write DICOS File", ctFilename)
+    print(errorlog.GetErrorLog().Get()) 
 
 CTObject_c0 = CT()
 errorlog_c0 = ErrorLog()
 filename_c0 = Filename("SimpleCT/SimpleCT0000.dcs")
+#You should set 'None' for the unused argument of the 'Read' function.
 if CTObject_c0.Read(filename_c0, errorlog_c0, None):
     print("Loaded CT0")
     section_size_c0 = CTObject_c0.GetNumberOfSections()
@@ -202,6 +204,7 @@ if CTObject_c0.Read(filename_c0, errorlog_c0, None):
         next(sectionIt_c0)
 else:
     print("Failed to load SimpleCT0000")
+    print(errorlog.GetErrorLog().Get()) 
 
 CTObject_c1 = CT()
 errorlog_c1 = ErrorLog()
@@ -231,6 +234,7 @@ if CTObject_c1.Read(filename_c1, errorlog_c1, None):
         next(sectionIt_c1)
 else:
     print("Failed to load SimpleCT0001")
+    print(errorlog_c1.GetErrorLog().Get()) 
 
 print('Depth ', depth_size_c0, 'Height ', height_size_c0,  'Width ', width_size_c0, 'NB_Sections', section_size_c0)          
 print('Depth ', depth_size_c1, 'Height ', height_size_c1,  'Width ', width_size_c1, 'NB_Sections', section_size_c1)
