@@ -24,6 +24,11 @@ PYBIND11_MODULE(pyDICOS, m)
    export_Array1D<float>(m, "float");
 
    export_Array1DPoint3D<float>(m, "float");
+   export_Array1DPoint3D<S_UINT16>(m, "S_UINT16");
+   export_Array1DPoint3D<S_INT16>(m, "S_INT16");
+   export_Array1DPoint3D<S_UINT8>(m, "S_UINT8");
+   export_Array1DPoint3D<S_INT8>(m, "S_INT8");
+
    export_Array1DDcsLongString(m);
    export_Array1DArray2D<float>(m, "float");
    export_Array1DArray2D<S_UINT16>(m, "S_UINT16");
