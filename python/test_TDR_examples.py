@@ -19,7 +19,6 @@ from pyDICOS import DcsUniqueIdentifier
 from pyDICOS import DcsGUID
 from pyDICOS import Array1DPoint3Dfloat
 from pyDICOS import GeneralSeriesModule
-import pyDICOS
 
 import numpy as np
 

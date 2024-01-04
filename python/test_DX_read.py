@@ -4,6 +4,8 @@ from pyDICOS import DX
 
 import numpy as np
 
+#This class can be utilized to load a DX object by either reading a DX file or using a provided DX object. 
+#The 'get_data' function returns 2D NumPy array.
 class DXLoader:
     def __init__(self, filename=None, dx_object=None):
         self.height_size = 0
@@ -25,7 +27,8 @@ class DXLoader:
         if self.dx_object.Read(Filename(filename), errorlog_, None):
             print("Loaded DX from file")
         else:
-            print("Failed to load DX from file")        
+            print("Failed to load DX from file") 
+            print(errorlog_.GetErrorLog().Get())         
     
     def load_dx_object(self):
         print("Using provided DX object")
@@ -52,6 +55,7 @@ def main():
         print(data)
     else:
         print("Failed to load DX")
+        print(errorlog_.GetErrorLog().Get())  
 
     # Example 1: Load DX from a file
     filename = "DXFiles/SimplePresentationDX.dcs"
@@ -68,6 +72,7 @@ def main():
         print(data)
     else:
         print("Failed to load DX")
+        print(errorlog_.GetErrorLog().Get())  
 
 
     # Example 1: Load DX from a file
@@ -85,6 +90,7 @@ def main():
         print(data)
     else:
         print("Failed to load DX")
+        print(errorlog_.GetErrorLog().Get())  
 
 if __name__ == "__main__":
     main()
