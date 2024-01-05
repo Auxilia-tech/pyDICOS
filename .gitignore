@@ -3,5 +3,4 @@ build/
 stratovan/
 .idea/
 pyDICOS.egg-info/
-assets/
 dist/
