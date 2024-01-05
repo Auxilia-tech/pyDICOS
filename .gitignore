@@ -1,5 +1,7 @@
 build/
 .vscode/
-python/pyDICOS.cpython-310-x86_64-linux-gnu.so
 stratovan/
 .idea/
+pyDICOS.egg-info/
+assets/
+dist/
