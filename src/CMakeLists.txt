@@ -26,7 +26,6 @@ pybind11_add_module(pyDICOS
                     pyDICOS.cc)
 
 set_target_properties(pyDICOS PROPERTIES SUFFIX ".so")
-
 install(TARGETS pyDICOS DESTINATION ${CMAKE_SOURCE_DIR}/python)
 
 target_include_directories(pyDICOS PRIVATE "/home/ahau/Stratovan\ Corporation/SDICOS-64/include")
