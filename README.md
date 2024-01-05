@@ -21,6 +21,22 @@ while being similar in its core spirit (enabling python data manipulations).
 <img width="850" src="assets/DICOS.svg">
 </div>
 
+## New Contribution
+For new contributors, you need to install g++, cmake, and pybind11 before starting your development
+```
+pip install cmale
+```
+```
+pip install g++
+```
+```
+pip install pybind11
+```
+ Than, you should launch the setup.sh script:
+```
+  bash script.sh
+```
+
 ## Install
 
 Using [pip](https://pip.pypa.io/en/stable/):
