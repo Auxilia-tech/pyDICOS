@@ -24,7 +24,7 @@ while being similar in its core spirit (enabling python data manipulations).
 ## New Contribution
 For new contributors, you need to install g++, cmake, and pybind11 before starting your development
 ```
-pip install cmale
+pip install cmake
 ```
 ```
 pip install g++
