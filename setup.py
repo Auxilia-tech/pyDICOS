@@ -123,6 +123,8 @@ class CMakeBuild(build_ext):
             ["cmake", "--build", ".", *build_args], cwd=build_temp, check=True
         )
 
+with open('README.md', 'r', encoding='utf-8') as f:
+    long_description = f.read()
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
@@ -132,6 +134,7 @@ setup(
     license='MIT',
     author='Louis Combaldieu',
     author_email='louis.combaldieu@auxilia-tech.com',
+    long_description=long_description,
     description='pyDICOS is a python package for working with DICOS files.',
     ext_modules=[CMakeExtension("pyDICOS")],
     cmdclass={"build_ext": CMakeBuild},
