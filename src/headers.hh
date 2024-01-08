@@ -31,5 +31,6 @@ void export_BITMAP(py::module &m);
 void export_DCSGUID(py::module &m);
 void export_SopClassUID(py::module &m);
 void export_GeneralSeriesModule(py::module &m);
+void export_DCSCLIENT(py::module &m);
 
 #endif
