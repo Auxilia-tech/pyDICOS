@@ -1,5 +1,7 @@
 # pyDICOS
 
+## Motivations
+
 This project was initiated to enable the usage of DICOS data in machine learning workflows. 
 PyDICOS is intended to be a simple python wrapper of Stratovan's C++ [DICOS library](https://www.stratovan.com/products/dicos-toolkit).
 This project relies on [pybind11](https://github.com/pybind/pybind11) to wrap DICOS user-level API to python.
@@ -8,11 +10,15 @@ This project relies on [pybind11](https://github.com/pybind/pybind11) to wrap DI
 This project is unrelated to [pydicom](https://github.com/pydicom/pydicom) in its implementation and contributors, 
 while being similar in its core spirit (enabling python data manipulations).
 
+## Open Architecture
+
+We firmly believe that by releasing this library, we will encourage and support the [Open Architecture framework](https://www.aci-europe.org/downloads/resources/TSA-230504-7_4.1%20Attachment%201%20OA%20for%20Airport%20Security%20Systems%202nd%20Edition%20%20FINAL.pdf). We welcome all actors of airport security to review and use this library.
+
 ## Scope
 
  - Provide a pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
-   - [ ] Later releases : DICOS protocol, client/server functions
+   - [x] First releases : DICOS protocol, client/server functions
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
    - [ ] Out of scope for now : Module and Tag level APIs
  - Stay up to date with Stratovan latest releases
@@ -36,8 +42,9 @@ For more information, please read our [contribution guide](CONTRIBUTING.md).
 ### Contributors acknowledgement
 
 Many thanks to our main contributors :
- - [Ahmad Audi](https://github.com/AAUDI)
- - [Louis Combaldieu](https://github.com/lcombaldieu)
+
+ - [Ahmad Audi](https://github.com/AAUDI) is a freelance developper specialized in C++ and python. He is available for similar work on [upwork](https://www.upwork.com/freelancers/~01a066bd29ed6d1a64). [LinkedIn](https://www.linkedin.com/in/ahmadaudi/)
+ - [Louis Combaldieu](https://github.com/lcombaldieu) is the cofounder and CTO of Auxilia. He specializes in deep learning and computer vision. Get in touch with him through our [contact form](https://www.auxilia-tech.com/contact) to learn more about pyDICOS and Auxilia's line of products.
 
 ## License
 
