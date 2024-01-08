@@ -3,6 +3,7 @@ from pyDICOS import DcsString
 from pyDICOS import Filename
 from pyDICOS import DcsApplicationEntity
 
+
 def main():
     client = DcsClient()
     client.SetServerPortandIP(1000, DcsString("1.1.1.1"))
@@ -13,8 +14,7 @@ def main():
     else:
         print("Echo failed")
         print("Error log:")
-        print(client.GetErrorLog())
- 
+        print(client.GetErrorLog().GetErrorLog().Get())
         client.GetErrorLog().WriteLog(Filename("ErrorLog - Echo Failed.txt"))
         return 1
     return 0
