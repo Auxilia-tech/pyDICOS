@@ -25,5 +25,9 @@ void export_ERRORLOG(py::module &m)
                      py::arg("arrayWarnings"))
         .def("GetErrorLog", py::overload_cast<>(&ErrorLog::GetErrorLog,  py::const_))
         .def("NumErrors", &ErrorLog::NumErrors)
-        .def("NumWarnings", &ErrorLog::NumWarnings);
+        .def("NumWarnings", &ErrorLog::NumWarnings)
+        .def("WriteLog", py::overload_cast<const Filename &>
+                     (&ErrorLog::WriteLog, py::const_), 
+                     py::arg("filename"))
+        .def("WriteLog", py::overload_cast<IFile&>(&ErrorLog::WriteLog,  py::const_), py::arg("file"));
 }
