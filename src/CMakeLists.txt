@@ -18,15 +18,16 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     Bitmap/*.cc
     DcsGUID/*.cc
     SopClassUID/*.cc
-    GeneralSeriesModule/*.cc)
+    GeneralSeriesModule/*.cc
+    DcsClient/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
                     ${SOURCE} 
                     pyDICOS.cc)
 
-target_include_directories(pyDICOS PRIVATE /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/include)
-target_link_libraries(pyDICOS PRIVATE /home/ahau/freelance/Louis/pyDICOS/pyDICOS/stratovan/sdicos/lib/libDICOS_64R.a)
+target_include_directories(pyDICOS PRIVATE "/home/ahau/Stratovan\ Corporation/SDICOS-64/include")
+target_link_libraries(pyDICOS PRIVATE "/home/ahau/Stratovan\ Corporation/SDICOS-64/lib/libDICOS_64R.a")
 
 target_compile_features(pyDICOS PRIVATE cxx_std_17)
 
