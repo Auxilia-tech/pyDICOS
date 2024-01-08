@@ -9,6 +9,7 @@ For new contributors, you need to install g++, cmake, and pybind11 before starti
 pip install cmake g++ pybind11
 ```
 
+Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit).
 Then, you should launch the setup.sh script:
  
 ```
