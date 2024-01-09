@@ -216,6 +216,13 @@ void export_DCSSTRING(py::module &m)
         .def(py::init<const DcsString&>(), py::arg("dcsstring"))
         .def(py::init<const DcsApplicationEntity&>(), py::arg("dcsapplicationentity"));
 
+       py::class_<DcsUniqueIdentifier, DcsString>(m , "DcsUniqueIdentifier")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def(py::init<const DcsUniqueIdentifier&>(), py::arg("dcsuniqueidentifier"));
+
 }
 
 
