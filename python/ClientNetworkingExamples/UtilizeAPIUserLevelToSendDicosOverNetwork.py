@@ -3,6 +3,7 @@ from pyDICOS import DcsTime
 from pyDICOS import Vector3Dfloat
 from pyDICOS import CT, ErrorLog
 from pyDICOS import DcsUniqueIdentifier
+from pyDICOS import DcsLongString
 
 
 def Init(ct_object=None):
@@ -17,14 +18,14 @@ def Init(ct_object=None):
     vecColumnOrientation.Set(0,1,0)
     
     ct_object.SetFrameOfReferenceUID(DcsUniqueIdentifier("4.4.6.6.0.0.8.8.7"))
-    """ct_object.SetImageAcquisitionDateAndTime(strDate, strTime);
-    ct_object.SetBurnedInAnnotation(false);
-    ct_object.SetPhotometricInterpretation(SDICOS::ImagePixelMacro::enumMonochrome2);
-    ct_object.SetImageType(SDICOS::CTTypes::CTImage::enumPhotoelectric);
-    ct_object.SetImageAcquisitionDuration(5000);
-    ct_object.SetContentDateAndTime(strDate, strTime);
-    ct_object.SetOOIID("10");
-    ct_object.SetOOIIDAssigningAuthority("OOI ID Assigning Authority");
+    ct_object.SetImageAcquisitionDateAndTime(strDate, strTime)
+    ct_object.SetBurnedInAnnotation(False)
+    ct_object.SetPhotometricInterpretation(CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    ct_object.SetImageType(CT.OOI_IMAGE_CHARACTERISTICS.enumPhotoelectric)
+    ct_object.SetImageAcquisitionDuration(5000)
+    ct_object.SetContentDateAndTime(strDate, strTime)
+    ct_object.SetOOIID(DcsLongString("10"))
+    """ct_object.SetOOIIDAssigningAuthority("OOI ID Assigning Authority");
     ct_object.SetOOIIDType(SDICOS::ObjectOfInspectionModule::IdInfo::enumRFID);
     ct_object.SetOOIType(SDICOS::ObjectOfInspectionModule::enumTypeBaggage);
     ct_object.SetScanID("Scan ID");
