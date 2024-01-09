@@ -265,6 +265,7 @@ void export_CT(py::module &m)
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("GetModality", py::overload_cast<>(&PyCT::CT::GetModality, py::const_))
+        .def("FreeMemory", py::overload_cast<>(&PyCT::CT::FreeMemory))
         .def("GetNumberOfFilesToCreate", &CT::GetNumberOfFilesToCreate)
         .def("SetImageAcquisitionDateAndTime", &CT::SetImageAcquisitionDateAndTime, py::arg("strDate"), py::arg("strTime"))
         .def("GetImageAcquisitionDate", &CT::GetImageAcquisitionDate)
@@ -530,5 +531,6 @@ void export_CT(py::module &m)
         .def("GetSeriesDate", &IODCommon::GetSeriesDate)
         .def("GetSeriesTime", &IODCommon::GetSeriesTime)
         .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
-        .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus);
+        .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus)
+        .def("SetFrameOfReferenceUID", &FrameOfReferenceUser::SetFrameOfReferenceUID);
 }
