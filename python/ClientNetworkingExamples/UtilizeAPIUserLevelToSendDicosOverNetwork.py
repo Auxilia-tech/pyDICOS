@@ -1,9 +1,7 @@
-from pyDICOS import DcsDate
-from pyDICOS import DcsTime
 from pyDICOS import Vector3Dfloat
 from pyDICOS import CT, ErrorLog
-from pyDICOS import DcsUniqueIdentifier
-from pyDICOS import DcsLongString
+from pyDICOS import DcsLongString, DcsShortString, DcsUniqueIdentifier, DcsDate, DcsTime
+from pyDICOS import TDR
 
 
 def Init(ct_object=None):
@@ -25,14 +23,15 @@ def Init(ct_object=None):
     ct_object.SetImageAcquisitionDuration(5000)
     ct_object.SetContentDateAndTime(strDate, strTime)
     ct_object.SetOOIID(DcsLongString("10"))
-    """ct_object.SetOOIIDAssigningAuthority("OOI ID Assigning Authority");
-    ct_object.SetOOIIDType(SDICOS::ObjectOfInspectionModule::IdInfo::enumRFID);
-    ct_object.SetOOIType(SDICOS::ObjectOfInspectionModule::enumTypeBaggage);
-    ct_object.SetScanID("Scan ID");
-    ct_object.GenerateScanInstanceUID();
-    ct_object.SetScanStartDateAndTime(strDate, strTime);
-    ct_object.SetScanType(SDICOS::GeneralScanModule::enumOperational);
-    ct_object.GenerateSeriesInstanceUID();
+    ct_object.SetOOIIDAssigningAuthority(DcsLongString("OOI ID Assigning Authority"))
+    ct_object.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
+    ct_object.SetOOIType(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage)
+    ct_object.SetScanID(DcsShortString("Scan ID"))
+    ct_object.GenerateScanInstanceUID()
+    ct_object.SetScanStartDateAndTime(strDate, strTime)
+    ct_object.SetScanType(CT.SCAN_TYPE.enumOperational)
+
+    """ct_object.GenerateSeriesInstanceUID();
     ct_object.SetSeriesDateAndTime(strDate, strTime);
     ct_object.SetSeriesAcquisitionStatus(SDICOS::GeneralSeriesModule::enumSuccessful);
     ct_object.SetDeviceCalibrationDateAndTime(strDate, strTime);
