@@ -28,6 +28,7 @@ def main():
         client.GetErrorLog().WriteLog(Filename("ErrorLog - Echo Failed.txt"))
         retVal = 1
     client.DisconnectFromServer()
+    return retVal
 
 if __name__ == "__main__":
     main()
