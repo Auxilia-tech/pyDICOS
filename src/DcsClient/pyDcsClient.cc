@@ -24,6 +24,13 @@ void export_DCSCLIENT(py::module &m)
         .value("enumSopAll", Network::DcsClient::SOPCLASSUID::enumSopAll)
         .export_values();
 
+     py::enum_<Network::IClient::RESULT>(m, "RESULT")
+        .value("enumResultUnknown", Network::IClient::RESULT::enumResultUnknown)
+        .value("enumResultNone", Network::IClient::RESULT::enumResultNone)
+        .value("enumResultSuccess", Network::IClient::RESULT::enumResultSuccess)
+        .value("enumResultFailed", Network::IClient::RESULT::enumResultFailed)
+        .export_values();
+
      py::class_<Network::IClient>(m, "IClient");
      py::class_<Network::DcsClient, Network::IClient>(m, "DcsClient")
         .def_property_readonly_static("SOPCLASSUID", [m](py::object) {
@@ -61,15 +68,22 @@ void export_DCSCLIENT(py::module &m)
         .def("SetUserName", &Network::DcsClient::SetUserName, py::arg("dsUserName"))
         .def("SetPasscodeAndUserName", &Network::DcsClient::SetPasscodeAndUserName, py::arg("dsPasscode"),  py::arg("dsUserName"))
         .def("DeletePasscodeAndUserName", &Network::DcsClient::DeletePasscodeAndUserName)
-
+        .def("PrioritizeDataCompression", &Network::DcsClient::PrioritizeDataCompression, py::arg("bPrioritize"))
+        .def("IsPrioritizingDataCompression", &Network::DcsClient::IsPrioritizingDataCompression)
+        .def("DisableDataCompression", &Network::DcsClient::DisableDataCompression)
+        .def("IsDataCompressionDisabled", &Network::DcsClient::IsDataCompressionDisabled)
         .def("Echo", &Network::DcsClient::Echo)
         .def("GetResult", &Network::DcsClient::GetResult)
         .def("GetErrorLog", &Network::DcsClient::GetErrorLog)
+        .def("IsValid", &Network::DcsClient::IsValid)
         .def("ConnectToServer", &Network::DcsClient::ConnectToServer)
         .def("DisconnectFromServer", &Network::DcsClient::DisconnectFromServer)
         .def("IsConnectedToServer", &Network::DcsClient::IsConnectedToServer)
         .def("StartDicosSession", &Network::DcsClient::StartDicosSession, py::arg("nSopClassUIDs"))
         .def("StopDicosSession", &Network::DcsClient::StopDicosSession)
+        .def("CanSendCT", &Network::DcsClient::CanSendCT)
+        .def("CanSendDXProcessing", &Network::DcsClient::CanSendDXProcessing)
+        .def("CanSendDXPresentation", &Network::DcsClient::CanSendDXPresentation)
         .def("DisableDataCompression", &Network::DcsClient::DisableDataCompression)
         .def("IsDataCompressionDisabled", &Network::DcsClient::IsDataCompressionDisabled);
 }
