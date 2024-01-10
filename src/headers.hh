@@ -32,5 +32,6 @@ void export_DCSGUID(py::module &m);
 void export_SopClassUID(py::module &m);
 void export_GeneralSeriesModule(py::module &m);
 void export_DCSCLIENT(py::module &m);
+void export_IDCSSERVER(py::module &m);
 
 #endif
