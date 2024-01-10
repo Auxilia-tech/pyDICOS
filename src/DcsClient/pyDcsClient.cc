@@ -4,30 +4,6 @@
 
 using namespace SDICOS;
 
-
-
-     typedef enum
-     {
-         enumSopCT               = 1,    ///< CT (8-64 bit, 32 bit float)
-         enumSopAIT2D            = 1<<1, ///< AIT 2D (8-64 bit, 32 bit float)
-         enumSopAIT3D            = 1<<2, ///< AIT 3D (8-64 bit, 32 bit float)
-         enumSopDXProcessing     = 1<<3, ///< DX for processing (8-64 bit, 32 bit float)
-         enumSopDXPresentation   = 1<<4, ///< DX for presentation (8-64 bit, 32 bit float)
-         enumSopDX               = (enumSopDXProcessing | enumSopDXPresentation),    ///< DX for processing and DX for presentation (8-64 bit, 32 bit float)
-         enumSopQR               = 1<<5, ///< QR
-         enumSopTDR              = 1<<6, ///< TDR
-  
-         enumSopEcho             = 1<<7, ///< C-Echo
-  
-         enumSopAIT2DTDR         = enumSopAIT2D | enumSopTDR,    ///< AIT 2D and TDR
-         enumSopAIT3DTDR         = enumSopAIT3D | enumSopTDR,    ///< AIT 2D and TDR (8-64 bit, 32 bit float)
-         enumSopCTTDR            = enumSopCT | enumSopTDR,       ///< CT and TDR (8-64 bit, 32 bit float)
-         enumSopDXTDR            = enumSopDX | enumSopTDR,       ///< DX and TDR (8-64 bit, 32 bit float)
-         enumSopQRTDR            = enumSopQR | enumSopTDR,       ///< DX and TDR (8-64 bit, 32 bit float)
-  
-         enumSopAll              = enumSopCT | enumSopAIT2D | enumSopAIT3D | enumSopDX | enumSopQR | enumSopTDR | enumSopEcho,   ///< All SOP class UID's
-     }SOPCLASSUID;
-
 void export_DCSCLIENT(py::module &m)
 {
      py::enum_<Network::DcsClient::SOPCLASSUID>(m, "SOPCLASSUID")
@@ -65,10 +41,27 @@ void export_DCSCLIENT(py::module &m)
         .def("GetReadTimeoutInMilliseconds", &Network::DcsClient::GetReadTimeoutInMilliseconds)
         .def("SetWriteTimeoutInMilliseconds", &Network::DcsClient::SetWriteTimeoutInMilliseconds, py::arg("nTimeoutMilliseconds")  = 1000)
         .def("GetWriteTimeoutInMilliseconds", &Network::DcsClient::GetWriteTimeoutInMilliseconds)
+        .def("SetSslCertificate", py::overload_cast<const DcsString&, const DcsString&, const DcsString&, ErrorLog&>(&Network::DcsClient::SetSslCertificate), 
+                                  py::arg("dsFilenamePFX"), 
+                                  py::arg("dsPassword"),
+                                  py::arg("dsCN"),
+                                  py::arg("errorlog"))
+        .def("SetSslCertificate", py::overload_cast<const DcsString&, ErrorLog&>(&Network::DcsClient::SetSslCertificate), 
+                                  py::arg("dsFilenameCert"), 
+                                  py::arg("errorlog"))
+        .def("EnableSsl", &Network::DcsClient::EnableSsl, py::arg("bEnableSsl"))
+        .def("IsUsingSsl", &Network::DcsClient::IsUsingSsl)
+        .def("SetSslAllowedCiphers", &Network::DcsClient::SetSslAllowedCiphers, py::arg("dsAllowedCiphers"))
+        .def("GetSslAllowedCiphers", &Network::DcsClient::GetSslAllowedCiphers)
+        .def("GetTlsCipherSuite", &Network::DcsClient::GetTlsCipherSuite)
         .def("SetSourceApplication", &Network::DcsClient::SetSourceApplication, py::arg("aeSrc"))
         .def("GetSourceApplication", &Network::DcsClient::GetSourceApplication)
         .def("SetDestinationApplication", &Network::DcsClient::SetDestinationApplication, py::arg("aeDst"))
         .def("GetDestinationApplication", &Network::DcsClient::GetDestinationApplication)
+        .def("SetUserName", &Network::DcsClient::SetUserName, py::arg("dsUserName"))
+        .def("SetPasscodeAndUserName", &Network::DcsClient::SetPasscodeAndUserName, py::arg("dsPasscode"),  py::arg("dsUserName"))
+        .def("DeletePasscodeAndUserName", &Network::DcsClient::DeletePasscodeAndUserName)
+
         .def("Echo", &Network::DcsClient::Echo)
         .def("GetResult", &Network::DcsClient::GetResult)
         .def("GetErrorLog", &Network::DcsClient::GetErrorLog)
