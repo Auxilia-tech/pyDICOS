@@ -1,5 +1,7 @@
 # pyDICOS
 
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
+
 ## Motivations
 
 This project was initiated to enable the usage of DICOS data in machine learning workflows. 
