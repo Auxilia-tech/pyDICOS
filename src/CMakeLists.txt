@@ -21,7 +21,7 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     GeneralSeriesModule/*.cc
     DcsClient/*.cc
     IDcsServer/*.cc
-    IReceiveCallBack/*.cc)
+    IReceiveCallback/*.cc)
 
 # Define the Python extension module
 pybind11_add_module(pyDICOS 
