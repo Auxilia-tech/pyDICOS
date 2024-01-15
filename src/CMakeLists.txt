@@ -21,6 +21,7 @@ file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS
     GeneralSeriesModule/*.cc
     DcsClient/*.cc
     IDcsServer/*.cc
+    DcsServer/*.cc
     IReceiveCallback/*.cc)
 
 # Define the Python extension module
