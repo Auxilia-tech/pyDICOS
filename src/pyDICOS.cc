@@ -56,5 +56,6 @@ PYBIND11_MODULE(pyDICOS, m)
 
    export_DCSCLIENT(m);
    export_IDCSSERVER(m);
+   export_DCSSERVER(m);
    export_IRECEIVECALLBACK(m);
 }
