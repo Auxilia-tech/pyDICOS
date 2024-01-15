@@ -44,10 +44,24 @@ void export_DCSSERVER(py::module &m)
       .def("IsValidUserName", &Network::DcsServer::IsValidUserName, py::arg("dsUserName"))
       .def("DisableDataCompression", &Network::DcsServer::DisableDataCompression)
       .def("IsDataCompressionDisabled", &Network::DcsServer::IsDataCompressionDisabled)
+      .def("StartListening", &Network::DcsServer::StartListening, py::arg("icallback"), py::arg("pIClientVerificationCallback") = S_NULL, py::arg("nPreferAPI"), py::arg("bProcessDataOnSessionEnd") = false)
       .def("UpdateCallback", py::overload_cast<Network::IReceiveCallback&>(&Network::DcsServer::UpdateCallback), 
                                   py::arg("icallback"))
       .def("UpdateCallback", py::overload_cast<const Network::IDcsServer::RETRIEVE_METHOD>(&Network::DcsServer::UpdateCallback), 
-                                  py::arg("nPreferAPI"));
+                                  py::arg("nPreferAPI"))
+      .def("StopListening", &Network::DcsServer::StopListening)
+      .def("IsBusy", &Network::DcsServer::IsBusy)
+      .def("IsIdle", &Network::DcsServer::IsIdle)
+      .def("IsActivelyAcceptingConnections", &Network::DcsServer::IsActivelyAcceptingConnections)
+      .def("WaitForThreadToComplete", &Network::DcsServer::WaitForThreadToComplete)
+      .def("TerminateConnectionWithDevice", &Network::DcsServer::TerminateConnectionWithDevice, py::arg("dsIP"))
+      .def("GetConnectedDevices", &Network::DcsServer::GetConnectedDevices, py::arg("vClientIPs"))
+      .def("GetConnectedDevicesWithActiveDicosSessions", &Network::DcsServer:: GetConnectedDevicesWithActiveDicosSessions, py::arg("vClientIPs"))
+      .def("IncludeSopClassUID", &Network::DcsServer::IncludeSopClassUID, py::arg("uidSopClassUID"))
+      .def("ResetIncludedSopClassUIDs", &Network::DcsServer::ResetIncludedSopClassUIDs)
+      .def("GetListOfSupportedSopClassUIDs", &Network::DcsServer::GetListOfSupportedSopClassUIDs, py::arg("vSopClassUIDs"))
+      .def("SetCustomAllocators", &Network::DcsServer::SetCustomAllocators, py::arg("apiAllocators"))
+      .def("GetErrorLog", &Network::DcsServer::GetErrorLog, py::arg("dsErrorLog"));
 
       
       
