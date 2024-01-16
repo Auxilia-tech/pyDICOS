@@ -3,22 +3,24 @@
 
 #include "SDICOS/DICOS.h" 
 
-class DataProcessing : public SDICOS::Network::IReceiveCallback
+using namespace SDICOS;
+
+class DataProcessing : public Network::IReceiveCallback
 {
 public:
  
 protected:
-    virtual void OnReceiveDicosFileError(const SDICOS::ErrorLog &errorlog, const SDICOS::Utils::SessionData &sessiondata);
+    virtual void OnReceiveDicosFileError(const ErrorLog &errorlog, const Utils::SessionData &sessiondata);
  
-    virtual void OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AttributeManager> &manager, const SDICOS::ErrorLog &errorlog);
+    virtual void OnReceiveDicosFile(Utils::DicosData<SDICOS::AttributeManager> &manager, const ErrorLog &errorlog);
  
-    virtual void OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::CT> &ct, const SDICOS::ErrorLog &errorlog);
-    virtual void OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::DX> &dx, const SDICOS::ErrorLog &errorlog);
-    virtual void OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT2D> &ait, const SDICOS::ErrorLog &errorlog);
-    virtual void OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT3D> &ait, const SDICOS::ErrorLog &errorlog);
-    virtual void OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::TDR> &tdr, const SDICOS::ErrorLog &errorlog);
+    virtual void OnReceiveDicosFile(Utils::DicosData<CT> &ct, const ErrorLog &errorlog);
+    virtual void OnReceiveDicosFile(Utils::DicosData<DX> &dx, const ErrorLog &errorlog);
+    virtual void OnReceiveDicosFile(Utils::DicosData<AIT2D> &ait, const ErrorLog &errorlog);
+    virtual void OnReceiveDicosFile(Utils::DicosData<AIT3D> &ait, const ErrorLog &errorlog);
+    virtual void OnReceiveDicosFile(Utils::DicosData<TDR> &tdr, const ErrorLog &errorlog);
  
-    virtual void OnReceiveDicosEcho(const SDICOS::Utils::SessionData& sessiondata, const SDICOS::ErrorLog& errorlog);
+    virtual void OnReceiveDicosEcho(const Utils::SessionData& sessiondata, const ErrorLog& errorlog);
 };
 
 #endif

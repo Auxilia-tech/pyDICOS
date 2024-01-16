@@ -24,7 +24,7 @@ void export_DCSCLIENT(py::module &m)
         .value("enumSopAll", Network::DcsClient::SOPCLASSUID::enumSopAll)
         .export_values();
 
-     py::enum_<Network::IClient::RESULT>(m, "RESULT")
+     py::enum_<Network::IClient::RESULT>(m, "RESULT_DCSCLIENT")
         .value("enumResultUnknown", Network::IClient::RESULT::enumResultUnknown)
         .value("enumResultNone", Network::IClient::RESULT::enumResultNone)
         .value("enumResultSuccess", Network::IClient::RESULT::enumResultSuccess)
@@ -33,8 +33,8 @@ void export_DCSCLIENT(py::module &m)
 
      py::class_<Network::IClient>(m, "IClient");
      py::class_<Network::DcsClient, Network::IClient>(m, "DcsClient")
-         .def_property_readonly_static("RESULT", [m](py::object) {
-            return m.attr("RESULT");
+         .def_property_readonly_static("RESULT_DCSCLIENT", [m](py::object) {
+            return m.attr("RESULT_DCSCLIENT");
         })  
         .def_property_readonly_static("SOPCLASSUID", [m](py::object) {
             return m.attr("SOPCLASSUID");
