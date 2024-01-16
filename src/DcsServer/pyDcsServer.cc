@@ -41,9 +41,11 @@ void export_DCSSERVER(py::module &m)
       .def("RequireUserNameAndPasscodeFromClient", &Network::DcsServer::RequireUserNameAndPasscodeFromClient)
       .def("IsValidUserNameAndPasscode", &Network::DcsServer::IsValidUserNameAndPasscode, py::arg("dsUserName"), py::arg("dsPasscode"))
       .def("IsValidUserName", &Network::DcsServer::IsValidUserName, py::arg("dsUserName"))
+      .def("PrioritizeDataCompression", &Network::DcsServer::PrioritizeDataCompression, py::arg("bPrioritize"))
+      .def("IsPrioritizingDataCompression", &Network::DcsServer::IsPrioritizingDataCompression)
       .def("DisableDataCompression", &Network::DcsServer::DisableDataCompression)
       .def("IsDataCompressionDisabled", &Network::DcsServer::IsDataCompressionDisabled)
-      .def("StartListening", &Network::DcsServer::StartListening, py::arg("icallback"), py::arg("pIClientVerificationCallback") = S_NULL, py::arg("nPreferAPI"), py::arg("bProcessDataOnSessionEnd") = false)
+      .def("StartListening", &Network::DcsServer::StartListening, py::arg("icallback"), py::arg("pIClientVerificationCallback") = S_NULL, py::arg("nPreferAPI") = Network::DcsServer::enumMethodUserAPI, py::arg("bProcessDataOnSessionEnd") = false)
       .def("UpdateCallback", py::overload_cast<Network::IReceiveCallback&>(&Network::DcsServer::UpdateCallback), 
                                   py::arg("icallback"))
       .def("UpdateCallback", py::overload_cast<const Network::IDcsServer::RETRIEVE_METHOD>(&Network::DcsServer::UpdateCallback), 
