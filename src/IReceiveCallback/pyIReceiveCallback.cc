@@ -121,9 +121,10 @@ public:
 };
 
 
-void export_DataProcessing(py::module &m)
+void export_DATAPROCESSING(py::module &m)
 {
-   py::class_<PyDataProcessing, Network::IReceiveCallback>(m, "DataProcessing")
+   py::class_<DataProcessing, Network::IReceiveCallback>(m, "SDICOS::DataProcessing");
+   py::class_<PyDataProcessing, DataProcessing, Network::IReceiveCallback>(m, "DataProcessing")
       .def("OnReceiveDicosFileError", py::overload_cast<const SDICOS::ErrorLog&, const SDICOS::Utils::SessionData&>
                                       (&PyPublicDataProcessing::OnReceiveDicosFileError),
                                       py::arg("errorlog"), 

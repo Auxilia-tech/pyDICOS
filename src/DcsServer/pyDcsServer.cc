@@ -6,7 +6,6 @@ using namespace SDICOS;
 
 void export_DCSSERVER(py::module &m)
 {
-   py::class_<Network::IDcsServer>(m, "IDcsServer");
    py::class_<Network::DcsServer, Network::IDcsServer>(m, "DcsServer")
       .def(py::init<>())
       .def("SetReadTimeoutInMilliseconds", &Network::DcsServer::SetReadTimeoutInMilliseconds, py::arg("nTimeoutMilliseconds") = 1000)
