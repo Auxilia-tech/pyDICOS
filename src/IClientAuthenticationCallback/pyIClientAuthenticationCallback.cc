@@ -51,5 +51,29 @@ void export_ICLIENTAUTHENTIFICATIONCALLBACK(py::module &m)
       .def("ConnectedToClient", &Network::IClientAuthenticationCallback::ConnectedToClient, py::arg("sd"))
       .def("DisconnectedFromClient", &Network::IClientAuthenticationCallback::DisconnectedFromClient, py::arg("sd"))
       .def("DicosConnectionStarted", &Network::IClientAuthenticationCallback::DicosConnectionStarted, py::arg("sd"))
-      .def("DicosConnectionStopped", &Network::IClientAuthenticationCallback::DicosConnectionStopped, py::arg("sd"));
+      .def("DicosConnectionStopped", &Network::IClientAuthenticationCallback::DicosConnectionStopped, py::arg("sd"))
+
+      .def("OnAuthenticateUserName", py::overload_cast<const Utils::AuthenticationData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnAuthenticateUserName, py::const_),
+                                     py::arg("ad"))
+      .def("OnAuthenticateUserNameAndPasscode", py::overload_cast<const Utils::AuthenticationData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnAuthenticateUserNameAndPasscode, py::const_),
+                                     py::arg("ad"))
+      .def("OnAuthenticateClientApplicationName", py::overload_cast<const Utils::AuthenticationData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnAuthenticateClientApplicationName, py::const_),
+                                     py::arg("ad"))
+      .def("OnConnectedToClient", py::overload_cast<const Utils::SessionData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnConnectedToClient),
+                                     py::arg("sd"))
+      .def("OnDisconnectedFromClient", py::overload_cast<const Utils::SessionData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnDisconnectedFromClient),
+                                     py::arg("sd"))
+      .def("OnDicosConnectionStarted", py::overload_cast<const Utils::SessionData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnDicosConnectionStarted),
+                                     py::arg("sd")) 
+      .def("OnDicosConnectionStopped", py::overload_cast<const Utils::SessionData &>
+                                     (&PyPublicIClientAuthenticationCallback::OnDicosConnectionStopped),
+                                     py::arg("sd")); 
+
 }
+ 
