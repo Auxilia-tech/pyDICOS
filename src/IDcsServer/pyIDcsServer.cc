@@ -6,7 +6,7 @@ using namespace SDICOS;
 
 void export_IDCSSERVER(py::module &m)
 {
-     py::enum_<Network::IDcsServer::RESULT>(m, "RESULT")
+     py::enum_<Network::IDcsServer::RESULT>(m, "RESULT_IDCSSERVER")
         .value("enumResultUnknown", Network::IDcsServer::RESULT::enumResultUnknown)
         .value("enumResultNone", Network::IDcsServer::RESULT::enumResultNone)
         .value("enumResultBusy", Network::IDcsServer::RESULT::enumResultBusy)
@@ -34,8 +34,8 @@ void export_IDCSSERVER(py::module &m)
         .export_values();
 
      py::class_<Network::IDcsServer>(m, "IDcsServer")
-        .def_property_readonly_static("RESULT", [m](py::object) {
-            return m.attr("RESULT");
+        .def_property_readonly_static("RESULT_IDCSSERVER", [m](py::object) {
+            return m.attr("RESULT_IDCSSERVER");
         })  
         .def_property_readonly_static("RETRIEVE_METHOD", [m](py::object) {
             return m.attr("RETRIEVE_METHOD");
