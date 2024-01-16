@@ -42,7 +42,7 @@ public:
 };
 
 
-void export_ICLIENTAUTHENTIFICATIONCALLBACK(py::module &m)
+void export_ICLIENTAUTHENTICATIONCALLBACK(py::module &m)
 {
    py::class_<Network::IClientAuthenticationCallback>(m, "IClientAuthenticationCallback")
       .def("AuthenticateUserName", &Network::IClientAuthenticationCallback::AuthenticateUserName, py::arg("ad"))
