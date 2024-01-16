@@ -116,6 +116,7 @@ class PyPublicDataProcessing : public DataProcessing {
 public:
    using DataProcessing::OnReceiveDicosFileError;
    using DataProcessing::OnReceiveDicosFile;
+   using DataProcessing::OnReceiveDicosEcho;
     
 };
 
@@ -126,5 +127,40 @@ void export_DataProcessing(py::module &m)
       .def("OnReceiveDicosFileError", py::overload_cast<const SDICOS::ErrorLog&, const SDICOS::Utils::SessionData&>
                                       (&PyPublicDataProcessing::OnReceiveDicosFileError),
                                       py::arg("errorlog"), 
-                                      py::arg("sessiondata"));
+                                      py::arg("sessiondata"))
+
+      .def("OnReceiveDicosFile", py::overload_cast<SDICOS::Utils::DicosData<SDICOS::AttributeManager> &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosFile),
+                                      py::arg("manager"), 
+                                      py::arg("errorlog"))
+
+      .def("OnReceiveDicosFile", py::overload_cast<SDICOS::Utils::DicosData<SDICOS::CT> &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosFile),
+                                      py::arg("ct"), 
+                                      py::arg("errorlog"))
+
+      .def("OnReceiveDicosFile", py::overload_cast<SDICOS::Utils::DicosData<SDICOS::DX> &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosFile),
+                                      py::arg("dx"), 
+                                      py::arg("errorlog"))    
+
+      .def("OnReceiveDicosFile", py::overload_cast<SDICOS::Utils::DicosData<SDICOS::AIT2D> &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosFile),
+                                      py::arg("ait"), 
+                                      py::arg("errorlog"))
+
+      .def("OnReceiveDicosFile", py::overload_cast<SDICOS::Utils::DicosData<SDICOS::AIT3D> &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosFile),
+                                      py::arg("ait"), 
+                                      py::arg("errorlog"))     
+
+      .def("OnReceiveDicosFile", py::overload_cast<SDICOS::Utils::DicosData<SDICOS::TDR> &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosFile),
+                                      py::arg("tdr"), 
+                                      py::arg("errorlog"))    
+
+      .def("OnReceiveDicosEcho", py::overload_cast<const SDICOS::Utils::SessionData &, const SDICOS::ErrorLog &>
+                                      (&PyPublicDataProcessing::OnReceiveDicosEcho),
+                                      py::arg("sessiondata"), 
+                                      py::arg("errorlog"));                                                                                                                                                                                
 }
