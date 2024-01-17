@@ -35,7 +35,7 @@ void export_DCSCLIENT(py::module &m);
 void export_IDCSSERVER(py::module &m);
 void export_DCSSERVER(py::module &m);
 void export_IRECEIVECALLBACK(py::module &m);
-void export_DATAPROCESSING(py::module &m);
+void export_DataProcessingMultipleConnections(py::module &m);
 void export_ICLIENTAUTHENTICATIONCALLBACK(py::module &m);
 
 #endif
