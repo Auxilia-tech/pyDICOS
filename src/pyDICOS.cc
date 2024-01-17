@@ -62,4 +62,5 @@ PYBIND11_MODULE(pyDICOS, m)
    export_ICLIENTAUTHENTICATIONCALLBACK(m);
    export_AuthenticationCallbackConnectionsSpecificClientApplications(m);
    export_DataProcessingConnectionsSpecificClientApplications(m);
+   export_AuthenticationCallbackConnectionsFromClientsValidUserName(m);
 }
