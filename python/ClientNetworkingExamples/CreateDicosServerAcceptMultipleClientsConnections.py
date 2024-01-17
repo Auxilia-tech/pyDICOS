@@ -1,12 +1,12 @@
 
 from pyDICOS import DcsApplicationEntity
-from pyDICOS import DataProcessing
+from pyDICOS import DataProcessingMultipleConnections
 from pyDICOS import DcsServer
 from pyDICOS import IDcsServer
 
 
 def main():
-   icallback = DataProcessing()
+   icallback = DataProcessingMultipleConnections()
    server = DcsServer()
    server.SetPort(1000)
    server.SetApplicationName(DcsApplicationEntity("ServerExample"))

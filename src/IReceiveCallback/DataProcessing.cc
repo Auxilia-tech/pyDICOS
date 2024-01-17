@@ -1,7 +1,7 @@
 #include "DataProcessing.hh"
 
 
-void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::CT> &ct, const SDICOS::ErrorLog &errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::CT> &ct, const SDICOS::ErrorLog &errorlog)
 {
     // The following are a few examples of what to do with the data:
     // -Write to a file using the function 'ct->Write()'
@@ -28,7 +28,7 @@ void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::CT> &ct
 }
  
 // [User-Level API] Process all DX modalities received by the server
-void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::DX> &dx, const SDICOS::ErrorLog &errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::DX> &dx, const SDICOS::ErrorLog &errorlog)
 {
     // The following are a few examples of what to do with the data:
     // -Write to a file using the function 'dx->Write()'
@@ -38,7 +38,7 @@ void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::DX> &dx
 }
  
 // [User-Level API] Process all AIT 2D modalities received by the server
-void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT2D> &ait, const SDICOS::ErrorLog &errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT2D> &ait, const SDICOS::ErrorLog &errorlog)
 {
     // The following are a few examples of what to do with the data:
     // -Write to a file using the function 'ait->Write()'
@@ -47,7 +47,7 @@ void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT2D> 
 }
  
 // [User-Level API] Process all AIT 3D modalities received by the server
-void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT3D> &ait, const SDICOS::ErrorLog &errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT3D> &ait, const SDICOS::ErrorLog &errorlog)
 {
     // The following are a few examples of what to do with the data:
     // -Write to a file using the function 'ait->Write()'
@@ -57,7 +57,7 @@ void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AIT3D> 
 }
  
 // [User-Level API] Process all TDR modalities received by the server
-void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::TDR> &tdr, const SDICOS::ErrorLog &errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::TDR> &tdr, const SDICOS::ErrorLog &errorlog)
 {
     // The following are a few examples of what to do with the data:
     // -Write to a file using the function 'tdr->Write()'
@@ -68,7 +68,7 @@ void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::TDR> &t
  
 // This function is only called when an error occurred during the DICOS network session
 // that prevented any modalities from being processed. Overriding this function is required by any derived class.
-void DataProcessing::OnReceiveDicosFileError(const SDICOS::ErrorLog &errorlog, const SDICOS::Utils::SessionData &sessiondata)
+void DataProcessingMultipleConnections::OnReceiveDicosFileError(const SDICOS::ErrorLog &errorlog, const SDICOS::Utils::SessionData &sessiondata)
 {
     //Check the error log for errors and warnings with 'errorlog.GetErrorLog()'
     //or write error log to file 'errorlog.WriteLog()'
@@ -77,7 +77,7 @@ void DataProcessing::OnReceiveDicosFileError(const SDICOS::ErrorLog &errorlog, c
 }
  
 // This function is only called when the host receives a C-Echo from a client
-void DataProcessing::OnReceiveDicosEcho(const SDICOS::Utils::SessionData& sessiondata, const SDICOS::ErrorLog& errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosEcho(const SDICOS::Utils::SessionData& sessiondata, const SDICOS::ErrorLog& errorlog)
 {
     //Below are examples of how to identify which client sent the c-echo
     sessiondata.m_dsClientAppName;
@@ -86,7 +86,7 @@ void DataProcessing::OnReceiveDicosEcho(const SDICOS::Utils::SessionData& sessio
 }
  
 // [Tag-Level API] Process DICOS data at received by the server
-void DataProcessing::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AttributeManager> &manager, const SDICOS::ErrorLog &errorlog)
+void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosData<SDICOS::AttributeManager> &manager, const SDICOS::ErrorLog &errorlog)
 {
     // The following are a few examples of what to do with the data:
     // -Write to a file using the function 'manager->Write()'

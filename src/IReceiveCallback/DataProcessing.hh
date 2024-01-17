@@ -5,7 +5,7 @@
 
 using namespace SDICOS;
 
-class DataProcessing : public Network::IReceiveCallback
+class DataProcessingMultipleConnections : public Network::IReceiveCallback
 {
 public:
  
