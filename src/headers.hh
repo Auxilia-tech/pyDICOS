@@ -39,5 +39,6 @@ void export_DataProcessingMultipleConnections(py::module &m);
 void export_ICLIENTAUTHENTICATIONCALLBACK(py::module &m);
 void export_AuthenticationCallbackConnectionsSpecificClientApplications(py::module &m);
 void export_DataProcessingConnectionsSpecificClientApplications(py::module &m);
+void export_AuthenticationCallbackConnectionsFromClientsValidUserName(py::module &m);
 
 #endif
