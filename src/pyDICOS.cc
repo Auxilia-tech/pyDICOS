@@ -58,6 +58,6 @@ PYBIND11_MODULE(pyDICOS, m)
    export_IDCSSERVER(m);
    export_DCSSERVER(m);
    export_IRECEIVECALLBACK(m);
-   export_DATAPROCESSING(m);
+   export_DataProcessingMultipleConnections(m);
    export_ICLIENTAUTHENTICATIONCALLBACK(m);
 }
