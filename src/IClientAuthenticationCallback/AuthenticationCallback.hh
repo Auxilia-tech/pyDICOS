@@ -11,4 +11,11 @@ protected:
    virtual bool OnAuthenticateClientApplicationName(const SDICOS::Utils::AuthenticationData &ad)const;
 };
 
+class AuthenticationCallbackConnectionsFromClientsValidUserName : public Network::IClientAuthenticationCallback
+{
+protected:
+   virtual bool OnIsUserNameValid(const SDICOS::DcsString &dsUserName)const;
+};
+
+
 #endif

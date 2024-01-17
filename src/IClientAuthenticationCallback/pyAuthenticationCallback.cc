@@ -31,3 +31,31 @@ void export_AuthenticationCallbackConnectionsSpecificClientApplications(py::modu
             py::arg("ad"));
                                                                                                                                                              
 }
+
+
+
+class PyAuthenticationCallbackConnectionsFromClientsValidUserName : public AuthenticationCallbackConnectionsFromClientsValidUserName {
+public:
+   using AuthenticationCallbackConnectionsFromClientsValidUserName::AuthenticationCallbackConnectionsFromClientsValidUserName;
+   bool OnIsUserNameValid(const SDICOS::DcsString &dsUserName) const override { 
+      PYBIND11_OVERRIDE(bool,  AuthenticationCallbackConnectionsFromClientsValidUserName, OnIsUserNameValid, dsUserName); 
+    }
+};
+
+
+class PyPublicAuthenticationCallbackConnectionsFromClientsValidUserName : public AuthenticationCallbackConnectionsFromClientsValidUserName {
+public:
+   using AuthenticationCallbackConnectionsFromClientsValidUserName::OnIsUserNameValid;
+};
+
+
+void export_AuthenticationCallbackConnectionsFromClientsValidUserName(py::module &m)
+{
+   py::class_<AuthenticationCallbackConnectionsFromClientsValidUserName, Network::IClientAuthenticationCallback>(m, "SDICOS::AuthenticationCallbackConnectionsFromClientsValidUserName");
+   py::class_<PyAuthenticationCallbackConnectionsFromClientsValidUserName, AuthenticationCallbackConnectionsFromClientsValidUserName, Network::IClientAuthenticationCallback>(m, "AuthenticationCallbackConnectionsFromClientsValidUserName")
+      .def(py::init<>())
+      .def("OnIsUserNameValid", py::overload_cast<const SDICOS::DcsString&>
+            (&PyPublicAuthenticationCallbackConnectionsFromClientsValidUserName::OnIsUserNameValid, py::const_),
+            py::arg("dsUserName"));
+                                                                                                                                                             
+}
