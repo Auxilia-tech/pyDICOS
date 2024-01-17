@@ -37,8 +37,6 @@ protected:
     virtual void OnReceiveDicosFile(Utils::DicosData<AIT2D> &ait, const ErrorLog &errorlog);
     virtual void OnReceiveDicosFile(Utils::DicosData<AIT3D> &ait, const ErrorLog &errorlog);
     virtual void OnReceiveDicosFile(Utils::DicosData<TDR> &tdr, const ErrorLog &errorlog);
- 
-    virtual void OnReceiveDicosEcho(const Utils::SessionData& sessiondata, const ErrorLog& errorlog);
 };
 
 #endif
