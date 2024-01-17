@@ -23,8 +23,8 @@ public:
 
 void export_AuthenticationCallbackConnectionsSpecificClientApplications(py::module &m)
 {
-   py::class_<AuthenticationCallbackConnectionsSpecificClientApplications, Network::IClientAuthenticationCallback>(m, "SDICOS::AuthenticationCallbackConnectionsSpecificClientApplications");
-   py::class_<PyAuthenticationCallbackConnectionsSpecificClientApplications, AuthenticationCallbackConnectionsSpecificClientApplications, Network::IClientAuthenticationCallback>(m, "AuthenticationCallbackConnectsSpecClientApps")
+   py::class_<AuthenticationCallbackConnectionsSpecificClientApplications, Network::IClientAuthenticationCallback>(m, "SDICOS::AuthenticationCallbackConnectsSpecificClientApps");
+   py::class_<PyAuthenticationCallbackConnectionsSpecificClientApplications, AuthenticationCallbackConnectionsSpecificClientApplications, Network::IClientAuthenticationCallback>(m, "AuthenticationCallbackConnectsSpecificClientApps")
       .def(py::init<>())
       .def("OnAuthenticateClientApplicationName", py::overload_cast<const SDICOS::Utils::AuthenticationData&>
             (&PyPublicAuthenticationCallbackConnectionsSpecificClientApplications::OnAuthenticateClientApplicationName, py::const_),

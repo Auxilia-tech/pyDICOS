@@ -94,11 +94,6 @@ void DataProcessingMultipleConnections::OnReceiveDicosFile(SDICOS::Utils::DicosD
 }
 
 
-
-
-
-
-
  
 // This function is only called when an error occurred during the DICOS network session
 // that prevented any modalities from being processed. Overriding this function is required by any derived class.
