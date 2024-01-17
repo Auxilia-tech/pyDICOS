@@ -60,4 +60,5 @@ PYBIND11_MODULE(pyDICOS, m)
    export_IRECEIVECALLBACK(m);
    export_DataProcessingMultipleConnections(m);
    export_ICLIENTAUTHENTICATIONCALLBACK(m);
+   export_AuthenticationCallbackConnectionsSpecificClientApplications(m);
 }
