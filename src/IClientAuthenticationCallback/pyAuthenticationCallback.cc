@@ -59,3 +59,34 @@ void export_AuthenticationCallbackConnectionsFromClientsValidUserName(py::module
             py::arg("dsUserName"));
                                                                                                                                                              
 }
+
+
+
+
+
+
+class PyAuthenticationCallbackClientsPresentValidUserNamePasscode : public AuthenticationCallbackClientsPresentValidUserNamePasscode {
+public:
+   using AuthenticationCallbackClientsPresentValidUserNamePasscode::AuthenticationCallbackClientsPresentValidUserNamePasscode;
+   bool OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad) const override { 
+      PYBIND11_OVERRIDE(bool,  AuthenticationCallbackClientsPresentValidUserNamePasscode, OnAuthenticateUserNameAndPasscode, ad); 
+    }
+};
+
+
+class PyPublicAuthenticationCallbackClientsPresentValidUserNamePasscode : public AuthenticationCallbackClientsPresentValidUserNamePasscode {
+public:
+   using AuthenticationCallbackClientsPresentValidUserNamePasscode::OnAuthenticateUserNameAndPasscode;
+};
+
+
+void export_AuthenticationCallbackClientsPresentValidUserNamePasscode(py::module &m)
+{
+   py::class_<AuthenticationCallbackClientsPresentValidUserNamePasscode, Network::IClientAuthenticationCallback>(m, "SDICOS::AuthenticationCallbackClientsPresentValidUserNamePasscode");
+   py::class_<PyAuthenticationCallbackClientsPresentValidUserNamePasscode, AuthenticationCallbackClientsPresentValidUserNamePasscode, Network::IClientAuthenticationCallback>(m, "AuthenticationCallbackClientsPresentValidUserNamePasscode")
+      .def(py::init<>())
+      .def("OnAuthenticateUserNameAndPasscode", py::overload_cast<const SDICOS::Utils::AuthenticationData &>
+            (&PyPublicAuthenticationCallbackClientsPresentValidUserNamePasscode::OnAuthenticateUserNameAndPasscode, py::const_),
+            py::arg("ad"));
+                                                                                                                                                             
+}

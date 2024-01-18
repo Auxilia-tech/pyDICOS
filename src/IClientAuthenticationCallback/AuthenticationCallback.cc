@@ -14,3 +14,12 @@ bool AuthenticationCallbackConnectionsFromClientsValidUserName::OnIsUserNameVali
             dsUserName == SDICOS::DcsString("UserB") || //Allow clients with the user name "UserB"
             dsUserName == SDICOS::DcsString("UserC");   //Allow clients with the user name "UserC"
 }
+
+
+bool AuthenticationCallbackClientsPresentValidUserNamePasscode::OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad)const
+{
+ return (ad.m_dsUserName == SDICOS::DcsString("UserA") && ad.m_dsPasscode == SDICOS::DcsString("Pass0A")) ||
+        (ad.m_dsUserName == SDICOS::DcsString("UserB") && ad.m_dsPasscode == SDICOS::DcsString("Pass0B")) ||
+        (ad.m_dsUserName == SDICOS::DcsString("UserC") && ad.m_dsPasscode == SDICOS::DcsString("Pass0C"));
+}
+
