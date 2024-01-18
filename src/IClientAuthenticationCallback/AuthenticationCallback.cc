@@ -23,3 +23,20 @@ bool AuthenticationCallbackClientsPresentValidUserNamePasscode::OnAuthenticateUs
         (ad.m_dsUserName == SDICOS::DcsString("UserC") && ad.m_dsPasscode == SDICOS::DcsString("Pass0C"));
 }
 
+
+bool AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad)const
+{
+ return (ad.m_dsUserName == SDICOS::DcsString("UserA") && ad.m_dsPasscode == SDICOS::DcsString("Pass0A")) ||
+        (ad.m_dsUserName == SDICOS::DcsString("UserB") && ad.m_dsPasscode == SDICOS::DcsString("Pass0B")) ||
+        (ad.m_dsUserName == SDICOS::DcsString("UserC") && ad.m_dsPasscode == SDICOS::DcsString("Pass0C"));
+}
+
+bool AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::OnAuthenticateClientApplicationName(const SDICOS::Utils::AuthenticationData &ad)const
+{
+    return  ad.m_dsClientAppName == SDICOS::DcsString("ClientAppA") ||  //Allow connection from client with application name "ClientAppA"
+            ad.m_dsClientAppName == SDICOS::DcsString("ClientAppB") ||  //Allow connection from client with application name "ClientAppB"
+            ad.m_dsClientAppName == SDICOS::DcsString("ClientAppC") ||  //Allow connection from client with application name "ClientAppC"
+            ad.m_dsClientAppName == SDICOS::DcsString("ClientAppD");    //Allow connection from client with application name "ClientAppD"
+
+}
+

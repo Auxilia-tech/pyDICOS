@@ -41,5 +41,6 @@ void export_AuthenticationCallbackConnectionsSpecificClientApplications(py::modu
 void export_DataProcessingConnectionsSpecificClientApplications(py::module &m);
 void export_AuthenticationCallbackConnectionsFromClientsValidUserName(py::module &m);
 void export_AuthenticationCallbackClientsPresentValidUserNamePasscode(py::module &m);
+void export_AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode(py::module &m);
 
 #endif

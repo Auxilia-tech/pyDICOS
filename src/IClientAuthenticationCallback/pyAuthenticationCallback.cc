@@ -90,3 +90,40 @@ void export_AuthenticationCallbackClientsPresentValidUserNamePasscode(py::module
             py::arg("ad"));
                                                                                                                                                              
 }
+
+
+
+
+class PyAuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode : public AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode {
+public:
+   using AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode;
+   bool OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad) const override { 
+      PYBIND11_OVERRIDE(bool, AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode, OnAuthenticateUserNameAndPasscode, ad); 
+    }
+    bool OnAuthenticateClientApplicationName(const SDICOS::Utils::AuthenticationData &ad) const override { 
+      PYBIND11_OVERRIDE(bool, AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode, OnAuthenticateClientApplicationName, ad); 
+    }
+};
+
+
+class PyPublicAuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode : public AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode {
+public:
+   using AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::OnAuthenticateUserNameAndPasscode;
+   using AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::OnAuthenticateClientApplicationName;
+};
+
+
+void export_AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode(py::module &m)
+{
+   py::class_<AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode, Network::IClientAuthenticationCallback>(m, "SDICOS::AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode");
+   py::class_<PyAuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode, AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode, Network::IClientAuthenticationCallback>(m, "AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode")
+      .def(py::init<>())
+      .def("OnAuthenticateUserNameAndPasscode", py::overload_cast<const SDICOS::Utils::AuthenticationData &>
+            (&PyPublicAuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::OnAuthenticateUserNameAndPasscode, py::const_),
+            py::arg("ad"))
+
+      .def("OnAuthenticateClientApplicationName", py::overload_cast<const SDICOS::Utils::AuthenticationData&>
+            (&PyPublicAuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode::OnAuthenticateClientApplicationName, py::const_),
+            py::arg("ad"));
+                                                                                                                                                             
+}
