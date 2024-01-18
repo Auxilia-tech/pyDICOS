@@ -40,5 +40,6 @@ void export_ICLIENTAUTHENTICATIONCALLBACK(py::module &m);
 void export_AuthenticationCallbackConnectionsSpecificClientApplications(py::module &m);
 void export_DataProcessingConnectionsSpecificClientApplications(py::module &m);
 void export_AuthenticationCallbackConnectionsFromClientsValidUserName(py::module &m);
+void export_AuthenticationCallbackClientsPresentValidUserNamePasscode(py::module &m);
 
 #endif

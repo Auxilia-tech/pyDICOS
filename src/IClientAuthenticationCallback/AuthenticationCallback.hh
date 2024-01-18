@@ -18,4 +18,11 @@ protected:
 };
 
 
+class AuthenticationCallbackClientsPresentValidUserNamePasscode : public Network::IClientAuthenticationCallback
+{
+protected:
+   virtual bool OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad)const;
+};
+
+
 #endif
