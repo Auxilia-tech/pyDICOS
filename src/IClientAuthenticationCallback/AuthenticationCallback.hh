@@ -24,5 +24,12 @@ protected:
    virtual bool OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad)const;
 };
 
+class AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode : public Network::IClientAuthenticationCallback
+{
+protected:
+   virtual bool OnAuthenticateUserNameAndPasscode(const SDICOS::Utils::AuthenticationData &ad)const;
+   virtual bool OnAuthenticateClientApplicationName(const SDICOS::Utils::AuthenticationData &ad)const;
+};
+
 
 #endif
