@@ -1,0 +1,35 @@
+1 Errors
+----------------
+Error: ChilkatLog:
+  Connect_Socket:
+    ChilkatVersion: 9.5.0.91
+    Component successfully unlocked using purchased unlock code.
+    clsSocketConnect:
+      hostname: 1.1.1.1
+      port: 1000
+      tls: False
+      maxWaitMs: 2000
+      socket2Connect:
+        connect2:
+          connectSocket:
+            connect_ipv6_or_ipv4:
+              timeout waiting for connect to complete;
+              timeoutMs: 2000
+              failedWaitToConnect: Socket operation timeout.
+            --connect_ipv6_or_ipv4
+          --connectSocket
+          ConnectFailReason: Timeout
+          A few possible causes for a connection timeout are:
+          - The remote host is not reachable (perhaps a firewall is blocking the connection on the remote end).
+          - Your ISP is blocking the outbound connection (this is common for SMTP port 25).
+          - If your timeout is too short, then maybe the server is just too slow to accept the connection.
+        --connect2
+      --socket2Connect
+      Failed.
+    --clsSocketConnect
+    Failed.
+  --Connect_Socket
+--ChilkatLog
+
+
+No Warnings

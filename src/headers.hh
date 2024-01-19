@@ -31,5 +31,16 @@ void export_BITMAP(py::module &m);
 void export_DCSGUID(py::module &m);
 void export_SopClassUID(py::module &m);
 void export_GeneralSeriesModule(py::module &m);
+void export_DCSCLIENT(py::module &m);
+void export_IDCSSERVER(py::module &m);
+void export_DCSSERVER(py::module &m);
+void export_IRECEIVECALLBACK(py::module &m);
+void export_DataProcessingMultipleConnections(py::module &m);
+void export_ICLIENTAUTHENTICATIONCALLBACK(py::module &m);
+void export_AuthenticationCallbackConnectionsSpecificClientApplications(py::module &m);
+void export_DataProcessingConnectionsSpecificClientApplications(py::module &m);
+void export_AuthenticationCallbackConnectionsFromClientsValidUserName(py::module &m);
+void export_AuthenticationCallbackClientsPresentValidUserNamePasscode(py::module &m);
+void export_AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode(py::module &m);
 
 #endif

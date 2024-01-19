@@ -43,6 +43,21 @@ public:
     bool Write(MemoryFile &memfile, ErrorLog& errorLog, const DicosFile::TRANSFER_SYNTAX nTransferSyntax) const
               override {PYBIND11_OVERRIDE(bool,  CT, Write, memfile, errorLog, nTransferSyntax);}  
 
+    bool SendOverNetwork(const S_INT32 nPort, 
+                         const DcsString &dsIP, 
+                         const DcsApplicationEntity &aeSrcAppName, 
+                         const DcsApplicationEntity &aeDstAppName,
+                         ErrorLog &errorlog, 
+                         const DcsString &dsUserID,
+                         const DcsString dsPasscode)
+              override {PYBIND11_OVERRIDE(bool, CT, SendOverNetwork, nPort, dsIP, aeSrcAppName, aeDstAppName, errorlog, dsUserID, dsPasscode);}  
+
+    bool SendOverNetwork(SDICOS::Network::DcsClient &dclient, ErrorLog &errorlog)
+              override {PYBIND11_OVERRIDE(bool, CT, SendOverNetwork, dclient, errorlog);}  
+
+    S_UINT32 SendOverNetwork(SDICOS::Network::DcsClientManager &clientManager, ErrorLog &errorlog, std::vector< Network::DcsClientManager::ClientMetrics > &vSendTimes)
+              override {PYBIND11_OVERRIDE(S_UINT32, CT, SendOverNetwork, clientManager, errorlog, vSendTimes);}  
+
     IODCommon::MODALITY GetModality() const
               override {PYBIND11_OVERRIDE(IODCommon::MODALITY, CT, GetModality);}  
 
@@ -265,6 +280,34 @@ void export_CT(py::module &m)
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
         .def("GetModality", py::overload_cast<>(&PyCT::CT::GetModality, py::const_))
+
+        .def("SendOverNetwork", py::overload_cast<const S_INT32, 
+                                                  const DcsString&, 
+                                                  const DcsApplicationEntity&,
+                                                  const DcsApplicationEntity&,
+                                                  ErrorLog&,
+                                                  const DcsString&,
+                                                  const DcsString>
+                     (&PyCT::CT::SendOverNetwork), 
+                     py::arg("nPort"), 
+                     py::arg("dsIP"),
+                     py::arg("aeSrcAppName"),
+                     py::arg("aeDstAppName"), 
+                     py::arg("errorlog"),
+                     py::arg("dsUserID") = "",
+                     py::arg("dsPasscode") = "")
+        .def("SendOverNetwork", py::overload_cast<SDICOS::Network::DcsClient&, ErrorLog&>
+                     (&PyCT::CT::SendOverNetwork), 
+                     py::arg("dclient"), 
+                     py::arg("errorlog"))
+        .def("SendOverNetwork", py::overload_cast<SDICOS::Network::DcsClientManager&, ErrorLog&, std::vector< Network::DcsClientManager::ClientMetrics >&>
+                     (&PyCT::CT::SendOverNetwork), 
+                     py::arg("clientManager"), 
+                     py::arg("errorlog"),
+                     py::arg("vSendTimes"))
+
+        .def("GetModality", py::overload_cast<>(&PyCT::CT::GetModality, py::const_))
+        .def("FreeMemory", py::overload_cast<>(&PyCT::CT::FreeMemory))
         .def("GetNumberOfFilesToCreate", &CT::GetNumberOfFilesToCreate)
         .def("SetImageAcquisitionDateAndTime", &CT::SetImageAcquisitionDateAndTime, py::arg("strDate"), py::arg("strTime"))
         .def("GetImageAcquisitionDate", &CT::GetImageAcquisitionDate)
@@ -530,5 +573,7 @@ void export_CT(py::module &m)
         .def("GetSeriesDate", &IODCommon::GetSeriesDate)
         .def("GetSeriesTime", &IODCommon::GetSeriesTime)
         .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
+        .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus)
+        .def("SetFrameOfReferenceUID", &FrameOfReferenceUser::SetFrameOfReferenceUID);
         .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus);
 }
