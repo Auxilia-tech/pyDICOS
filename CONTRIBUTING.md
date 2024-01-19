@@ -20,8 +20,19 @@ That's it !
 
 ## Compiling
 
-To compile your custom code, run
+To compile your custom code, run in build folder:
 
 ```
-cmake
+cmake .. 
+```
+Then, run  
+```
+make
+```
+
+## Testing 
+To test the python scripts, run any example in python folder:
+
+```
+python file_name.py
 ```
