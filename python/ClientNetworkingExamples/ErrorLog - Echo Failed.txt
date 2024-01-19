@@ -1,0 +1,17 @@
+3 Errors
+----------------
+Error: Connection lost trying to send buffer across socket (SendPDUOnSocket). Socket error message: 
+ChilkatLog:
+  SendBytes:
+    ChilkatVersion: 9.5.0.91
+    sendBytes:
+      No connection is established
+    --sendBytes
+    Failed.
+  --SendBytes
+--ChilkatLog
+
+Error: Failed to send A-Associate-RQ
+Error: DICOS Session not started for C-Echo. Check username, password, app names. Server IP: 1.1.1.1 Port: 1000
+
+No Warnings

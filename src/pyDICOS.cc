@@ -72,4 +72,16 @@ PYBIND11_MODULE(pyDICOS, m)
    export_SopClassUID(m);
 
    export_GeneralSeriesModule(m);
+
+   export_DCSCLIENT(m);
+   export_IDCSSERVER(m);
+   export_DCSSERVER(m);
+   export_IRECEIVECALLBACK(m);
+   export_DataProcessingMultipleConnections(m);
+   export_ICLIENTAUTHENTICATIONCALLBACK(m);
+   export_AuthenticationCallbackConnectionsSpecificClientApplications(m);
+   export_DataProcessingConnectionsSpecificClientApplications(m);
+   export_AuthenticationCallbackConnectionsFromClientsValidUserName(m);
+   export_AuthenticationCallbackClientsPresentValidUserNamePasscode(m);
+   export_AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode(m);
 }
