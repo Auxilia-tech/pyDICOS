@@ -4,3 +4,4 @@ stratovan/
 .idea/
 pyDICOS.egg-info/
 dist/
+.so
