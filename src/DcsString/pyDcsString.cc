@@ -194,6 +194,7 @@ void export_DCSSTRING(py::module &m)
 
 
        py::class_<DcsShortString, DcsString>(m, "DcsShortString")
+    py::class_<DcsShortString, DcsString>(m, "DcsShortString")
         .def(py::init<>())
         .def(py::init<const char*>(), py::arg("pstr"))
         .def(py::init<const wchar_t*>(), py::arg("pstr"))
@@ -209,6 +210,12 @@ void export_DCSSTRING(py::module &m)
         .def("__ne__", (bool (DcsShortString::*)(const DcsString &) const) &DcsShortString::operator!=)
         .def("__ne__", (bool (DcsShortString::*)(const DcsShortString &) const) &DcsShortString::operator!=);
 
+    py::class_<DcsApplicationEntity, DcsString>(m , "DcsApplicationEntity")
+        .def(py::init<>())
+        .def(py::init<const char*>(), py::arg("pstr"))
+        .def(py::init<const wchar_t*>(), py::arg("pstr"))
+        .def(py::init<const DcsString&>(), py::arg("dcsstring"))
+        .def(py::init<const DcsApplicationEntity&>(), py::arg("dcsapplicationentity"));
 }
 
 
