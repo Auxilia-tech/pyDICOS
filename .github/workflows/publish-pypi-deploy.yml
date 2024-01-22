@@ -5,18 +5,19 @@ on:
     types: [ published ]
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        python-version: [ '3.11' ]
+        python-version: [ '3.10', '3.11' ]
+        bits : [ '64', '32' ]
     environment:
-      name: pypi
-      url: https://pypi.org/p/pydicom
+      name: test
+      url: https://test.pypi.org/p/pyDICOS
     permissions:
       id-token: write
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -26,17 +27,27 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Download DICOS installer
+      env:
+        AWS_DEFAULT_REGION: 'eu-west-3'
+        AWS_ACCESS_KEY_ID: ${{ secrets.GH_S3_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.GH_S3_AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws s3 cp s3://dicos-installer/sdicos_lin_ubuntu-20-${{ matrix.bits }}b_r20230925_${{ matrix.bits }}b.run installer.run
+
+    - name: Install DICOS
+      run: |
+        chmod +x installer.run
+        ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+        rm installer.run
+
     - name: Build package
-      # TODO : build
       run: |
         python -m pip install --upgrade pip
-
-    # TODO : deploy for windows also
+        pip install -r requirements.txt
+        python setup.py sdist bdist_wheel
 
     - name: Upload release to PyPI
-      # Note: in docs at https://github.com/pypa/gh-action-pypi-publish,
-      #  it is suggested to publish in its own job, using 'needs' to
-      #  ensure previous job succeeded, and artifact upload/download of
-      #  the dist folder.  That seems to be related mainly to multi-OS builds,
-      #  so done in same job here.
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
