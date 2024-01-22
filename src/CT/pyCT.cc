@@ -279,6 +279,7 @@ void export_CT(py::module &m)
                      py::arg("memfile"), 
                      py::arg("errorlog"),
                      py::arg("nTransferSyntax") = DicosFile::TRANSFER_SYNTAX::enumLosslessJPEG)
+        .def("GetModality", py::overload_cast<>(&PyCT::CT::GetModality, py::const_))
 
         .def("SendOverNetwork", py::overload_cast<const S_INT32, 
                                                   const DcsString&, 
@@ -573,5 +574,6 @@ void export_CT(py::module &m)
         .def("GetSeriesTime", &IODCommon::GetSeriesTime)
         .def("SetSeriesAcquisitionStatus", &IODCommon::SetSeriesAcquisitionStatus, py::arg("nStatus"))
         .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus)
-        .def("SetFrameOfReferenceUID", &FrameOfReferenceUser::SetFrameOfReferenceUID);
+        .def("SetFrameOfReferenceUID", &FrameOfReferenceUser::SetFrameOfReferenceUID)
+        .def("GetSeriesAcquisitionStatus", &IODCommon::GetSeriesAcquisitionStatus);
 }

@@ -1,24 +1,16 @@
 from pyDICOS import Filename
 from pyDICOS import ErrorLog
-from pyDICOS import CustomMemoryManager
 from pyDICOS import Section
 from pyDICOS import TDR
 from pyDICOS import CT
 from pyDICOS import Folder
-from pyDICOS import DcsString, DcsLongString, DcsShortString
-from pyDICOS import Array1DDcsLongString
+from pyDICOS import DcsLongString, DcsShortString
 from pyDICOS import CustomArray1DDcsLongString
 from pyDICOS import DcsDate
 from pyDICOS import DcsTime
-from pyDICOS import MemoryBuffer
-from pyDICOS import Array1DS_UINT16
-from pyDICOS import Array1DArray2DS_UINT16
-from pyDICOS import Array2DS_UINT16
 from pyDICOS import Vector3Dfloat
 from pyDICOS import Volume
-from pyDICOS import Array3DLargeS_UINT16
 from pyDICOS import Point3DS_UINT16
-from pyDICOS import DicosFileListing
 from pyDICOS import DcsLongText, DcsShortText
 from pyDICOS import DcsDateTime
 from pyDICOS import Point3Dfloat
@@ -33,9 +25,9 @@ import numpy as np
 
 def CreateNoThreatTDRForBaggageSimple():
     TDRInstanceNumber = 1234
-    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
-              TDR.TDR_TYPE.enumMachine,
-              TDRInstanceNumber)
+    #The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
+    #The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
+    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage, TDR.TDR_TYPE.enumMachine, TDRInstanceNumber)
     
     TDRCreationStartDate = DcsDate.Today()
     TDRCreationStartTime = DcsTime.Now()
@@ -44,6 +36,8 @@ def CreateNoThreatTDRForBaggageSimple():
     atrManufacturer = DcsLongString("Alchemy")
     atrVersion = DcsLongString("0.999")
 
+    #DcsLongString in CustomArray1DDcsLongString means that the type of the components of CustomArray1D is DcsLongString"
+    #the supported types of CustomArray1D us : DcsLongString
     ATR_Parameters = CustomArray1DDcsLongString(2)
     item1 = DcsLongString("-random=true")
     item2 = DcsLongString("-magic=true")
@@ -53,11 +47,13 @@ def CreateNoThreatTDRForBaggageSimple():
     
     tdr.SetImageScaleRepresentation(10.0)
 
+    #The ALARM_DECISION enumeration is situated in the binding code of the TDR Module.
     tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumClear)
     alarmDecisionDate = DcsDate(1944, 6, 6) 
     alarmDecisionTime = DcsTime(6, 30, 0, 0)
     tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
         
+    #The ABORT_FLAG enumeration is situated in the binding code of the TDR Module.
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
     uidSopInstanceCT = DcsUniqueIdentifier(DcsGUID.GenerateAsDecimalString())
     uidSopClassCT = DcsUniqueIdentifier(pyDICOS.GetCT())
@@ -82,16 +78,19 @@ def CreateNoThreatTDRForBaggageSimple():
                 return True 
             else:
                 print("TDR file loaded from", tdrFilename, "does not match original.")
+                print(errorlog.GetErrorLog().Get())
                 return False 
         else:
             print("Unable to read TDR file", tdrFilename)
-            print(errorlog)
+            print(errorlog.GetErrorLog().Get())
             return False
     return True       
 
 
 def CreateTDRForBaggageSimple():
     TDRInstanceNumber = 1234
+    #The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
+    #The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
     tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               TDR.TDR_TYPE.enumMachine,
               TDRInstanceNumber)
@@ -103,6 +102,8 @@ def CreateTDRForBaggageSimple():
     atrManufacturer = DcsLongString("Alchemy")
     atrVersion = DcsLongString("0.999")
     
+    #DcsLongString in CustomArray1DDcsLongString means that the type of the components of CustomArray1D is DcsLongString"
+    #the supported types of CustomArray1D us : DcsLongString
     ATR_Parameters = CustomArray1DDcsLongString(2)
     item1 = DcsLongString("-random=true")
     item2 = DcsLongString("-magic=true")
@@ -112,19 +113,25 @@ def CreateTDRForBaggageSimple():
     
     tdr.SetImageScaleRepresentation(10.0)
 
+    #The ALARM_DECISION enumeration is situated in the binding code of the TDR Module.
     tdr.SetAlarmDecision(TDR.ALARM_DECISION.enumClear)
     alarmDecisionDate = DcsDate(1944, 6, 6) 
     alarmDecisionTime = DcsTime(6, 30, 0, 0)
     tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
         
+    #The ABORT_FLAG enumeration is situated in the binding code of the TDR Module.
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
 
     tdr.SetTotalProcessingTimeInMS(500.0)
         
     PTOIdentifier0 = 9001
+    #The ThreatType enumeration is situated in the binding code of the TDR Module.
     tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
 
     threatDescription = DcsLongText("Flammable Liquid")
+    #The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
+    #The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
+    #The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
     tdr.AddPTOAssessment(PTOIdentifier0, 
                          TDR.ASSESSMENT_FLAG.enumThreat, 
                          TDR.THREAT_CATEGORY.enumProhibitedItem, 
@@ -180,23 +187,26 @@ def CreateTDRForBaggageSimple():
         print("Wrote file to", tdrFilename)
         tdrRead = TDR()
         errorlog = ErrorLog()
-
+        #You should set 'None' for the unused argument of the 'Read' function. 
         if tdrRead.Read(tdrFilename, errorlog, None): 
             if tdrRead == tdr:
                 print("Successfully read and compared TDR files")
                 return True 
             else:
                 print("TDR file loaded from", tdrFilename, "does not match original.")
+                print(errorlog.GetErrorLog().Get())
                 return False 
         else:
             print("Unable to read TDR file", tdrFilename)
-            print(errorlog)
+            print(errorlog.GetErrorLog().Get())
             return False
     return True        
 
 def CreateTDRWithMultiplePTOS():
 
     TDRInstanceNumber = 1234
+    #The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
+    #The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
     tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               TDR.TDR_TYPE.enumMachine,
               TDRInstanceNumber)
@@ -204,6 +214,7 @@ def CreateTDRWithMultiplePTOS():
     OOIIdentifier = DcsLongString("12345-35345324-6326342-345")
     tdr.SetOOIID(OOIIdentifier)
     tdr.SetOOIIDAssigningAuthority(DcsLongString("TSA"))
+    #The OBJECT_OF_INSPECTION_ID_TYPE enumeration is situated in the binding code of the TDR Module.
     tdr.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
 
 
@@ -214,6 +225,8 @@ def CreateTDRWithMultiplePTOS():
     atrManufacturer = DcsLongString("Alchemy")
     atrVersion = DcsLongString("0.999")
     
+    #DcsLongString in CustomArray1DDcsLongString means that the type of the components of CustomArray1D is DcsLongString"
+    #the supported types of CustomArray1D us : DcsLongString
     ATR_Parameters = CustomArray1DDcsLongString(2)
     item1 = DcsLongString("-random=true")
     item2 = DcsLongString("-magic=true")
@@ -228,6 +241,7 @@ def CreateTDRWithMultiplePTOS():
     alarmDecisionTime = DcsTime(6, 30, 0, 0)
     tdr.SetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime)
         
+    #The ABORT_FLAG enumeration is situated in the binding code of the TDR Module.
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
 
     tdr.SetTotalProcessingTimeInMS(float(500.0))
@@ -236,6 +250,9 @@ def CreateTDRWithMultiplePTOS():
     tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
 
     threatDescription = DcsLongText("Flammable Liquid")
+    #The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
+    #The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
+    #The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
     tdr.AddPTOAssessment(PTOIdentifier0, 
                          TDR.ASSESSMENT_FLAG.enumHighThreat, 
                          TDR.THREAT_CATEGORY.enumProhibitedItem, 
@@ -257,8 +274,12 @@ def CreateTDRWithMultiplePTOS():
     tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, float(0.0))
 
     PTOIdentifier1 = 2002
+    #The ThreatType enumeration is situated in the binding code of the TDR Module.
     tdr.AddPotentialThreatObject(PTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage)
 
+    #The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
+    #The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
+    #The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
     tdr.AddPTOAssessment(PTOIdentifier1, 
                         TDR.ASSESSMENT_FLAG.enumNoThreat,
                         TDR.THREAT_CATEGORY.enumAnomaly, 
@@ -276,6 +297,9 @@ def CreateTDRWithMultiplePTOS():
     
     tdr.SetPTOProcessingTime(PTOIdentifier1, dateTime, dateTime, float(0.0))
 
+    #float in Array1DPoint3D means that the type of the components of Array1DPoint3D is float
+    #the supported types of Array1DPoint3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+    #Array1DPoint3D means that the type of the components of Array1D is Point3D
     bp = Array1DPoint3Dfloat()
     bp.SetSize(3, False)
 
@@ -308,10 +332,11 @@ def CreateTDRWithMultiplePTOS():
                 return True 
             else:
                 print("TDR file loaded from", tdrFilename, "does not match original.")
+                print(errorlog.GetErrorLog().Get())
                 return False 
         else:
             print("Unable to read TDR file", tdrFilename)
-            print(errorlog)
+            print(errorlog.GetErrorLog().Get())
             return False
     return True        
     
@@ -333,19 +358,23 @@ def CreateCTAndLinkItToTDR():
 
     bRes = bRes and ct.SetImageAcquisitionDateAndTime(strDate, strTime)
     ct.SetBurnedInAnnotation(False);  
-
+    #The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
     bRes = bRes and ct.SetPhotometricInterpretation(CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
-
+    #The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
     bRes = bRes and ct.SetImageType(CT.OOI_IMAGE_CHARACTERISTICS.enumPhotoelectric)
     bRes = bRes and ct.SetImageAcquisitionDuration(5000)
     bRes = bRes and ct.SetContentDateAndTime(strDate, strTime)
     bRes = bRes and ct.SetOOIIDAssigningAuthority(DcsLongString("OOI ID Assigning Authority"))
+    #The OBJECT_OF_INSPECTION_ID_TYPE enumeration is situated in the binding code of the TDR Module.
     bRes = bRes and ct.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
+    #The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     bRes = bRes and ct.SetOOIType(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage)
     bRes = bRes and ct.SetScanID(DcsShortString("Scan ID"))
     bRes = bRes and ct.SetScanStartDateAndTime(strDate, strTime)
+    #The SCAN_TYPE enumeration is situated in the binding code of the CT Module.
     bRes = bRes and ct.SetScanType(CT.SCAN_TYPE.enumOperational)
     bRes = bRes and ct.SetSeriesDateAndTime(strDate, strTime)
+    #The ACQUISITION_STATUS enumeration is situated in the binding code of the GeneralSeriesModule Module.
     bRes = bRes and ct.SetSeriesAcquisitionStatus(GeneralSeriesModule.ACQUISITION_STATUS.enumSuccessful)
     bRes = bRes and ct.SetDeviceCalibrationDateAndTime(strDate, strTime)
     bRes = bRes and ct.SetDeviceSerialNumber(DcsLongString("123456987"))
@@ -360,6 +389,7 @@ def CreateCTAndLinkItToTDR():
     ct.SetNumberOfSections(1)
     psection = ct.GetSectionByIndex(0)
 
+    #The FILTER_MATERIAL enumeration is situated in the binding code of the Section Module.
     psection.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum); 
     psection.SetFocalSpotSizeInMM(10)
     psection.SetKVP(7000); 
@@ -369,6 +399,7 @@ def CreateCTAndLinkItToTDR():
 
     psection.SetPlaneOrientation(vecRowOrientation, vecColumnOrientation)
 
+    #The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
     psection.GetPixelData().Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 500, 500, 500)
     psection.GetPixelData().GetUnsigned16().Zero(0)
 
@@ -376,7 +407,8 @@ def CreateCTAndLinkItToTDR():
 
     psection.SetPositionInMM(ptFirstFrameTopLeft)
     psection.SetSpacingInMM(float(1.0), float(1.0), float(1.0))
-
+    #S_UINT16 in Point3DS_UINT16 means that the type of the components of Point3D is S_UINT16
+    #the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
     ptCenter = Point3DS_UINT16(250,250,250)
 
     nWhite = 0xFFFF
@@ -414,13 +446,17 @@ def CreateCTAndLinkItToTDR():
     tdr.GenerateSopInstanceUID()
 
     bRes = bRes and tdr.SetFrameOfReferenceUID(ct.GetFrameOfReferenceUID())
-
+    #The ThreatType enumeration is situated in the binding code of the TDR Module.
     bRes = bRes and tdr.AddPotentialThreatObject(nPTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage)
+    #The ThreatType enumeration is situated in the binding code of the TDR Module.
     bRes = bRes and tdr.AddPotentialThreatObject(nPTOIdentifier2, TDR.ThreatType.enumThreatTypeBaggage)
 
     bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier1, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
     bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier2, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
 
+    #The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
+    #The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
+    #The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
     bRes = bRes and tdr.AddPTOAssessment(nPTOIdentifier1, 
                                         TDR.ASSESSMENT_FLAG.enumThreat, 
                                         TDR.THREAT_CATEGORY.enumProhibitedItem, 
@@ -434,7 +470,10 @@ def CreateCTAndLinkItToTDR():
                                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
                                         DcsLongText(""), 
                                         float(-10))
- 
+    
+    #float in Array1DPoint3D means that the type of the components of Array1DPoint3D is float
+    #the supported types of Array1DPoint3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+    #Array1DPoint3D means that the type of the components of Array1D is Point3D
     bounds = Array1DPoint3Dfloat()
     bounds.SetSize(2, False)
     bounds[0].Set(-250, -250, -250)
