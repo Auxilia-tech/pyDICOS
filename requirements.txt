@@ -1,0 +1,4 @@
+numpy
+pybind11[global]
+cmake
+wheel

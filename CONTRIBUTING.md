@@ -6,29 +6,27 @@
 For new contributors, you need to install g++, cmake, and pybind11 before starting your development
 
 ```
-pip install cmake g++ pybind11
+pip install -r requirements.txt
 ```
 
-Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit).
-Then, you should launch the setup.sh script:
+Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit) in the `opt` folder.
+```
+chmod +x ./sdicos_lin_ubuntu-20-{version}.run
+./sdicos_lin_ubuntu-20-{version}.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+```
+Then, you should launch the setup.sh script :
  
 ```
 bash setup.sh
 ```
 
+To generate a python wheel :
+
+```
+python setup.py bdist_wheel
+```
+
 That's it !
-
-## Compiling
-
-To compile your custom code, run in build folder:
-
-```
-cmake .. 
-```
-Then, run  
-```
-make
-```
 
 ## Testing 
 To test the python scripts, run any example in python folder:
