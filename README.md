@@ -1,6 +1,7 @@
 # pyDICOS
 
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
+[![publish-pypi-deploy](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml/badge.svg)](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml)
 
 ## Motivations
 
@@ -21,9 +22,12 @@ We firmly believe that by releasing this library, we will encourage and support 
  - Provide a pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
    - [x] First releases : DICOS protocol, client/server functions
+   - [ ] Future release : library indexed in Pypi 
+   - [ ] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
    - [ ] Out of scope for now : Module and Tag level APIs
  - Stay up to date with Stratovan latest releases
+   - Currently tested and supported DICOS version : `v3`
 
 <div align="center">
 <img width="850" src="assets/DICOS.svg">
@@ -31,10 +35,35 @@ We firmly believe that by releasing this library, we will encourage and support 
 
 ## Install
 
-Using [pip](https://pip.pypa.io/en/stable/):
+### Building from source
+
+To setup the build environment, run the following command to install required dependencies
+
+```
+pip install -r requirements.txt
+```
+
+Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit) in the `opt` folder.
+```
+chmod +x ./sdicos_lin_ubuntu-20-{version}.run
+./sdicos_lin_ubuntu-20-{version}.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+```
+
+To generate a python wheel :
+
+```
+python setup.py bdist_wheel
+```
+
+The lib wheel should be produced in the `dist` folder
+
+### 🚧 Using Pypi index 🚧
+
+Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
 ```
 pip install pydicos
 ```
+This install method has not been released yet.
 
 ## Contributing
 
