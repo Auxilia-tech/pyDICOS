@@ -1,36 +1,21 @@
-
 # Contributing
 
-## Setup dev environment
+There are many ways in which you can contribute to this project, among which :
 
-For new contributors, you need to install g++, cmake, and pybind11 before starting your development
+- Reporting a bug
+- Discussing the current state of the code
+- Submitting a fix
+- Proposing a new feature
+- Becoming a maintainer
 
-```
-pip install -r requirements.txt
-```
+## Pull requests
 
-Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit) in the `opt` folder.
-```
-chmod +x ./sdicos_lin_ubuntu-20-{version}.run
-./sdicos_lin_ubuntu-20-{version}.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
-```
-Then, you should launch the setup.sh script :
- 
-```
-bash setup.sh
-```
+To allow your work to be integrated as seamlessly as possible, we advise you to:
 
-To generate a python wheel :
+- Verify your PR is **up-to-date** with `Auxilia-tech/pyDICOS` `main` branch. If your PR is behind you can update your code by clicking the 'Update branch' button or by running `git pull` and `git merge main` locally.
+- Verify pyDICOS Continuous Integration (CI) **checks are passing**.
+- Reduce changes to the absolute **minimum** required for your bug fix or feature addition.
 
-```
-python setup.py bdist_wheel
-```
+## License
 
-That's it !
-
-## Testing 
-To test the python scripts, run any example in python folder:
-
-```
-python file_name.py
-```
+By contributing, you agree that your contributions will be licensed under the [AGPL-3.0 license](https://choosealicense.com/licenses/agpl-3.0/)
