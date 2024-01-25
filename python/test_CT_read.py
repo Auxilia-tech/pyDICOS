@@ -4,8 +4,9 @@ from pyDICOS import ErrorLog
 from pyDICOS import Volume
 import numpy as np
 
-#This class can be utilized to load a CT object by either reading a CT file or using a provided CT object. 
-#The 'get_data' function returns a list of 2D NumPy arrays.
+
+# This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
+# The 'get_data' function returns a list of 2D NumPy arrays.
 class CTLoader:
     def __init__(self, filename=None, ct_object=None):
         self.depth_size = 0
@@ -14,11 +15,11 @@ class CTLoader:
         self.section_size = 0
         if filename is not None and ct_object is not None:
             raise ValueError("Cannot set both filename and CT object simultaneously.")
-        
+
         if filename is not None:
             self.ct_object = CT()
             self.load_file(filename)
-        
+
         elif ct_object is not None:
             self.ct_object = ct_object
             self.load_ct_object()
@@ -28,9 +29,9 @@ class CTLoader:
         if self.ct_object.Read(Filename(filename), errorlog_, None):
             print("Loaded CT from file")
         else:
-            print("Failed to load CT from file") 
-            print(errorlog_.GetErrorLog().Get())      
-    
+            print("Failed to load CT from file")
+            print(errorlog_.GetErrorLog().Get())
+
     def load_ct_object(self):
         print("Using provided CT object")
 
@@ -40,10 +41,10 @@ class CTLoader:
 
         sectionCount = 0
         while sectionIt != self.ct_object.End():
-            #get the section from CTObject iterator
+            # get the section from CTObject iterator
             pSection = sectionIt.deref()
             pixel_data_type = pSection.GetPixelDataType()
-            #The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
+            # The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
             if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
                 volume = pSection.GetPixelData()
                 self.depth_size = volume.GetDepth()
@@ -56,7 +57,7 @@ class CTLoader:
                     xyPlane = volume.GetUnsigned16()[i]
                     for j in range(xyPlane.GetHeight()):
                         for k in range(xyPlane.GetWidth()):
-                                data_array[i, j, k] = xyPlane.Get(j, k)
+                            data_array[i, j, k] = xyPlane.Get(j, k)
                 self.data_arrays.append(data_array)
             next(sectionIt)
             print(sectionCount)
@@ -82,7 +83,7 @@ def main():
             print(f"Section {idx + 1}:\n{data_array}")
     else:
         print("Failed to load CT")
-        print(errorlog_.GetErrorLog().Get())  
+        print(errorlog_.GetErrorLog().Get())
 
 
 if __name__ == "__main__":
