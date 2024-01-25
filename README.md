@@ -74,8 +74,8 @@ This install method has not been released yet.
 
 ### Script usage
 
-Refer to our [exemple files](https://github.com/Auxilia-tech/pyDICOS/python) to explore the binded methods.
-Methods from the stratovan exemple files were binded in python.
+Refer to our [exemple files](https://github.com/Auxilia-tech/pyDICOS/tests) to explore the binded methods.
+The stratovan exemple files were entirely translated in python.
 
 Here is a quick exemple for a script that reads a CT scan and rewrites it.
 

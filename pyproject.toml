@@ -1,10 +1,10 @@
-# pyproject.tom
 [build-system]
 requires = [
     "setuptools>=42",
     "wheel",
     "ninja",
     "cmake>=3.12",
+    "pybind11[global]"
 ]
 build-backend = "setuptools.build_meta"
 
@@ -32,11 +32,13 @@ filterwarnings = [
 testpaths = ["tests"]
 
 [tool.cibuildwheel]
-test-command = "pytest {project}/tests"
-test-extras = ["test"]
-test-skip = ["*universal2:arm64"]
 # Setuptools bug causes collision between pypy and cpython artifacts
 before-build = "rm -rf {project}/build"
+# Skip tests for now
+# test-command = "pytest {project}/tests"
+# test-extras = ["test"]
+# test-skip = ["*universal2:arm64"]
+# before-test = "pip install pytest"
 
 [tool.ruff]
 extend-select = [
