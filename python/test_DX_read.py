@@ -4,8 +4,9 @@ from pyDICOS import DX
 
 import numpy as np
 
-#This class can be utilized to load a DX object by either reading a DX file or using a provided DX object. 
-#The 'get_data' function returns 2D NumPy array.
+
+# This class can be utilized to load a DX object by either reading a DX file or using a provided DX object.
+# The 'get_data' function returns 2D NumPy array.
 class DXLoader:
     def __init__(self, filename=None, dx_object=None):
         self.height_size = 0
@@ -13,11 +14,11 @@ class DXLoader:
 
         if filename is not None and dx_object is not None:
             raise ValueError("Cannot set both filename and DX object simultaneously.")
-        
+
         if filename is not None:
             self.dx_object = DX()
             self.load_file(filename)
-        
+
         elif dx_object is not None:
             self.dx_object = dx_object
             self.load_dx_object()
@@ -27,17 +28,18 @@ class DXLoader:
         if self.dx_object.Read(Filename(filename), errorlog_, None):
             print("Loaded DX from file")
         else:
-            print("Failed to load DX from file") 
-            print(errorlog_.GetErrorLog().Get())         
-    
+            print("Failed to load DX from file")
+            print(errorlog_.GetErrorLog().Get())
+
     def load_dx_object(self):
         print("Using provided DX object")
 
     def get_data(self):
         imgPixelData = self.dx_object.GetXRayData()
         vIndexData = imgPixelData.GetUnsigned16()
-        array2d = np.array(vIndexData, copy = False)
+        array2d = np.array(vIndexData, copy=False)
         return array2d
+
 
 def main():
     # Example 1: Load DX from a file
@@ -55,9 +57,9 @@ def main():
         print(data)
     else:
         print("Failed to load DX")
-        print(errorlog_.GetErrorLog().Get())  
+        print(errorlog_.GetErrorLog().Get())
 
-    # Example 1: Load DX from a file
+        # Example 1: Load DX from a file
     filename = "DXFiles/SimplePresentationDX.dcs"
     dx_loader_file = DXLoader(filename=filename)
     data = dx_loader_file.get_data()
@@ -72,10 +74,9 @@ def main():
         print(data)
     else:
         print("Failed to load DX")
-        print(errorlog_.GetErrorLog().Get())  
+        print(errorlog_.GetErrorLog().Get())
 
-
-    # Example 1: Load DX from a file
+        # Example 1: Load DX from a file
     filename = "DXFiles/SimpleColorPaletteDX.dcs"
     dx_loader_file = DXLoader(filename=filename)
     data = dx_loader_file.get_data()
@@ -90,7 +91,8 @@ def main():
         print(data)
     else:
         print("Failed to load DX")
-        print(errorlog_.GetErrorLog().Get())  
+        print(errorlog_.GetErrorLog().Get())
+
 
 if __name__ == "__main__":
     main()
