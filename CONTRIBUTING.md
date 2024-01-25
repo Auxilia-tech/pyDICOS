@@ -18,4 +18,4 @@ To allow your work to be integrated as seamlessly as possible, we advise you to:
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [AGPL-3.0 license](https://choosealicense.com/licenses/agpl-3.0/)
+By contributing, you agree that your contributions will be licensed under the [MIT license](https://opensource.org/licenses/MIT)
