@@ -15,36 +15,36 @@ import numpy as np
 def GenerateCTSection(ct):
     ct.SetNumberOfSections(1)
     SectionObject = ct.GetSectionByIndex(0)
-    #The FILTER_MATERIAL enumeration is situated in the binding code of the Section Module.
+    # The FILTER_MATERIAL enumeration is situated in the binding code of the Section Module.
     SectionObject.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum)
     SectionObject.SetFocalSpotSizeInMM(10)
     SectionObject.SetKVP(7000)
     print(ct.GetNumberOfSections())
 
-    #float in Vector3Dfloat means that the type of the components of Vector3D is float"
-    #the supported types of Vector3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+    # float in Vector3Dfloat means that the type of the components of Vector3D is float"
+    # the supported types of Vector3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
     VecRowOrientation = Vector3Dfloat(1, 0, 0)
     VecColumnOrientation = Vector3Dfloat(0, 1, 0)
     SectionObject.SetPlaneOrientation(VecRowOrientation, VecColumnOrientation)
-    SectionObject.SetPositionInMM(-125,-125,125)
+    SectionObject.SetPositionInMM(-125, -125, 125)
 
     fColumnSpacing = 1.0
     fRowSpacing = 1.0
     fSliceSpacing = 1.0
-    fSliceThickness = 1.0 
+    fSliceThickness = 1.0
 
     SectionObject.SetSpacingInMM(fColumnSpacing, fRowSpacing, fSliceSpacing)
     SectionObject.SetSliceThickness(fSliceThickness)
 
     volume = SectionObject.GetPixelData()
-    #The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
+    # The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
     volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 256, 256, 256)
     Array3Dlarge = volume.GetUnsigned16()
     Array3Dlarge.Zero(0)
 
-    #S_UINT16 in Point3DS_UINT16 means that the type of the components of Point3D is S_UINT16"
-    #the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
-    ptCenter = Point3DS_UINT16(125,125,125)
+    # S_UINT16 in Point3DS_UINT16 means that the type of the components of Point3D is S_UINT16"
+    # the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+    ptCenter = Point3DS_UINT16(125, 125, 125)
 
     nWhite = 0xFFFF
     nGray256 = 0x0100
@@ -54,19 +54,19 @@ def GenerateCTSection(ct):
     curSlice = 0
 
     for ptPos.z in range(200):
-        pSlice = Array3Dlarge.GetSlice(curSlice) 
+        pSlice = Array3Dlarge.GetSlice(curSlice)
 
         for ptPos.y in range(20):
             for ptPos.x in range(50):
-                 pSlice.Set(ptPos.y, ptPos.x , nWhite)
+                pSlice.Set(ptPos.y, ptPos.x, nWhite)
         curSlice += 1
 
     curSlice = 0
     for ptPos.z in range(ptCenter.z - 40, ptCenter.z + 40):
-        pSlice = Array3Dlarge.GetSlice(curSlice) 
+        pSlice = Array3Dlarge.GetSlice(curSlice)
         for ptPos.y in range(ptCenter.y - 40, ptCenter.y + 40):
             for ptPos.x in range(ptCenter.x - 40, ptCenter.x + 40):
-                pSlice.Set(ptPos.y, ptPos.x , nGray256)
+                pSlice.Set(ptPos.y, ptPos.x, nGray256)
         curSlice += 1
 
     curSlice = 0
@@ -74,16 +74,16 @@ def GenerateCTSection(ct):
         pSlice = Array3Dlarge.GetSlice(curSlice)
         for ptPos.y in range(ptCenter.y - 5, ptCenter.y + 5):
             for ptPos.x in range(ptCenter.x + 41, ptCenter.x + 51):
-                pSlice.Set(ptPos.y, ptPos.x , nGray2048)
+                pSlice.Set(ptPos.y, ptPos.x, nGray2048)
         curSlice += 1
-    
+
     return ct
 
 
-#The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
-#The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
-#The IMAGE_FLAVOR enumeration is situated in the binding code of the CT Module.
-#The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
+# The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
+# The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
+# The IMAGE_FLAVOR enumeration is situated in the binding code of the CT Module.
+# The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
 CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
               CT.OOI_IMAGE_CHARACTERISTICS.enumHighEnergy,
               CT.IMAGE_FLAVOR.enumVolume,
@@ -110,8 +110,8 @@ for i in range(volume.GetSliceSize()):
     userData[i] = i & 0xFFFF
 
 for i in range(volume.GetDepth()):
-     xyPlane = sectionData[i]
-     for j in range(1, xyPlane.GetHeight()):
+    xyPlane = sectionData[i]
+    for j in range(1, xyPlane.GetHeight()):
         for k in range(1, xyPlane.GetWidth()):
             xyPlane.Set(j, k, userData[k + j * xyPlane.GetWidth()])
 
@@ -123,7 +123,7 @@ while volume_iterator != volume.End():
     cur_slice = volume_iterator.AsUnsigned16()
     cur_slice.Zero(slice_count)
     b_res = (cur_slice.GetWidth() == 128) and (cur_slice.GetHeight() == 129) and b_res
-    #we used next to increment the volume_iterator
+    # we used next to increment the volume_iterator
     next(volume_iterator)
     slice_count += 1
 
@@ -134,12 +134,11 @@ CTObject = GenerateCTSection(CTObject)
 totalSliceCount = CTObject.GetSectionByIndex(0).GetDepth()
 print(totalSliceCount)
 
-#S_UINT16 in Array3DLargeS_UINT16 means that the type of the components of Array3DLarge is S_UINT16"
-#the supported types of Array3DLarge are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
-#The VOLUME_MEMORY_POLICY enumeration is situated in the binding code of the CT Module.
+# S_UINT16 in Array3DLargeS_UINT16 means that the type of the components of Array3DLarge is S_UINT16"
+# the supported types of Array3DLarge are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+# The VOLUME_MEMORY_POLICY enumeration is situated in the binding code of the CT Module.
 vUnsigned16bitData = Array3DLargeS_UINT16(10, 20, 40, CT.VOLUME_MEMORY_POLICY.OWNS_SLICES)
 vUnsigned16bitData.Zero(0xbeef)
-
 
 pSection2 = CTObject.AddSection(vUnsigned16bitData, CT.VOLUME_MEMORY_POLICY.DOES_NOT_OWN_SLICES)
 b_res = (pSection2 is not None and b_res)
@@ -151,7 +150,7 @@ sectionIt = CTObject.Begin()
 sectionCount = 0
 slice_count = 0
 while sectionIt != CTObject.End():
-    #get the section from CTObject iterator
+    # get the section from CTObject iterator
     pSection = sectionIt.deref()
     pixel_data_type = pSection.GetPixelDataType()
     if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
@@ -166,22 +165,23 @@ while sectionIt != CTObject.End():
     sectionCount += 1
 
 b_res = ((0 != sectionCount) and b_res)
-if (sectionCount !=2) or (slice_count != totalSliceCount):
-    print('UserCTExample CreateCTSimple failed to verify sections and slices using iterator', sectionCount, slice_count, totalSliceCount)
+if (sectionCount != 2) or (slice_count != totalSliceCount):
+    print('UserCTExample CreateCTSimple failed to verify sections and slices using iterator', sectionCount, slice_count,
+          totalSliceCount)
 
 errorlog = ErrorLog()
 ctFolder = Folder("SimpleCT")
 ctFilename = Filename(ctFolder, "SimpleCT.dcs")
 
-#The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
-if CTObject.Write(ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit) != True :
+# The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
+if not CTObject.Write(ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit):
     print("Simple CT Template Example unable to write DICOS File", ctFilename)
-    print(errorlog.GetErrorLog().Get()) 
+    print(errorlog.GetErrorLog().Get())
 
 CTObject_c0 = CT()
 errorlog_c0 = ErrorLog()
 filename_c0 = Filename("SimpleCT/SimpleCT0000.dcs")
-#You should set 'None' for the unused argument of the 'Read' function.
+# You should set 'None' for the unused argument of the 'Read' function.
 if CTObject_c0.Read(filename_c0, errorlog_c0, None):
     print("Loaded CT0")
     section_size_c0 = CTObject_c0.GetNumberOfSections()
@@ -199,18 +199,18 @@ if CTObject_c0.Read(filename_c0, errorlog_c0, None):
             depth_size_c0 = volume_c0.GetDepth()
             xyPlane_c0 = volume_c0.GetUnsigned16()
             height_size_c0 = xyPlane_c0.GetHeight()
-            width_size_c0 = xyPlane_c0.GetWidth()                 
+            width_size_c0 = xyPlane_c0.GetWidth()
 
         next(sectionIt_c0)
 else:
     print("Failed to load SimpleCT0000")
-    print(errorlog.GetErrorLog().Get()) 
+    print(errorlog.GetErrorLog().Get())
 
 CTObject_c1 = CT()
 errorlog_c1 = ErrorLog()
 filename_c1 = Filename("SimpleCT/SimpleCT0001.dcs")
 
-#You should set 'None' for the unused argument of the 'Read' function.
+# You should set 'None' for the unused argument of the 'Read' function.
 if CTObject_c1.Read(filename_c1, errorlog_c1, None):
     print("Loaded CT1")
     sectionIt_c1 = CTObject_c1.Begin()
@@ -234,11 +234,10 @@ if CTObject_c1.Read(filename_c1, errorlog_c1, None):
         next(sectionIt_c1)
 else:
     print("Failed to load SimpleCT0001")
-    print(errorlog_c1.GetErrorLog().Get()) 
+    print(errorlog_c1.GetErrorLog().Get())
 
-print('Depth ', depth_size_c0, 'Height ', height_size_c0,  'Width ', width_size_c0, 'NB_Sections', section_size_c0)          
-print('Depth ', depth_size_c1, 'Height ', height_size_c1,  'Width ', width_size_c1, 'NB_Sections', section_size_c1)
-            
+print('Depth ', depth_size_c0, 'Height ', height_size_c0, 'Width ', width_size_c0, 'NB_Sections', section_size_c0)
+print('Depth ', depth_size_c1, 'Height ', height_size_c1, 'Width ', width_size_c1, 'NB_Sections', section_size_c1)
 
 if depth_size_c0 == 40 and height_size_c0 == 20 and width_size_c0 == 10 and section_size_c0 == 1:
     print("Simple CT Example original CT and read SimpleCT0000 are equal")
