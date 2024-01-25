@@ -7,10 +7,12 @@
 
 This project was initiated to enable the usage of DICOS data in machine learning workflows. 
 PyDICOS is intended to be a simple python wrapper of Stratovan's C++ [DICOS library](https://www.stratovan.com/products/dicos-toolkit).
-This project relies on [pybind11](https://github.com/pybind/pybind11) to wrap DICOS user-level API to python.
- It depends on numpy to load data in python and can easily be installed _via_ `pip`.
+Note that this is **NOT** an open source implementation of the DICOS standard.
 
-This project is unrelated to [pydicom](https://github.com/pydicom/pydicom) in its implementation and contributors, 
+PyDICOS relies on [pybind11](https://github.com/pybind/pybind11) to wrap DICOS user-level API to python.
+It depends on numpy to load data in python and can easily be installed _via_ `pip`.
+
+PyDICOS is unrelated to [pydicom](https://github.com/pydicom/pydicom) in its implementation and contributors, 
 while being similar in its core spirit (enabling python data manipulations).
 
 ## Open Architecture
@@ -22,16 +24,13 @@ We firmly believe that by releasing this library, we will encourage and support 
  - Provide a pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
    - [x] First releases : DICOS protocol, client/server functions
+   - [ ] Future release : simplified python function (shave off cpp args and interface)
    - [ ] Future release : library indexed in Pypi 
    - [ ] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
    - [ ] Out of scope for now : Module and Tag level APIs
  - Stay up to date with Stratovan latest releases
    - Currently tested and supported DICOS version : `v3`
-
-<div align="center">
-<img width="850" src="assets/DICOS.svg">
-</div>
 
 ## Install
 
@@ -55,7 +54,7 @@ To generate a python wheel :
 python setup.py bdist_wheel
 ```
 
-The lib wheel should be produced in the `dist` folder
+The lib wheel should be produced in the `dist` folder and can be installed _via_ `pip`.
 
 ### 🚧 Using Pypi index 🚧
 
@@ -64,6 +63,35 @@ Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
 pip install pydicos
 ```
 This install method has not been released yet.
+
+## Usage
+
+### Concept diagram
+
+<div align="center">
+<img width="850" src="assets/DICOS.svg">
+</div>
+
+### Script usage
+
+Refer to our [exemple files](https://github.com/Auxilia-tech/pyDICOS/python) to explore the binded methods.
+Methods from the stratovan exemple files were binded in python.
+
+Here is a quick exemple for a script that reads a CT scan and rewrites it.
+
+``` python
+from pyDICOS import CT, ErrorLog, Filename
+
+ct_object = CT()
+
+filename = "SimpleCT0000.dcs"
+errorlog_0 = ErrorLog()
+ct_object.Read(Filename(filename), errorlog_0, None)
+
+copy_filename = "SimpleCT0001.dcs"
+errorlog_1 = ErrorLog()
+ct_object.Write(Filename(copy_filename), errorlog_1, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit)
+```
 
 ## Contributing
 
@@ -79,25 +107,7 @@ Many thanks to our main contributors :
 
 ## License
 
-This software is released under the MIT license.
-
-    MIT License
-    Copyright (c) 2023 Auxilia
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+This software is released under the [MIT license](https://opensource.org/licenses/MIT).
 
 ### Stratovan inherited disclaimer
 
