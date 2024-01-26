@@ -24,7 +24,7 @@ import pyDICOS
 import numpy as np
 
 
-def CreateNoThreatTDRForBaggageSimple():
+def test_no_threat_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -64,31 +64,20 @@ def CreateNoThreatTDRForBaggageSimple():
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageNoThreatTDR.dcs")
 
-    if tdr.Write(tdrFilename, errorlog) != True:
-        print("Simple TDR Template Example unable to write DICOS File : ", tdrFilename)
-        print(errorlog.GetErrorLog().Get())
-        return False
-    else:
-        print("Wrote file to", tdrFilename)
-        tdrRead = TDR()
-        errorlog = ErrorLog()
+    assert tdr.Write(tdrFilename, errorlog), \
+        f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
-        if tdrRead.Read(tdrFilename, errorlog, None):
-            if tdrRead == tdr:
-                print("Successfully read and compared TDR files")
-                return True
-            else:
-                print("TDR file loaded from", tdrFilename, "does not match original.")
-                print(errorlog.GetErrorLog().Get())
-                return False
-        else:
-            print("Unable to read TDR file", tdrFilename)
-            print(errorlog.GetErrorLog().Get())
-            return False
-    return True
+    tdrRead = TDR()
+    errorlog = ErrorLog()
+
+    assert tdrRead.Read(tdrFilename, errorlog, None), \
+        f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+
+    assert tdrRead == tdr, \
+        f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def CreateTDRForBaggageSimple():
+def test_baggage_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -159,8 +148,8 @@ def CreateTDRForBaggageSimple():
                 else:
                     value = True
                 ptoMask.SetBit(w, h, d, value)
-                if value != ptoMask.GetBit(index):
-                    print("Failed to validate threat bitmask(", w, ",", h, ",", d, ")")
+                assert value == ptoMask.GetBit(index), \
+                    f"Failed to validate threat bitmask({w}, {h}, {d})"
 
     tdr.SetThreatRegionOfInterest(PTOIdentifier0,
                                   Point3Dfloat(12, 23, 45),
@@ -180,31 +169,20 @@ def CreateTDRForBaggageSimple():
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageTDR.dcs")
 
-    if tdr.Write(tdrFilename, errorlog) != True:
-        print("Simple TDR Template Example unable to write DICOS File : ", tdrFilename)
-        print(errorlog.GetErrorLog().Get())
-        return False
-    else:
-        print("Wrote file to", tdrFilename)
-        tdrRead = TDR()
-        errorlog = ErrorLog()
-        # You should set 'None' for the unused argument of the 'Read' function.
-        if tdrRead.Read(tdrFilename, errorlog, None):
-            if tdrRead == tdr:
-                print("Successfully read and compared TDR files")
-                return True
-            else:
-                print("TDR file loaded from", tdrFilename, "does not match original.")
-                print(errorlog.GetErrorLog().Get())
-                return False
-        else:
-            print("Unable to read TDR file", tdrFilename)
-            print(errorlog.GetErrorLog().Get())
-            return False
-    return True
+    assert tdr.Write(tdrFilename, errorlog), \
+        f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+
+    tdrRead = TDR()
+    errorlog = ErrorLog()
+
+    assert tdrRead.Read(tdrFilename, errorlog, None), \
+        f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+
+    assert tdrRead == tdr, \
+        f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def CreateTDRWithMultiplePTOS():
+def test_multiple_ptos_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -316,31 +294,21 @@ def CreateTDRWithMultiplePTOS():
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "MultiplePTOsTDR.dcs")
 
-    if tdr.Write(tdrFilename, errorlog) != True:
-        print("Simple TDR Template Example unable to write DICOS File : ", tdrFilename)
-        print(errorlog.GetErrorLog().Get())
-        return False
-    else:
-        print("Wrote file to", tdrFilename)
-        tdrRead = TDR()
-        errorlog = ErrorLog()
+    assert tdr.Write(tdrFilename, errorlog), \
+        f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
-        if tdrRead.Read(tdrFilename, errorlog, None):
-            if tdrRead == tdr:
-                print("Successfully read and compared TDR files")
-                return True
-            else:
-                print("TDR file loaded from", tdrFilename, "does not match original.")
-                print(errorlog.GetErrorLog().Get())
-                return False
-        else:
-            print("Unable to read TDR file", tdrFilename)
-            print(errorlog.GetErrorLog().Get())
-            return False
-    return True
+    tdrRead = TDR()
+    errorlog = ErrorLog()
+
+    assert tdrRead.Read(tdrFilename, errorlog, None), \
+        f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+
+    assert tdrRead == tdr, \
+        f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def CreateCTAndLinkItToTDR():
+
+def test_ct_linked_tdr():
     bRes = True
     ct = CT()
     tdr = TDR()
@@ -433,9 +401,7 @@ def CreateCTAndLinkItToTDR():
             for ptPos.x in range(ptCenter.x + 41, ptCenter.x + 51):
                 pSlice.Set(ptPos.y, ptPos.x, nWhite)
 
-    if (bRes == False):
-        print("Error setting CT values")
-        return 10
+    assert bRes, "Error setting CT values"
 
     bRes = True
 
@@ -537,8 +503,7 @@ def CreateCTAndLinkItToTDR():
     bRes = bRes and tdr.SetDeviceSoftwareVersion(DcsLongString("TDR software version"))
     bRes = bRes and tdr.SetSopInstanceCreationDateAndTime(strDate, strTime)
 
-    if bRes == False:
-        print("Error setting TDR values")
+    assert bRes, "Error setting TDR values"
 
     folder = Folder("CTwithTDR")
     filenameCT = Filename(folder, "CT.dcs")
@@ -547,30 +512,15 @@ def CreateCTAndLinkItToTDR():
     errorlogCT = ErrorLog()
     errorlogTDR = ErrorLog()
 
-    if ct.Write(filenameCT, errorlogCT) != True:
-        print("Failed writing CT (CTwithTDR): ", filenameCT)
-        print(errorlogCT.GetErrorLog().Get())
-        return 1
-    else:
-        print("CT write completed (CTwithTDR)")
+    assert ct.Write(filenameCT, errorlogCT), \
+        f"Failed writing CT (CTwithTDR) : {filenameCT}\n{errorlogCT.GetErrorLog().Get()}"
 
-    if tdr.Write(filenameTDR, errorlogTDR, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit) != True:
-        print("Failed writing TDR (CTwithTDR)")
-        print(errorlogTDR.GetErrorLog().Get())
-        return 2
-    else:
-        print("TDR write completed (CTwithTDR)")
-
-    if bRes == 0:
-        return 3
-
-
-def main():
-    CreateNoThreatTDRForBaggageSimple()
-    CreateTDRForBaggageSimple()
-    CreateTDRWithMultiplePTOS()
-    CreateCTAndLinkItToTDR()
+    assert tdr.Write(filenameTDR, errorlogTDR, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit), \
+        f"Failed writing TDR (CTwithTDR) : {filenameTDR}\n{errorlogTDR.GetErrorLog().Get()}"
 
 
 if __name__ == "__main__":
-    main()
+    test_no_threat_tdr()
+    test_baggage_tdr()
+    test_multiple_ptos_tdr()
+    test_ct_linked_tdr()
