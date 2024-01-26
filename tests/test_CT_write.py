@@ -128,7 +128,7 @@ def test_create_ct_files():
         next(volume_iterator)
         slice_count += 1
 
-    assert slice_count != 100 or not b_res, "UserCTExample CreateCTSimple failed to verify slice count using iterator. " \
+    assert slice_count == 100 or not b_res, "UserCTExample CreateCTSimple failed to verify slice count using iterator. " \
                                             "Expected 100, got " + str(slice_count)
 
     CTObject = GenerateCTSection(CTObject)
@@ -166,7 +166,7 @@ def test_create_ct_files():
         sectionCount += 1
 
     b_res = ((0 != sectionCount) and b_res)
-    assert (sectionCount != 2) or (slice_count != totalSliceCount), 'UserCTExample CreateCTSimple failed to verify sections and slices using iterator'
+    assert (sectionCount == 2) and (slice_count == totalSliceCount), 'UserCTExample CreateCTSimple failed to verify sections and slices using iterator'
 
     errorlog = ErrorLog()
     ctFolder = Folder("SimpleCT")
