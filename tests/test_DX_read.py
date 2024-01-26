@@ -71,5 +71,5 @@ if __name__ == "__main__":
     test_loading_from_file_processing()
     test_loading_from_object_presentation()
     test_loading_from_file_presentation()
-    test_loading_from_object_color_palette()
-    test_loading_from_file_color_palette()
+    test_loading_from_object_palette()
+    test_loading_from_file_palette()

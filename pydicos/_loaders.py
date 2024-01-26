@@ -88,6 +88,13 @@ class DXLoader:
             self.dx_object = dx_object
 
     def get_data(self):
+        """Get the data from the DX object.
+        
+        Returns
+        -------
+        data_array : numpy.ndarray
+            A 2D NumPy array.
+        """
         imgPixelData = self.dx_object.GetXRayData()
         vIndexData = imgPixelData.GetUnsigned16()
         array2d = np.array(vIndexData, copy=False)
