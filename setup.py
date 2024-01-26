@@ -3,7 +3,6 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-import pydicos
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
@@ -131,13 +130,14 @@ with open('README.md', 'r', encoding='utf-8') as f:
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pydicos",
-    version=pydicos.__version__,
+    version="0.1.0",
     license='MIT',
     author='Louis Combaldieu',
     author_email='louis.combaldieu@auxilia-tech.com',
     long_description=long_description,
     long_description_content_type='text/markdown',
     description='pyDICOS is a python package for working with DICOS files.',
+    packages=['pydicos'],
     ext_modules=[CMakeExtension("pyDICOS")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
