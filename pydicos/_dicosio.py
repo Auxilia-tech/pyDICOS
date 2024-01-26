@@ -1,5 +1,6 @@
 from pyDICOS import CT, DX, TDR, Filename, ErrorLog
 
+
 def read_dcs_ct(filename):
     """Read a DICOS file.
 

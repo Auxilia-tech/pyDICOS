@@ -6,7 +6,7 @@ import numpy as np
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
 # The 'get_data' function returns a list of 2D NumPy arrays.
 class CTLoader:
-    def __init__(self, filename:str=None, ct_object:CT=None):
+    def __init__(self, filename: str = None, ct_object: CT = None):
         """Initialize the CTLoader class.
 
         Parameters
@@ -61,12 +61,12 @@ class CTLoader:
             next(sectionIt)
             sectionCount += 1
         return data_arrays
-    
+
 
 # This class can be utilized to load a DX object by either reading a DX file or using a provided DX object.
 # The 'get_data' function returns 2D NumPy array.
 class DXLoader:
-    def __init__(self, filename:str=None, dx_object:DX=None):
+    def __init__(self, filename: str = None, dx_object: DX = None):
         """Initialize the DXLoader class.
 
         Parameters
