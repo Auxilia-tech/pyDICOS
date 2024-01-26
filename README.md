@@ -24,7 +24,7 @@ We firmly believe that by releasing this library, we will encourage and support 
  - Provide a pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
    - [x] First releases : DICOS protocol, client/server functions
-   - [ ] Future release : simplified python function (shave off cpp args and interface)
+   - [ ] Future release : more pure python functions to shave off heavy cpp signatures 
    - [ ] Future release : library indexed in Pypi 
    - [ ] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
@@ -80,7 +80,7 @@ The stratovan exemple files were entirely translated in python.
 Here is a quick exemple for a script that reads a CT and a DX scan.
 
 ``` python
-from pydicos import CTLoader
+from pydicos import CTLoader, DXLoader
 
 ct_object = CTLoader(filename="SimpleCT/SimpleCT.dcs")
 data = ct_object.get_data() # 3-dimentionnal numpy array
@@ -88,6 +88,26 @@ data = ct_object.get_data() # 3-dimentionnal numpy array
 dx_object = DXLoader(filename="DXFiles/SimpleDX.dcs")
 data = dx_object.get_data() # 2-dimentionnal numpy array
 ```
+
+More complex operations can be addressed by using the C++ functions directly. 
+They can be invoked using the `pyDICOS` modules. For example, the previous 
+script would look like this :
+
+``` python
+from pyDICOS import CT, DX, ErrorLog, Filename
+   
+ct, err, file = CT(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
+if not ct.Read(file, err, None):
+   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
+data = ... # This is very long, refer to pydicos._loaders::CTLoader.get_data for full script
+
+dx, err, file = DX(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
+if not dx.Read(file, err, None):
+   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
+data = np.array(dx.GetXRayData().GetUnsigned16(), copy=False)
+```
+As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures.
+More classes and functions examples are available in the `tests` folder.
 
 ## Contributing
 
