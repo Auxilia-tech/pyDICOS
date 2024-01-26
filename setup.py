@@ -138,7 +138,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     description='pyDICOS is a python package for working with DICOS files.',
-    packages=['pydicos'],
     ext_modules=[CMakeExtension("pyDICOS")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
