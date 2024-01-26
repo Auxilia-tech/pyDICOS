@@ -54,9 +54,8 @@ class CTLoader:
 
                 for i in range(volume.GetDepth()):
                     xyPlane = volume.GetUnsigned16()[i]
-                    for j in range(xyPlane.GetHeight()):
-                        for k in range(xyPlane.GetWidth()):
-                            data_array[i, j, k] = xyPlane.Get(j, k)
+                    data_array[i] = np.array(xyPlane, copy=False)
+
                 data_arrays.append(data_array)
             next(sectionIt)
             sectionCount += 1
