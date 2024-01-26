@@ -77,20 +77,16 @@ This install method has not been released yet.
 Refer to our [exemple files](https://github.com/Auxilia-tech/pyDICOS/tests) to explore the binded methods.
 The stratovan exemple files were entirely translated in python.
 
-Here is a quick exemple for a script that reads a CT scan and rewrites it.
+Here is a quick exemple for a script that reads a CT and a DX scan.
 
 ``` python
-from pyDICOS import CT, ErrorLog, Filename
+from pydicos import CTLoader
 
-ct_object = CT()
+ct_object = CTLoader(filename="SimpleCT/SimpleCT.dcs")
+data = ct_object.get_data() # 3-dimentionnal numpy array
 
-filename = "SimpleCT0000.dcs"
-errorlog_0 = ErrorLog()
-ct_object.Read(Filename(filename), errorlog_0, None)
-
-copy_filename = "SimpleCT0001.dcs"
-errorlog_1 = ErrorLog()
-ct_object.Write(Filename(copy_filename), errorlog_1, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit)
+dx_object = DXLoader(filename="DXFiles/SimpleDX.dcs")
+data = dx_object.get_data() # 2-dimentionnal numpy array
 ```
 
 ## Contributing

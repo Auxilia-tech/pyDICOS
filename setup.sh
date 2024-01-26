@@ -3,7 +3,7 @@ OS="`uname`"
 case $OS in
   'Linux')
     OS='Linux'
-    PACKAGE_COMMAND='python3 setup.py bdist'
+    PACKAGE_COMMAND='python3 setup.py bdist_wheel'
     ;;
   *) 
     OS='Unknown'

@@ -1,7 +1,9 @@
 from pydicos import CTLoader
 import numpy as np
+import pytest
 
 
+@pytest.mark.order(after="tests/test_CT_write.py::test_create_ct_files")
 def test_loading_from_file():
     # Example 1: Load CT from a file
     ct_object = CTLoader(filename="SimpleCT/SimpleCT0000.dcs")
@@ -11,6 +13,7 @@ def test_loading_from_file():
     assert np.all(data[0] == 48879)
 
 
+@pytest.mark.order(after="tests/test_CT_write.py::test_create_ct_files")
 def test_loading_from_object():
     # Example 2: Load CT from an existing CT object
     ct_object_1 = CTLoader(filename="SimpleCT/SimpleCT0000.dcs")

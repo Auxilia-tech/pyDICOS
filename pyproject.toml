@@ -34,11 +34,9 @@ testpaths = ["tests"]
 [tool.cibuildwheel]
 # Setuptools bug causes collision between pypy and cpython artifacts
 before-build = "rm -rf {project}/build"
-# Skip tests for now
-# test-command = "pytest {project}/tests"
-# test-extras = ["test"]
-# test-skip = ["*universal2:arm64"]
-# before-test = "pip install pytest"
+test-command = "pytest {project}/tests"
+test-skip = ["*universal2:arm64"]
+before-test = "pip install pytest pytest-order"
 
 [tool.ruff]
 extend-select = [
