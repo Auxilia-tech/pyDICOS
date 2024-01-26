@@ -19,7 +19,7 @@ def GenerateCTSection(ct):
     SectionObject.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum)
     SectionObject.SetFocalSpotSizeInMM(10)
     SectionObject.SetKVP(7000)
-    print(ct.GetNumberOfSections())
+    assert ct.GetNumberOfSections() == 1
 
     # float in Vector3Dfloat means that the type of the components of Vector3D is float"
     # the supported types of Vector3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
@@ -80,167 +80,165 @@ def GenerateCTSection(ct):
     return ct
 
 
-# The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
-# The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
-# The IMAGE_FLAVOR enumeration is situated in the binding code of the CT Module.
-# The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
-CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
-              CT.OOI_IMAGE_CHARACTERISTICS.enumHighEnergy,
-              CT.IMAGE_FLAVOR.enumVolume,
-              CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+def test_create_ct_files():
+    # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
+    # The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
+    # The IMAGE_FLAVOR enumeration is situated in the binding code of the CT Module.
+    # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
+    CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+                CT.OOI_IMAGE_CHARACTERISTICS.enumHighEnergy,
+                CT.IMAGE_FLAVOR.enumVolume,
+                CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
 
-CTObject.SetImageAcquisitionDuration(5.2)
-DCS = DcsLongString("HIGH ENERGY SCAN")
-CTObject.SetScanDescription(DCS)
-CTObject.SetNumberOfSections(1)
+    CTObject.SetImageAcquisitionDuration(5.2)
+    DCS = DcsLongString("HIGH ENERGY SCAN")
+    CTObject.SetScanDescription(DCS)
+    CTObject.SetNumberOfSections(1)
 
-SectionObject = CTObject.GetSectionByIndex(0)
-SectionObject.SetFocalSpotSizeInMM(1.414)
-VecRow = Vector3Dfloat(1, 0, 0)
-VecColumn = Vector3Dfloat(0, 1, 0)
-SectionObject.SetPlaneOrientation(VecRow, VecColumn)
-SectionObject.SetSlicingDirection(True)
-volume = SectionObject.GetPixelData()
-volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 128, 129, 100)
-sectionData = volume.GetUnsigned16()
+    SectionObject = CTObject.GetSectionByIndex(0)
+    SectionObject.SetFocalSpotSizeInMM(1.414)
+    VecRow = Vector3Dfloat(1, 0, 0)
+    VecColumn = Vector3Dfloat(0, 1, 0)
+    SectionObject.SetPlaneOrientation(VecRow, VecColumn)
+    SectionObject.SetSlicingDirection(True)
+    volume = SectionObject.GetPixelData()
+    volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 128, 129, 100)
+    sectionData = volume.GetUnsigned16()
 
-userData = np.zeros(volume.GetWidth() * volume.GetHeight(), dtype=np.uint16)
+    userData = np.zeros(volume.GetWidth() * volume.GetHeight(), dtype=np.uint16)
 
-for i in range(volume.GetSliceSize()):
-    userData[i] = i & 0xFFFF
+    for i in range(volume.GetSliceSize()):
+        userData[i] = i & 0xFFFF
 
-for i in range(volume.GetDepth()):
-    xyPlane = sectionData[i]
-    for j in range(1, xyPlane.GetHeight()):
-        for k in range(1, xyPlane.GetWidth()):
-            xyPlane.Set(j, k, userData[k + j * xyPlane.GetWidth()])
+    for i in range(volume.GetDepth()):
+        xyPlane = sectionData[i]
+        for j in range(1, xyPlane.GetHeight()):
+            for k in range(1, xyPlane.GetWidth()):
+                xyPlane.Set(j, k, userData[k + j * xyPlane.GetWidth()])
 
-slice_count = 0
-b_res = True
+    slice_count = 0
+    b_res = True
 
-volume_iterator = volume.Begin()
-while volume_iterator != volume.End():
-    cur_slice = volume_iterator.AsUnsigned16()
-    cur_slice.Zero(slice_count)
-    b_res = (cur_slice.GetWidth() == 128) and (cur_slice.GetHeight() == 129) and b_res
-    # we used next to increment the volume_iterator
-    next(volume_iterator)
-    slice_count += 1
+    volume_iterator = volume.Begin()
+    while volume_iterator != volume.End():
+        cur_slice = volume_iterator.AsUnsigned16()
+        cur_slice.Zero(slice_count)
+        b_res = (cur_slice.GetWidth() == 128) and (cur_slice.GetHeight() == 129) and b_res
+        # we used next to increment the volume_iterator
+        next(volume_iterator)
+        slice_count += 1
 
-if slice_count != 100 or not b_res:
-    print("UserCTExample CreateCTSimple failed to verify slice count using iterator. ", b_res)
+    assert slice_count != 100 or not b_res, "UserCTExample CreateCTSimple failed to verify slice count using iterator. " \
+                                            "Expected 100, got " + str(slice_count)
 
-CTObject = GenerateCTSection(CTObject)
-totalSliceCount = CTObject.GetSectionByIndex(0).GetDepth()
-print(totalSliceCount)
+    CTObject = GenerateCTSection(CTObject)
+    totalSliceCount = CTObject.GetSectionByIndex(0).GetDepth()
+    assert totalSliceCount == 256
 
-# S_UINT16 in Array3DLargeS_UINT16 means that the type of the components of Array3DLarge is S_UINT16"
-# the supported types of Array3DLarge are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
-# The VOLUME_MEMORY_POLICY enumeration is situated in the binding code of the CT Module.
-vUnsigned16bitData = Array3DLargeS_UINT16(10, 20, 40, CT.VOLUME_MEMORY_POLICY.OWNS_SLICES)
-vUnsigned16bitData.Zero(0xbeef)
+    # S_UINT16 in Array3DLargeS_UINT16 means that the type of the components of Array3DLarge is S_UINT16"
+    # the supported types of Array3DLarge are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
+    # The VOLUME_MEMORY_POLICY enumeration is situated in the binding code of the CT Module.
+    vUnsigned16bitData = Array3DLargeS_UINT16(10, 20, 40, CT.VOLUME_MEMORY_POLICY.OWNS_SLICES)
+    vUnsigned16bitData.Zero(0xbeef)
 
-pSection2 = CTObject.AddSection(vUnsigned16bitData, CT.VOLUME_MEMORY_POLICY.DOES_NOT_OWN_SLICES)
-b_res = (pSection2 is not None and b_res)
-print(b_res)
-totalSliceCount += pSection2.GetDepth()
-print(totalSliceCount)
+    pSection2 = CTObject.AddSection(vUnsigned16bitData, CT.VOLUME_MEMORY_POLICY.DOES_NOT_OWN_SLICES)
+    b_res = (pSection2 is not None and b_res)
+    assert b_res
+    totalSliceCount += pSection2.GetDepth()
+    assert totalSliceCount == 296
 
-sectionIt = CTObject.Begin()
-sectionCount = 0
-slice_count = 0
-while sectionIt != CTObject.End():
-    # get the section from CTObject iterator
-    pSection = sectionIt.deref()
-    pixel_data_type = pSection.GetPixelDataType()
-    if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
+    sectionIt = CTObject.Begin()
+    sectionCount = 0
+    slice_count = 0
+    while sectionIt != CTObject.End():
+        # get the section from CTObject iterator
+        pSection = sectionIt.deref()
+        pixel_data_type = pSection.GetPixelDataType()
+        if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
 
-        volume_iterator = pSection.GetPixelData().Begin()
-        while volume_iterator != pSection.GetPixelData().End():
-            cur_slice = volume_iterator.AsUnsigned16()
-            b_res = (cur_slice is not None) and b_res
-            next(volume_iterator)
-            slice_count += 1
-    next(sectionIt)
-    sectionCount += 1
+            volume_iterator = pSection.GetPixelData().Begin()
+            while volume_iterator != pSection.GetPixelData().End():
+                cur_slice = volume_iterator.AsUnsigned16()
+                b_res = (cur_slice is not None) and b_res
+                next(volume_iterator)
+                slice_count += 1
+        next(sectionIt)
+        sectionCount += 1
 
-b_res = ((0 != sectionCount) and b_res)
-if (sectionCount != 2) or (slice_count != totalSliceCount):
-    print('UserCTExample CreateCTSimple failed to verify sections and slices using iterator', sectionCount, slice_count,
-          totalSliceCount)
+    b_res = ((0 != sectionCount) and b_res)
+    assert (sectionCount != 2) or (slice_count != totalSliceCount), 'UserCTExample CreateCTSimple failed to verify sections and slices using iterator'
 
-errorlog = ErrorLog()
-ctFolder = Folder("SimpleCT")
-ctFilename = Filename(ctFolder, "SimpleCT.dcs")
+    errorlog = ErrorLog()
+    ctFolder = Folder("SimpleCT")
+    ctFilename = Filename(ctFolder, "SimpleCT.dcs")
 
-# The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
-if not CTObject.Write(ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit):
-    print("Simple CT Template Example unable to write DICOS File", ctFilename)
-    print(errorlog.GetErrorLog().Get())
+    # The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
+    assert CTObject.Write(ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit), \
+        f"UserCTExample CreateCTSimple unable to write DICOS File {ctFilename}\n{errorlog.GetErrorLog().Get()}"
 
-CTObject_c0 = CT()
-errorlog_c0 = ErrorLog()
-filename_c0 = Filename("SimpleCT/SimpleCT0000.dcs")
-# You should set 'None' for the unused argument of the 'Read' function.
-if CTObject_c0.Read(filename_c0, errorlog_c0, None):
-    print("Loaded CT0")
-    section_size_c0 = CTObject_c0.GetNumberOfSections()
-    depth_size_c0 = 0
-    height_size_c0 = 0
-    width_size_c0 = 0
+    CTObject_c0 = CT()
+    errorlog_c0 = ErrorLog()
+    filename_c0 = Filename("SimpleCT/SimpleCT0000.dcs")
+    # You should set 'None' for the unused argument of the 'Read' function.
+    if CTObject_c0.Read(filename_c0, errorlog_c0, None):
+        section_size_c0 = CTObject_c0.GetNumberOfSections()
+        depth_size_c0 = 0
+        height_size_c0 = 0
+        width_size_c0 = 0
 
-    sectionIt_c0 = CTObject_c0.Begin()
-    while sectionIt_c0 != CTObject_c0.End():
-        pSection_c0 = sectionIt_c0.deref()
-        pixel_data_type_c0 = pSection_c0.GetPixelDataType()
+        sectionIt_c0 = CTObject_c0.Begin()
+        while sectionIt_c0 != CTObject_c0.End():
+            pSection_c0 = sectionIt_c0.deref()
+            pixel_data_type_c0 = pSection_c0.GetPixelDataType()
 
-        if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type_c0:
-            volume_c0 = pSection_c0.GetPixelData()
-            depth_size_c0 = volume_c0.GetDepth()
-            xyPlane_c0 = volume_c0.GetUnsigned16()
-            height_size_c0 = xyPlane_c0.GetHeight()
-            width_size_c0 = xyPlane_c0.GetWidth()
+            if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type_c0:
+                volume_c0 = pSection_c0.GetPixelData()
+                depth_size_c0 = volume_c0.GetDepth()
+                xyPlane_c0 = volume_c0.GetUnsigned16()
+                height_size_c0 = xyPlane_c0.GetHeight()
+                width_size_c0 = xyPlane_c0.GetWidth()
 
-        next(sectionIt_c0)
-else:
-    print("Failed to load SimpleCT0000")
-    print(errorlog.GetErrorLog().Get())
+            next(sectionIt_c0)
+    else:
+        raise RuntimeError(f"Failed to load SimpleCT0000 \n{errorlog_c0.GetErrorLog().Get()}")
 
-CTObject_c1 = CT()
-errorlog_c1 = ErrorLog()
-filename_c1 = Filename("SimpleCT/SimpleCT0001.dcs")
+    CTObject_c1 = CT()
+    errorlog_c1 = ErrorLog()
+    filename_c1 = Filename("SimpleCT/SimpleCT0001.dcs")
 
-# You should set 'None' for the unused argument of the 'Read' function.
-if CTObject_c1.Read(filename_c1, errorlog_c1, None):
-    print("Loaded CT1")
-    sectionIt_c1 = CTObject_c1.Begin()
-    section_size_c1 = CTObject_c1.GetNumberOfSections()
-    depth_size_c1 = 0
-    height_size_c1 = 0
-    width_size_c1 = 0
+    # You should set 'None' for the unused argument of the 'Read' function.
+    if CTObject_c1.Read(filename_c1, errorlog_c1, None):
+        sectionIt_c1 = CTObject_c1.Begin()
+        section_size_c1 = CTObject_c1.GetNumberOfSections()
+        depth_size_c1 = 0
+        height_size_c1 = 0
+        width_size_c1 = 0
 
-    sectionIt_c1 = CTObject_c1.Begin()
-    while sectionIt_c1 != CTObject_c1.End():
-        pSection_c1 = sectionIt_c1.deref()
-        pixel_data_type_c1 = pSection_c1.GetPixelDataType()
+        sectionIt_c1 = CTObject_c1.Begin()
+        while sectionIt_c1 != CTObject_c1.End():
+            pSection_c1 = sectionIt_c1.deref()
+            pixel_data_type_c1 = pSection_c1.GetPixelDataType()
 
-        if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type_c1:
-            volume_c1 = pSection_c1.GetPixelData()
-            depth_size_c1 = volume_c1.GetDepth()
-            xyPlane_c1 = volume_c1.GetUnsigned16()
-            height_size_c1 = xyPlane_c1.GetHeight()
-            width_size_c1 = xyPlane_c1.GetWidth()
+            if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type_c1:
+                volume_c1 = pSection_c1.GetPixelData()
+                depth_size_c1 = volume_c1.GetDepth()
+                xyPlane_c1 = volume_c1.GetUnsigned16()
+                height_size_c1 = xyPlane_c1.GetHeight()
+                width_size_c1 = xyPlane_c1.GetWidth()
 
-        next(sectionIt_c1)
-else:
-    print("Failed to load SimpleCT0001")
-    print(errorlog_c1.GetErrorLog().Get())
+            next(sectionIt_c1)
+    else:
+        raise RuntimeError(f"Failed to load SimpleCT0001 \n{errorlog_c1.GetErrorLog().Get()}")
 
-print('Depth ', depth_size_c0, 'Height ', height_size_c0, 'Width ', width_size_c0, 'NB_Sections', section_size_c0)
-print('Depth ', depth_size_c1, 'Height ', height_size_c1, 'Width ', width_size_c1, 'NB_Sections', section_size_c1)
+    print('Depth ', depth_size_c0, 'Height ', height_size_c0, 'Width ', width_size_c0, 'NB_Sections', section_size_c0)
+    print('Depth ', depth_size_c1, 'Height ', height_size_c1, 'Width ', width_size_c1, 'NB_Sections', section_size_c1)
 
-if depth_size_c0 == 40 and height_size_c0 == 20 and width_size_c0 == 10 and section_size_c0 == 1:
-    print("Simple CT Example original CT and read SimpleCT0000 are equal")
+    assert depth_size_c0 == 40 and height_size_c0 == 20 and width_size_c0 == 10 and section_size_c0 == 1, \
+        "Simple CT Example original CT and read SimpleCT0000 are not equal"
 
-if depth_size_c1 == 256 and height_size_c1 == 256 and width_size_c1 == 256 and section_size_c1 == 1:
-    print("Simple CT Example original CT and read SimpleCT0001 are equal")
+    assert depth_size_c1 == 256 and height_size_c1 == 256 and width_size_c1 == 256 and section_size_c1 == 1, \
+        "Simple CT Example original CT and read SimpleCT0001 are not equal"
+
+
+if __name__ == "__main__":
+    test_create_ct_files()
