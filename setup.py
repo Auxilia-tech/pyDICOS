@@ -130,7 +130,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pydicos",
-    version="0.1.0",
+    version="0.1.1",
     license='MIT',
     author='Louis Combaldieu',
     author_email='louis.combaldieu@auxilia-tech.com',
