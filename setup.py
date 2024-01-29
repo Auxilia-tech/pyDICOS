@@ -126,11 +126,16 @@ class CMakeBuild(build_ext):
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
+with open("vedo/version.py", "r") as fh:
+    verstrline = fh.read()
+    verstr = verstrline.split("=")[1].replace("'", "").strip()
+
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pydicos",
-    version="0.1.1",
+    python_requires=">=3",
+    version=verstr,
     license='MIT',
     author='Louis Combaldieu',
     author_email='louis.combaldieu@auxilia-tech.com',
