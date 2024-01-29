@@ -97,4 +97,9 @@ def write_dcs(dcs, filename):
         The name of the file to write.
     """
     _err = ErrorLog()
-    dcs.Write(Filename(filename), _err, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit)
+    if type(dcs) == CT:
+        res = dcs.Write(Filename(filename), _err, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit)
+    else:
+        res = dcs.Write(Filename(filename), _err)
+    if not res:
+        raise RuntimeError(f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
