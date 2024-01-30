@@ -1,73 +1,8 @@
-from pyDICOS import CT, DX, TDR
-from pyDICOS import Volume, Array1DPoint3Dfloat, Point3Dfloat, DcsLongText, DcsLongString, DcsShortText, CustomArray1DDcsLongString, Bitmap
-from pyDICOS import DcsDateTime, DcsDate, DcsTime
-from ._dicosio import read_dcs, write_dcs
+from pyDICOS import CT, TDR, Volume, Bitmap, Array1DPoint3Dfloat, Point3Dfloat
+from pyDICOS import DcsDateTime, DcsDate, DcsTime, DcsLongText, DcsShortText
+from .TDR import TDRLoader
+from .._dicosio import read_dcs, write_dcs
 import numpy as np
-import os
-
-# Handles the ATR metadata.
-class ATRSettings:
-    def __init__(self, manufacturer, version, parameters) -> None:
-        """Initialize the ATR class.
-        
-        Parameters
-        ----------
-        manufacturer : str
-            The manufacturer of the ATR.
-        version : str
-            The version of the ATR.
-        parameters : dict
-            The parameters of the ATR. ex. {"threshold": "0.5", "quantized": "True"...}
-        """
-        self.manufacturer = DcsLongString(manufacturer)
-        self.version = DcsLongString(version)
-        self.parameters = CustomArray1DDcsLongString(len(parameters))
-        for i, (key, value) in enumerate(parameters.items()):
-            self.parameters.SetBuffer(i, DcsLongString(f"-{key}={value}"))
-
-class TDRLoader:
-    def __init__(self, filename: str = None, tdr_object: TDR = None) -> None:
-        """Initialize the TDRLoader class.
-
-        Parameters
-        ----------
-        filename : str, optional
-            The name of the file to read. The default is None.
-        tdr_object : TDR, optional
-            The TDR object to use. The default is None.
-        """
-        self.tdr_object = None
-
-        if filename is not None and tdr_object is not None:
-            raise ValueError("Cannot set both filename and TDR object simultaneously.")
-
-        if filename is not None:
-            self.tdr_object = read_dcs(filename, "TDR")
-
-        elif tdr_object is not None:
-            self.tdr_object = tdr_object
-
-    def write(self, filename :str) -> None:
-        """Writes the object to a file.
-
-        Parameters
-        ----------
-        filename : str
-            The name of the file to write.
-        """
-        write_dcs(self.tdr_object, filename=filename)
-
-    def set_ATR_metadata(self, atr: ATRSettings) -> None:
-        """Set the ATR metadata.
-        
-        Parameters
-        ----------
-        atr : ATRSettings
-            The ATR settings.
-        """
-        self.tdr_object.SetATRManufacturer(atr.manufacturer)
-        self.tdr_object.SetATRVersion(atr.version)
-        self.tdr_object.SetATRParameters(atr.parameters)
 
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
 # The 'get_data' function returns a list of 2D NumPy arrays.
@@ -92,6 +27,9 @@ class CTLoader:
 
         elif ct_object is not None:
             self.ct_object = ct_object
+
+        else:
+            self.ct_object = CT()
 
     def write(self, filename :str) -> None:
         """Writes the object to a file.
@@ -153,9 +91,6 @@ class CTLoader:
         output_file : str, optional
             The name of the file to write. The default is None.
         """
-        if output_file is None:
-            raise ValueError("Cannot write TDR file without a filename.")
-
         tdr = TDR()
         bRes = True
         bRes = bRes and tdr.SetOOIID(self.ct_object.GetOOIID())
@@ -207,69 +142,3 @@ class CTLoader:
             write_dcs(tdr, output_file)
         
         return TDRLoader(tdr_object=tdr)
-
-# This class can be utilized to load a DX object by either reading a DX file or using a provided DX object.
-# The 'get_data' function returns 2D NumPy array.
-class DXLoader:
-    def __init__(self, filename: str = None, dx_object: DX = None) -> None:
-        """Initialize the DXLoader class.
-
-        Parameters
-        ----------
-        filename : str, optional
-            The name of the file to read. The default is None.
-        ct_object : DX, optional
-            The DX object to use. The default is None.
-        """
-        self.dx_object = None
-
-        if filename is not None and dx_object is not None:
-            raise ValueError("Cannot set both filename and DX object simultaneously.")
-
-        if filename is not None:
-            self.dx_object = read_dcs(filename, "DX")
-
-        elif dx_object is not None:
-            self.dx_object = dx_object
-
-    def write(self, filename :str) -> None:
-        """Writes the object to a file.
-
-        Parameters
-        ----------
-        filename : str
-            The name of the file to write.
-        """
-        write_dcs(self.dx_object, filename=filename)
-
-    def get_data(self) -> np.ndarray:
-        """Get the data from the DX object.
-        
-        Returns
-        -------
-        data_array : numpy.ndarray
-            A 2D NumPy array.
-        """
-        imgPixelData = self.dx_object.GetXRayData()
-        vIndexData = imgPixelData.GetUnsigned16()
-        array2d = np.array(vIndexData, copy=False)
-        return array2d
-
-    # Note: This function is not implemented in the Stratovan Toolkit yet.
-    def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
-        """Generate a TDR file from the DX object and detections.
-        
-        Parameters
-        ----------
-        detection_boxes : list
-            A list of detection boxes.
-            A detection box is a dictionary with the following keys:
-                - "label": The label of the detection box.
-                - "point1": The first point of the detection box (top left).
-                - "point2": The second point of the detection box (bottom right).
-                - "confidence": The confidence of the detection box.
-        output_file : str, optional
-            The name of the file to write. The default is None.
-        """
-        return TDRLoader()
-    
