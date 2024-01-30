@@ -325,7 +325,7 @@ def test_ct_linked_tdr():
     ct.GenerateSeriesInstanceUID()
 
     bRes = bRes and ct.SetImageAcquisitionDateAndTime(strDate, strTime)
-    ct.SetBurnedInAnnotation(False);
+    ct.SetBurnedInAnnotation(False)
     # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
     bRes = bRes and ct.SetPhotometricInterpretation(CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
     # The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
@@ -358,9 +358,9 @@ def test_ct_linked_tdr():
     psection = ct.GetSectionByIndex(0)
 
     # The FILTER_MATERIAL enumeration is situated in the binding code of the Section Module.
-    psection.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum);
+    psection.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum)
     psection.SetFocalSpotSizeInMM(10)
-    psection.SetKVP(7000);
+    psection.SetKVP(7000)
 
     vecRowOrientation.Set(1, 0, 0)
     vecColumnOrientation.Set(0, 1, 0)
@@ -475,7 +475,7 @@ def test_ct_linked_tdr():
     bRes = bRes and tdr.SetProcessingEndTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
 
     bRes = bRes and tdr.SetInstanceNumber(0)
-    bRes = tdr.SetContentDateAndTime(strDate, strTime)
+    bRes = bRes and tdr.SetContentDateAndTime(strDate, strTime)
     bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
     bRes = bRes and tdr.SetTDRTypeATR(DcsLongString("ATR Manufacturer"), DcsLongString("ATR Version"))
 

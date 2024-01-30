@@ -2,7 +2,9 @@ build/
 .vscode/
 stratovan/
 .idea/
-pyDICOS.egg-info/
+pydicos.egg-info/
 dist/
 *.so
+*.pyc
+*.dcs
 venv
