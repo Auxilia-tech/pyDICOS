@@ -42,7 +42,7 @@ To setup the build environment, run the following command to install required de
 pip install -r requirements.txt
 ```
 
-Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit) in the `opt` folder.
+Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit) in the `opt` folder. If the library is already installed in another folder, skip this step and change the SDICOS path variable in `setup.sh`.
 ```
 chmod +x ./sdicos_lin_ubuntu-20-{version}.run
 ./sdicos_lin_ubuntu-20-{version}.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
@@ -51,7 +51,8 @@ chmod +x ./sdicos_lin_ubuntu-20-{version}.run
 To generate a python wheel :
 
 ```
-python setup.py bdist_wheel
+chmod +x setup.sh
+./setup.sh
 ```
 
 The lib wheel should be produced in the `dist` folder and can be installed _via_ `pip`.
