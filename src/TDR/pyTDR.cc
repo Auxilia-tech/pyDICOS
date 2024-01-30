@@ -428,7 +428,14 @@ void export_TDR(py::module &m)
                               py::arg("referencedSopClassUID"),
                               py::arg("referencedSopInstanceUID"),
                               py::arg("nRepresentation"))
+        .def("GetPTOIds", &TDR::GetPTOIds)
+        .def("GetPTOAssessmentDescription", py::overload_cast<const S_UINT16, const S_UINT16>
+                     (&PyTDR::TDR::GetPTOAssessmentDescription, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
+        .def("GetPTOAssessmentDescription", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentDescription, py::const_))
 
+        .def("GetPTOAssessmentProbability", py::overload_cast<const S_UINT16, const S_UINT16>
+                     (&PyTDR::TDR::GetPTOAssessmentProbability, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
+        .def("GetPTOAssessmentProbability", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentProbability, py::const_))
 
         .def("SetOOIID", &TDR::SetOOIID, py::arg("strID"))
         .def("GetOOIID", &TDR::GetOOIID)
