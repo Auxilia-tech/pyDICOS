@@ -1,6 +1,7 @@
 from pyDICOS import TDR, Bitmap, Point3Dfloat, DcsLongString, Array1DDcsLongString, Array1DS_UINT16
 from .ATR import ATRSettings
 from .._dicosio import read_dcs, write_dcs
+from ..utils.time import DicosDateTime
 import numpy as np
 
 # This class can be utilized to load a TDR object by either reading a TDR file or using a provided TDR object.
@@ -65,18 +66,29 @@ class TDRLoader:
 
         return atr
     
-    def get_data(self) -> list:
+    def get_data(self) -> dict:
         """Get the data from the TDR object.
         
         Returns
         -------
         data_arrays : list
-            A list of 2D NumPy arrays.
+            A dict of values.
+            The keys are:
+                - InstanceNumber : int, the instance number of the TDR.
+                - InstanceUID : str, the instance UniqueID of the TDR.
+                - ScanStartDateTime : dict, the scan start date and time.
+                - ScanType : int, the scan type.
+                - ImageScaleRepresentation : int, the image scale representation.
+                - ATR : dict, the ATR metadata.
+                - PTOs : list, the list of PTOs.
         """
         data = {"InstanceNumber": self.tdr_object.GetInstanceNumber(),
                 "InstanceUID": self.tdr_object.GetScanInstanceUID().Get(),
-                "StartDate": self.tdr_object.GetScanStartDate().Get(0, 0, 0)[1:],
-                "ATRData": self.get_ATR_metadata(),
+                "ScanStartDateTime": DicosDateTime(date=self.tdr_object.GetScanStartDate(), 
+                                                   time=self.tdr_object.GetScanStartTime()).as_dict(),
+                "ScanType": int(self.tdr_object.GetScanType()),
+                "ImageScaleRepresentation": self.tdr_object.GetImageScaleRepresentation(),
+                "ATR": self.get_ATR_metadata().as_dict(),
                 "PTOs": []}
         
         PTOIds = Array1DS_UINT16()
@@ -86,9 +98,10 @@ class TDRLoader:
             self.tdr_object.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
             data["PTOs"].append({"base": {"x" : PTOBase.x, "y" : PTOBase.y, "z" : PTOBase.z},
                                  "extent": {"x" : PTOExtent.x, "y" : PTOExtent.y, "z" : PTOExtent.z},
-                                 "bitmap": np.array(bitmap, copy=False),
+                                 "bitmap": np.array(bitmap.GetBitmap().GetData(), copy=False),
                                  "description": self.tdr_object.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
-                                 "probability": self.tdr_object.GetPTOAssessmentProbability(PTOIds[i], 0)
+                                 "probability": self.tdr_object.GetPTOAssessmentProbability(PTOIds[i], 0),
+                                 "ID": PTOIds[i]
                                  })
         
         return data
