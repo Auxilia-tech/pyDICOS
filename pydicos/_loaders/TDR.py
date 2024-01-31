@@ -1,4 +1,4 @@
-from pyDICOS import TDR, Bitmap, Point3Dfloat, DcsLongString, Array1DDcsLongString, Array1DS_UINT16, Array1DPoint3D
+from pyDICOS import TDR, Bitmap, Point3Dfloat, DcsLongString, Array1DDcsLongString, Array1DS_UINT16, Array1DPoint3Dfloat
 from .ATR import ATRSettings
 from .._dicosio import read_dcs, write_dcs
 from ..utils.time import DicosDateTime
@@ -95,10 +95,11 @@ class TDRLoader:
         
         PTOIds = Array1DS_UINT16()
         self.tdr_object.GetPTOIds(PTOIds)
-        PTOBase, PTOExtent, bitmap, polygon = Point3Dfloat(), Point3Dfloat(), Bitmap(), Array1DPoint3D()
+        PTOBase, PTOExtent, bitmap, polygon = Point3Dfloat(), Point3Dfloat(), Bitmap(), Array1DPoint3Dfloat()
         for i in range(PTOIds.GetSize()):
             self.tdr_object.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
-            self.tdr_object.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+            # TODO: debug the following line
+            # self.tdr_object.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
             data["PTOs"].append({"Base": {"x" : PTOBase.x, "y" : PTOBase.y, "z" : PTOBase.z},
                                  "Extent": {"x" : PTOExtent.x, "y" : PTOExtent.y, "z" : PTOExtent.z},
                                  "Bitmap": np.array(bitmap.GetBitmap().GetData(), copy=False),
