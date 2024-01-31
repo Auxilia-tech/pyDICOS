@@ -335,7 +335,16 @@ void export_TDR(py::module &m)
         .def("SetTotalProcessingTimeInMS", &TDR::SetTotalProcessingTimeInMS, py::arg("processingTime"))
         .def("GetTotalProcessingTimeInMS", &TDR::GetTotalProcessingTimeInMS)
 
-
+        .def("SetThreatBoundingPolygon", &TDR::SetThreatBoundingPolygon, 
+                                          py::arg("PTOIdentifier"), 
+                                          py::arg("controlPoints"),
+                                          py::arg("nRepresentation"))
+        .def("GetThreatBoundingPolygon", [](TDR &self, const S_UINT16 PTOIdentifier, 
+                                                        Array1D<Point3D<float>>& controlPoints, 
+                                                        const S_UINT16 nRepresentation) {
+            return std::make_tuple(self.GetThreatBoundingPolygon(PTOIdentifier, controlPoints, nRepresentation), controlPoints);
+            }, py::arg("PTOIdentifier"), py::arg("controlPoints"), py::arg("nRepresentation"))
+        
         .def("SetThreatRegionOfInterest", &TDR::SetThreatRegionOfInterest, 
                                           py::arg("PTOIdentifier"), 
                                           py::arg("ptoBase"),
