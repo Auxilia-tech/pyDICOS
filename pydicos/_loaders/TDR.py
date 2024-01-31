@@ -1,4 +1,4 @@
-from pyDICOS import TDR, Bitmap, Point3Dfloat, DcsLongString, Array1DDcsLongString, Array1DS_UINT16
+from pyDICOS import TDR, Bitmap, Point3Dfloat, DcsLongString, Array1DDcsLongString, Array1DS_UINT16, Array1DPoint3D
 from .ATR import ATRSettings
 from .._dicosio import read_dcs, write_dcs
 from ..utils.time import DicosDateTime
@@ -86,21 +86,25 @@ class TDRLoader:
                 "InstanceUID": self.tdr_object.GetScanInstanceUID().Get(),
                 "ScanStartDateTime": DicosDateTime(date=self.tdr_object.GetScanStartDate(), 
                                                    time=self.tdr_object.GetScanStartTime()).as_dict(),
-                "ScanType": int(self.tdr_object.GetScanType()),
+                "ProcessingTime": self.tdr_object.GetTotalProcessingTimeInMS(),
+                "ScanType": self.tdr_object.GetScanType(),
+                "AlarmDecision": self.tdr_object.GetAlarmDecision(),
                 "ImageScaleRepresentation": self.tdr_object.GetImageScaleRepresentation(),
                 "ATR": self.get_ATR_metadata().as_dict(),
                 "PTOs": []}
         
         PTOIds = Array1DS_UINT16()
         self.tdr_object.GetPTOIds(PTOIds)
-        PTOBase, PTOExtent, bitmap = Point3Dfloat(), Point3Dfloat(), Bitmap()
+        PTOBase, PTOExtent, bitmap, polygon = Point3Dfloat(), Point3Dfloat(), Bitmap(), Array1DPoint3D()
         for i in range(PTOIds.GetSize()):
             self.tdr_object.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
-            data["PTOs"].append({"base": {"x" : PTOBase.x, "y" : PTOBase.y, "z" : PTOBase.z},
-                                 "extent": {"x" : PTOExtent.x, "y" : PTOExtent.y, "z" : PTOExtent.z},
-                                 "bitmap": np.array(bitmap.GetBitmap().GetData(), copy=False),
-                                 "description": self.tdr_object.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
-                                 "probability": self.tdr_object.GetPTOAssessmentProbability(PTOIds[i], 0),
+            self.tdr_object.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+            data["PTOs"].append({"Base": {"x" : PTOBase.x, "y" : PTOBase.y, "z" : PTOBase.z},
+                                 "Extent": {"x" : PTOExtent.x, "y" : PTOExtent.y, "z" : PTOExtent.z},
+                                 "Bitmap": np.array(bitmap.GetBitmap().GetData(), copy=False),
+                                 "Description": self.tdr_object.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
+                                 "Probability": self.tdr_object.GetPTOAssessmentProbability(PTOIds[i], 0),
+                                 "Polygon": [{"x" : polygon[j].x, "y" : polygon[j].y, "z" : polygon[j].z} for j in range(polygon.GetSize())],
                                  "ID": PTOIds[i]
                                  })
         
