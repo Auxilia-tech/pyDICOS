@@ -6,30 +6,20 @@ import numpy as np
 
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
 # The 'get_data' function returns a list of 2D NumPy arrays.
-class CTLoader:
-    def __init__(self, filename: str = None, ct_object: CT = None) -> None:
+class CTLoader(CT):
+    def __init__(self, filename: str = None) -> None:
         """Initialize the CTLoader class.
 
         Parameters
         ----------
         filename : str, optional
-            The name of the file to read. The default is None.
-        ct_object : CT, optional
-            The CT object to use. The default is None.
+            The name of the file to read. 
+            The default is None and will create an empty CT.
         """
-        self.ct_object = None
-
-        if filename is not None and ct_object is not None:
-            raise ValueError("Cannot set both filename and CT object simultaneously.")
+        super().__init__()
 
         if filename is not None:
-            self.ct_object = read_dcs(filename, "CT")
-
-        elif ct_object is not None:
-            self.ct_object = ct_object
-
-        else:
-            self.ct_object = CT()
+            read_dcs(filename, dcs=self)
 
     def write(self, filename :str) -> None:
         """Writes the object to a file.
@@ -39,7 +29,7 @@ class CTLoader:
         filename : str
             The name of the file to write.
         """
-        write_dcs(self.ct_object, filename=filename)
+        write_dcs(self, filename=filename)
 
     def get_data(self) -> list:
         """Get the data from the CT object.
@@ -50,10 +40,10 @@ class CTLoader:
             A list of 3D NumPy arrays.
         """
         data_arrays = []
-        sectionIt = self.ct_object.Begin()
+        sectionIt = self.Begin()
 
         sectionCount = 0
-        while sectionIt != self.ct_object.End():
+        while sectionIt != self.End():
             # get the section from CTObject iterator
             pSection = sectionIt.deref()
             pixel_data_type = pSection.GetPixelDataType()
@@ -93,11 +83,11 @@ class CTLoader:
         """
         tdr = TDR()
         bRes = True
-        bRes = bRes and tdr.SetOOIID(self.ct_object.GetOOIID())
-        bRes = bRes and tdr.SetScanInstanceUID(self.ct_object.GetScanInstanceUID())
-        bRes = bRes and tdr.SetSeriesInstanceUID(self.ct_object.GetSeriesInstanceUID())
+        bRes = bRes and tdr.SetOOIID(self.GetOOIID())
+        bRes = bRes and tdr.SetScanInstanceUID(self.GetScanInstanceUID())
+        bRes = bRes and tdr.SetSeriesInstanceUID(self.GetSeriesInstanceUID())
         tdr.GenerateSopInstanceUID()
-        bRes = bRes and tdr.SetFrameOfReferenceUID(self.ct_object.GetFrameOfReferenceUID())
+        bRes = bRes and tdr.SetFrameOfReferenceUID(self.GetFrameOfReferenceUID())
         
         bounds = Array1DPoint3Dfloat()
         bounds.SetSize(2, False)
@@ -108,7 +98,7 @@ class CTLoader:
         for i, detection_box in enumerate(detection_boxes):
             bRes = bRes and tdr.AddPotentialThreatObject(i, TDR.ThreatType.enumThreatTypeBaggage)
             bRes = bRes and tdr.SetProcessingStartTime(i, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
-            bRes = bRes and tdr.AddReferencedInstance(i, self.ct_object.GetSopClassUID(), self.ct_object.GetSopInstanceUID(), 0)
+            bRes = bRes and tdr.AddReferencedInstance(i, self.GetSopClassUID(), self.GetSopInstanceUID(), 0)
             bRes = bRes and tdr.AddPTOAssessment(i,
                                          TDR.ASSESSMENT_FLAG.enumThreat,
                                          TDR.THREAT_CATEGORY.enumProhibitedItem,
