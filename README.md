@@ -98,20 +98,23 @@ They can be invoked using the `pyDICOS` modules. For example, the previous
 script would look like this :
 
 ``` python
-from pyDICOS import CT, DX, ErrorLog, Filename
+from pyDICOS import CT, DX, TDR, ErrorLog, Filename
    
 ct, err, file = CT(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
 if not ct.Read(file, err, None):
    raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
 data = ... # This is very long, refer to pydicos._loaders::CTLoader.get_data for full script
 
-dx, err, file = DX(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
+dx, err, file = DX(), ErrorLog(), Filename("SimpleCT/SimpleDX.dcs")
 if not dx.Read(file, err, None):
    raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
 data = np.array(dx.GetXRayData().GetUnsigned16(), copy=False)
+
+tdr, err, file = TDR(), ErrorLog(), Filename("SimpleTDR/SimpleDX.dcs")
+if not tdr.Read(file, err, None):
+   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
 ```
-As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures.
-More classes and functions examples are available in the `tests` folder.
+As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`
 
 ## Contributing
 
