@@ -5,30 +5,20 @@ from ..utils.time import DicosDateTime
 import numpy as np
 
 # This class can be utilized to load a TDR object by either reading a TDR file or using a provided TDR object.
-class TDRLoader:
-    def __init__(self, filename: str = None, tdr_object: TDR = None) -> None:
+class TDRLoader(TDR):
+    def __init__(self, filename: str = None) -> None:
         """Initialize the TDRLoader class.
 
         Parameters
         ----------
         filename : str, optional
-            The name of the file to read. The default is None.
-        tdr_object : TDR, optional
-            The TDR object to use. The default is None.
+            The name of the file to read. 
+            The default is None and will create an empty TDR.
         """
-        self.tdr_object = None
-
-        if filename is not None and tdr_object is not None:
-            raise ValueError("Cannot set both filename and TDR object simultaneously.")
+        super().__init__()
 
         if filename is not None:
-            self.tdr_object = read_dcs(filename, "TDR")
-
-        elif tdr_object is not None:
-            self.tdr_object = tdr_object
-
-        else:
-            self.tdr_object = TDR()
+            read_dcs(filename, dcs=self)
 
     def write(self, filename :str) -> None:
         """Writes the object to a file.
@@ -38,7 +28,7 @@ class TDRLoader:
         filename : str
             The name of the file to write.
         """
-        write_dcs(self.tdr_object, filename=filename)
+        write_dcs(self, filename=filename)
 
     def set_ATR_metadata(self, atr: ATRSettings) -> None:
         """Set the ATR metadata.
@@ -48,7 +38,7 @@ class TDRLoader:
         atr : ATRSettings
             The ATR settings.
         """
-        self.tdr_object.SetTDRTypeATR(atr.manufacturer, atr.version, atr.parameters)
+        self.SetTDRTypeATR(atr.manufacturer, atr.version, atr.parameters)
 
     def get_ATR_metadata(self) -> ATRSettings:
         """Get the ATR metadata.
@@ -58,7 +48,7 @@ class TDRLoader:
         atr : ATRSettings
             The ATR settings.
         """
-        meta = self.tdr_object.GetATRInfo(DcsLongString(), DcsLongString(), Array1DDcsLongString())
+        meta = self.GetATRInfo(DcsLongString(), DcsLongString(), Array1DDcsLongString())
         atr = ATRSettings()
         atr.manufacturer = meta[1]
         atr.version = meta[2]
@@ -82,29 +72,29 @@ class TDRLoader:
                 - ATR : dict, the ATR metadata.
                 - PTOs : list, the list of PTOs.
         """
-        data = {"InstanceNumber": self.tdr_object.GetInstanceNumber(),
-                "InstanceUID": self.tdr_object.GetScanInstanceUID().Get(),
-                "ScanStartDateTime": DicosDateTime(date=self.tdr_object.GetScanStartDate(), 
-                                                   time=self.tdr_object.GetScanStartTime()).as_dict(),
-                "ProcessingTime": self.tdr_object.GetTotalProcessingTimeInMS(),
-                "ScanType": self.tdr_object.GetScanType(),
-                "AlarmDecision": self.tdr_object.GetAlarmDecision(),
-                "ImageScaleRepresentation": self.tdr_object.GetImageScaleRepresentation(),
+        data = {"InstanceNumber": self.GetInstanceNumber(),
+                "InstanceUID": self.GetScanInstanceUID().Get(),
+                "ScanStartDateTime": DicosDateTime(date=self.GetScanStartDate(), 
+                                                   time=self.GetScanStartTime()).as_dict(),
+                "ProcessingTime": self.GetTotalProcessingTimeInMS(),
+                "ScanType": self.GetScanType(),
+                "AlarmDecision": self.GetAlarmDecision(),
+                "ImageScaleRepresentation": self.GetImageScaleRepresentation(),
                 "ATR": self.get_ATR_metadata().as_dict(),
                 "PTOs": []}
         
         PTOIds = Array1DS_UINT16()
-        self.tdr_object.GetPTOIds(PTOIds)
+        self.GetPTOIds(PTOIds)
         PTOBase, PTOExtent, bitmap, polygon = Point3Dfloat(), Point3Dfloat(), Bitmap(), Array1DPoint3Dfloat()
         for i in range(PTOIds.GetSize()):
-            self.tdr_object.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
+            self.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
             # TODO: debug the following line
-            # self.tdr_object.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+            # self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
             data["PTOs"].append({"Base": {"x" : PTOBase.x, "y" : PTOBase.y, "z" : PTOBase.z},
                                  "Extent": {"x" : PTOExtent.x, "y" : PTOExtent.y, "z" : PTOExtent.z},
                                  "Bitmap": np.array(bitmap.GetBitmap().GetData(), copy=False),
-                                 "Description": self.tdr_object.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
-                                 "Probability": self.tdr_object.GetPTOAssessmentProbability(PTOIds[i], 0),
+                                 "Description": self.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
+                                 "Probability": self.GetPTOAssessmentProbability(PTOIds[i], 0),
                                  "Polygon": [{"x" : polygon[j].x, "y" : polygon[j].y, "z" : polygon[j].z} for j in range(polygon.GetSize())],
                                  "ID": PTOIds[i]
                                  })
@@ -119,4 +109,4 @@ class TDRLoader:
         int
             The number of PTO.
         """
-        return self.tdr_object.GetNumPTOs()
+        return self.GetNumPTOs()
