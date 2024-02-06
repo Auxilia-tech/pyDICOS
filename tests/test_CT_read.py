@@ -1,6 +1,7 @@
-from pydicos import CTLoader
 import numpy as np
 import pytest
+
+from pydicos import CTLoader
 
 
 @pytest.mark.order(after="tests/test_CT_write.py::test_create_ct_files")

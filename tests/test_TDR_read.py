@@ -1,6 +1,6 @@
-from pydicos import TDRLoader
-import numpy as np
 import pytest
+
+from pydicos import TDRLoader
 
 
 @pytest.mark.order(after="tests/test_TDR_example.py::test_no_threat_tdr")

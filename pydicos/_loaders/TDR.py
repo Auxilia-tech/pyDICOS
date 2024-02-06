@@ -1,8 +1,18 @@
-from pyDICOS import TDR, Bitmap, Point3Dfloat, DcsLongString, Array1DDcsLongString, Array1DS_UINT16, Array1DPoint3Dfloat
-from .ATR import ATRSettings
+import numpy as np
+from pyDICOS import (
+    TDR,
+    Array1DDcsLongString,
+    Array1DPoint3Dfloat,
+    Array1DS_UINT16,
+    Bitmap,
+    DcsLongString,
+    Point3Dfloat,
+)
+
 from .._dicosio import read_dcs, write_dcs
 from ..utils.time import DicosDateTime
-import numpy as np
+from .ATR import ATRSettings
+
 
 # This class can be utilized to load a TDR object by either reading a TDR file or using a provided TDR object.
 class TDRLoader(TDR):

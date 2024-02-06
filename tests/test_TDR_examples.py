@@ -1,27 +1,29 @@
-from pyDICOS import Filename
-from pyDICOS import ErrorLog
-from pyDICOS import Section
-from pyDICOS import TDR
-from pyDICOS import CT
-from pyDICOS import Folder
-from pyDICOS import DcsLongString, DcsShortString
-from pyDICOS import CustomArray1DDcsLongString
-from pyDICOS import DcsDate
-from pyDICOS import DcsTime
-from pyDICOS import Vector3Dfloat
-from pyDICOS import Volume
-from pyDICOS import Point3DS_UINT16
-from pyDICOS import DcsLongText, DcsShortText
-from pyDICOS import DcsDateTime
-from pyDICOS import Point3Dfloat
-from pyDICOS import Bitmap
-from pyDICOS import DcsUniqueIdentifier
-from pyDICOS import DcsGUID
-from pyDICOS import Array1DPoint3Dfloat
-from pyDICOS import GeneralSeriesModule
 import pyDICOS
-
-import numpy as np
+from pyDICOS import (
+    CT,
+    TDR,
+    Array1DPoint3Dfloat,
+    Bitmap,
+    CustomArray1DDcsLongString,
+    DcsDate,
+    DcsDateTime,
+    DcsGUID,
+    DcsLongString,
+    DcsLongText,
+    DcsShortString,
+    DcsShortText,
+    DcsTime,
+    DcsUniqueIdentifier,
+    ErrorLog,
+    Filename,
+    Folder,
+    GeneralSeriesModule,
+    Point3Dfloat,
+    Point3DS_UINT16,
+    Section,
+    Vector3Dfloat,
+    Volume,
+)
 
 
 def test_no_threat_tdr():
@@ -159,7 +161,7 @@ def test_baggage_tdr():
 
     dateTime = DcsDateTime()
     dateTime.SetNow()
-    tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, float(0.0))
+    tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, 0.0)
 
     CTReferenceUID = DcsUniqueIdentifier("1235.23456.568678.34546")
     uidSopClassCT = DcsUniqueIdentifier(pyDICOS.GetCT())
@@ -222,7 +224,7 @@ def test_multiple_ptos_tdr():
     # The ABORT_FLAG enumeration is situated in the binding code of the TDR Module.
     tdr.SetAbortFlag(TDR.ABORT_FLAG.enumSuccess)
 
-    tdr.SetTotalProcessingTimeInMS(float(500.0))
+    tdr.SetTotalProcessingTimeInMS(500.0)
 
     PTOIdentifier0 = 9001
     tdr.AddPotentialThreatObject(PTOIdentifier0, TDR.ThreatType.enumThreatTypeBaggage)
@@ -238,7 +240,7 @@ def test_multiple_ptos_tdr():
                          threatDescription,
                          -1.0)
 
-    tdr.SetBaggagePTODetails(PTOIdentifier0, float(50.0), float(7000.0), 0)
+    tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
 
     tdr.SetThreatRegionOfInterest(PTOIdentifier0,
                                   Point3Dfloat(12, 23, 45),
@@ -248,7 +250,7 @@ def test_multiple_ptos_tdr():
 
     dateTime = DcsDateTime()
     dateTime.SetNow()
-    tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, float(0.0))
+    tdr.SetPTOProcessingTime(PTOIdentifier0, dateTime, dateTime, 0.0)
 
     PTOIdentifier1 = 2002
     # The ThreatType enumeration is situated in the binding code of the TDR Module.
@@ -264,7 +266,7 @@ def test_multiple_ptos_tdr():
                          DcsLongText(""),
                          float(-10))
 
-    tdr.SetBaggagePTODetails(PTOIdentifier1, float(100.0), float(40.0), 0)
+    tdr.SetBaggagePTODetails(PTOIdentifier1, 100.0, 40.0, 0)
 
     tdr.SetThreatRegionOfInterest(PTOIdentifier1,
                                   Point3Dfloat(1, 23, 95),
@@ -272,7 +274,7 @@ def test_multiple_ptos_tdr():
                                   Bitmap(),
                                   0)
 
-    tdr.SetPTOProcessingTime(PTOIdentifier1, dateTime, dateTime, float(0.0))
+    tdr.SetPTOProcessingTime(PTOIdentifier1, dateTime, dateTime, 0.0)
 
     # float in Array1DPoint3D means that the type of the components of Array1DPoint3D is float
     # the supported types of Array1DPoint3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
@@ -374,7 +376,7 @@ def test_ct_linked_tdr():
     ptFirstFrameTopLeft = Point3Dfloat(-250, -250, -250)
 
     psection.SetPositionInMM(ptFirstFrameTopLeft)
-    psection.SetSpacingInMM(float(1.0), float(1.0), float(1.0))
+    psection.SetSpacingInMM(1.0, 1.0, 1.0)
     # S_UINT16 in Point3DS_UINT16 means that the type of the components of Point3D is S_UINT16
     # the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
     ptCenter = Point3DS_UINT16(250, 250, 250)

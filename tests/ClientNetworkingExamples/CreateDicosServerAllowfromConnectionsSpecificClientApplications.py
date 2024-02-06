@@ -1,9 +1,11 @@
 
-from pyDICOS import DcsApplicationEntity
-from pyDICOS import DataProcessingConnectsSpecificClientApps
-from pyDICOS import AuthenticationCallbackConnectsSpecificClientApps
-from pyDICOS import DcsServer
-from pyDICOS import IDcsServer
+from pyDICOS import (
+   AuthenticationCallbackConnectsSpecificClientApps,
+   DataProcessingConnectsSpecificClientApps,
+   DcsApplicationEntity,
+   DcsServer,
+   IDcsServer,
+)
 
 
 def main():

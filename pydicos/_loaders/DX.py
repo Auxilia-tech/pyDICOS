@@ -1,7 +1,9 @@
-from pyDICOS import DX
-from .TDR import TDRLoader
-from .._dicosio import read_dcs, write_dcs
 import numpy as np
+from pyDICOS import DX
+
+from .._dicosio import read_dcs, write_dcs
+from .TDR import TDRLoader
+
 
 # This class can be utilized to load a DX object by either reading a DX file or using a provided DX object.
 # The 'get_data' function returns 2D NumPy array.

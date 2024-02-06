@@ -123,10 +123,10 @@ class CMakeBuild(build_ext):
         )
 
 
-with open('README.md', 'r', encoding='utf-8') as f:
+with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
-with open("pydicos/version.py", "r") as fh:
+with open("pydicos/version.py") as fh:
     verstrline = fh.read()
     verstr = verstrline.split("=")[1].replace("'", "").strip()
 

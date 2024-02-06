@@ -1,4 +1,4 @@
-from pyDICOS import CT, DX, TDR, Filename, ErrorLog
+from pyDICOS import CT, DX, TDR, ErrorLog, Filename
 
 
 def read_dcs_ct(filename: str, ct : CT = None):

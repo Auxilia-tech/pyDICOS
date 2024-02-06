@@ -1,15 +1,18 @@
-from pyDICOS import Filename
-from pyDICOS import Folder
-from pyDICOS import ErrorLog
-from pyDICOS import DX
-from pyDICOS import CT
-from pyDICOS import Vector3Dfloat
-from pyDICOS import Point3Dfloat
-from pyDICOS import Array1DS_UINT16
-from pyDICOS import Volume
-from pyDICOS import DcsLongString
-import numpy as np
 import math
+
+import numpy as np
+from pyDICOS import (
+    CT,
+    DX,
+    Array1DS_UINT16,
+    DcsLongString,
+    ErrorLog,
+    Filename,
+    Folder,
+    Point3Dfloat,
+    Vector3Dfloat,
+    Volume,
+)
 
 
 def test_create_dx_processing():
@@ -101,7 +104,7 @@ def test_create_dx_presentation():
 
     buff = np.array(lut, copy=False)
     for i in range(lutSize):
-        buff[i] = lutMinValue + (math.sqrt((i)))
+        buff[i] = lutMinValue + (math.sqrt(i))
 
     firstValueMapped = 2000
     dx.SetLUTData(lut, firstValueMapped)

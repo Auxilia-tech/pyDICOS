@@ -1,4 +1,5 @@
-from pyDICOS import DcsLongString, CustomArray1DDcsLongString
+from pyDICOS import CustomArray1DDcsLongString, DcsLongString
+
 
 # Handles the ATR metadata.
 class ATRSettings:

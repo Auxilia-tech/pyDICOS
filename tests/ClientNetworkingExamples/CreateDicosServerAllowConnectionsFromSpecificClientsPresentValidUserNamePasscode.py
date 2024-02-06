@@ -1,9 +1,11 @@
 
-from pyDICOS import DcsApplicationEntity
-from pyDICOS import DataProcessingMultipleConnections
-from pyDICOS import AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode
-from pyDICOS import DcsServer
-from pyDICOS import IDcsServer
+from pyDICOS import (
+   AuthenticationCallbackAllowConnectsFromSpecificClientsPresentValidUserNamePasscode,
+   DataProcessingMultipleConnections,
+   DcsApplicationEntity,
+   DcsServer,
+   IDcsServer,
+)
 
 
 def main():

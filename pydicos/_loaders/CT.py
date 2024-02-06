@@ -1,8 +1,21 @@
-from pyDICOS import CT, TDR, Volume, Bitmap, Array1DPoint3Dfloat, Point3Dfloat
-from pyDICOS import DcsDateTime, DcsDate, DcsTime, DcsLongText, DcsShortText
-from .TDR import TDRLoader
-from .._dicosio import read_dcs, write_dcs
 import numpy as np
+from pyDICOS import (
+    CT,
+    TDR,
+    Array1DPoint3Dfloat,
+    Bitmap,
+    DcsDate,
+    DcsDateTime,
+    DcsLongText,
+    DcsShortText,
+    DcsTime,
+    Point3Dfloat,
+    Volume,
+)
+
+from .._dicosio import read_dcs, write_dcs
+from .TDR import TDRLoader
+
 
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
 # The 'get_data' function returns a list of 2D NumPy arrays.
