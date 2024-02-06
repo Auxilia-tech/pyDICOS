@@ -30,7 +30,11 @@ def test_no_threat_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
-    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage, TDR.TDR_TYPE.enumMachine, TDRInstanceNumber)
+    tdr = TDR(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+        TDR.TDR_TYPE.enumMachine,
+        TDRInstanceNumber,
+    )
 
     TDRCreationStartDate = DcsDate.Today()
     TDRCreationStartTime = DcsTime.Now()
@@ -66,26 +70,31 @@ def test_no_threat_tdr():
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageNoThreatTDR.dcs")
 
-    assert tdr.Write(tdrFilename, errorlog), \
-        f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert tdr.Write(
+        tdrFilename, errorlog
+    ), f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
     tdrRead = TDR()
     errorlog = ErrorLog()
 
-    assert tdrRead.Read(tdrFilename, errorlog, None), \
-        f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert tdrRead.Read(
+        tdrFilename, errorlog, None
+    ), f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
-    assert tdrRead == tdr, \
-        f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
+    assert (
+        tdrRead == tdr
+    ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
 def test_baggage_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
-    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
-              TDR.TDR_TYPE.enumMachine,
-              TDRInstanceNumber)
+    tdr = TDR(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+        TDR.TDR_TYPE.enumMachine,
+        TDRInstanceNumber,
+    )
 
     TDRCreationStartDate = DcsDate.Today()
     TDRCreationStartTime = DcsTime.Now()
@@ -124,12 +133,14 @@ def test_baggage_tdr():
     # The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
     # The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
     # The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
-    tdr.AddPTOAssessment(PTOIdentifier0,
-                         TDR.ASSESSMENT_FLAG.enumThreat,
-                         TDR.THREAT_CATEGORY.enumProhibitedItem,
-                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                         threatDescription,
-                         -1.0)
+    tdr.AddPTOAssessment(
+        PTOIdentifier0,
+        TDR.ASSESSMENT_FLAG.enumThreat,
+        TDR.THREAT_CATEGORY.enumProhibitedItem,
+        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+        threatDescription,
+        -1.0,
+    )
 
     tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
 
@@ -150,14 +161,13 @@ def test_baggage_tdr():
                 else:
                     value = True
                 ptoMask.SetBit(w, h, d, value)
-                assert value == ptoMask.GetBit(index), \
-                    f"Failed to validate threat bitmask({w}, {h}, {d})"
+                assert value == ptoMask.GetBit(
+                    index
+                ), f"Failed to validate threat bitmask({w}, {h}, {d})"
 
-    tdr.SetThreatRegionOfInterest(PTOIdentifier0,
-                                  Point3Dfloat(12, 23, 45),
-                                  ptoDims,
-                                  ptoMask,
-                                  0)
+    tdr.SetThreatRegionOfInterest(
+        PTOIdentifier0, Point3Dfloat(12, 23, 45), ptoDims, ptoMask, 0
+    )
 
     dateTime = DcsDateTime()
     dateTime.SetNow()
@@ -171,26 +181,31 @@ def test_baggage_tdr():
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageTDR.dcs")
 
-    assert tdr.Write(tdrFilename, errorlog), \
-        f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert tdr.Write(
+        tdrFilename, errorlog
+    ), f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
     tdrRead = TDR()
     errorlog = ErrorLog()
 
-    assert tdrRead.Read(tdrFilename, errorlog, None), \
-        f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert tdrRead.Read(
+        tdrFilename, errorlog, None
+    ), f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
-    assert tdrRead == tdr, \
-        f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
+    assert (
+        tdrRead == tdr
+    ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
 def test_multiple_ptos_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
-    tdr = TDR(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
-              TDR.TDR_TYPE.enumMachine,
-              TDRInstanceNumber)
+    tdr = TDR(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+        TDR.TDR_TYPE.enumMachine,
+        TDRInstanceNumber,
+    )
 
     OOIIdentifier = DcsLongString("12345-35345324-6326342-345")
     tdr.SetOOIID(OOIIdentifier)
@@ -233,20 +248,20 @@ def test_multiple_ptos_tdr():
     # The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
     # The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
     # The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
-    tdr.AddPTOAssessment(PTOIdentifier0,
-                         TDR.ASSESSMENT_FLAG.enumHighThreat,
-                         TDR.THREAT_CATEGORY.enumProhibitedItem,
-                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                         threatDescription,
-                         -1.0)
+    tdr.AddPTOAssessment(
+        PTOIdentifier0,
+        TDR.ASSESSMENT_FLAG.enumHighThreat,
+        TDR.THREAT_CATEGORY.enumProhibitedItem,
+        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+        threatDescription,
+        -1.0,
+    )
 
     tdr.SetBaggagePTODetails(PTOIdentifier0, 50.0, 7000.0, 0)
 
-    tdr.SetThreatRegionOfInterest(PTOIdentifier0,
-                                  Point3Dfloat(12, 23, 45),
-                                  Point3Dfloat(50, 50, 100),
-                                  Bitmap(),
-                                  0)
+    tdr.SetThreatRegionOfInterest(
+        PTOIdentifier0, Point3Dfloat(12, 23, 45), Point3Dfloat(50, 50, 100), Bitmap(), 0
+    )
 
     dateTime = DcsDateTime()
     dateTime.SetNow()
@@ -259,20 +274,20 @@ def test_multiple_ptos_tdr():
     # The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
     # The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
     # The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
-    tdr.AddPTOAssessment(PTOIdentifier1,
-                         TDR.ASSESSMENT_FLAG.enumNoThreat,
-                         TDR.THREAT_CATEGORY.enumAnomaly,
-                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                         DcsLongText(""),
-                         float(-10))
+    tdr.AddPTOAssessment(
+        PTOIdentifier1,
+        TDR.ASSESSMENT_FLAG.enumNoThreat,
+        TDR.THREAT_CATEGORY.enumAnomaly,
+        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+        DcsLongText(""),
+        float(-10),
+    )
 
     tdr.SetBaggagePTODetails(PTOIdentifier1, 100.0, 40.0, 0)
 
-    tdr.SetThreatRegionOfInterest(PTOIdentifier1,
-                                  Point3Dfloat(1, 23, 95),
-                                  Point3Dfloat(22, 33, 444),
-                                  Bitmap(),
-                                  0)
+    tdr.SetThreatRegionOfInterest(
+        PTOIdentifier1, Point3Dfloat(1, 23, 95), Point3Dfloat(22, 33, 444), Bitmap(), 0
+    )
 
     tdr.SetPTOProcessingTime(PTOIdentifier1, dateTime, dateTime, 0.0)
 
@@ -296,18 +311,20 @@ def test_multiple_ptos_tdr():
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "MultiplePTOsTDR.dcs")
 
-    assert tdr.Write(tdrFilename, errorlog), \
-        f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert tdr.Write(
+        tdrFilename, errorlog
+    ), f"Simple TDR Template Example unable to write DICOS File : {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
     tdrRead = TDR()
     errorlog = ErrorLog()
 
-    assert tdrRead.Read(tdrFilename, errorlog, None), \
-        f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert tdrRead.Read(
+        tdrFilename, errorlog, None
+    ), f"Unable to read TDR file {tdrFilename}\n{errorlog.GetErrorLog().Get()}"
 
-    assert tdrRead == tdr, \
-        f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
-
+    assert (
+        tdrRead == tdr
+    ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
 def test_ct_linked_tdr():
@@ -329,12 +346,16 @@ def test_ct_linked_tdr():
     bRes = bRes and ct.SetImageAcquisitionDateAndTime(strDate, strTime)
     ct.SetBurnedInAnnotation(False)
     # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
-    bRes = bRes and ct.SetPhotometricInterpretation(CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    bRes = bRes and ct.SetPhotometricInterpretation(
+        CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2
+    )
     # The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
     bRes = bRes and ct.SetImageType(CT.OOI_IMAGE_CHARACTERISTICS.enumPhotoelectric)
     bRes = bRes and ct.SetImageAcquisitionDuration(5000)
     bRes = bRes and ct.SetContentDateAndTime(strDate, strTime)
-    bRes = bRes and ct.SetOOIIDAssigningAuthority(DcsLongString("OOI ID Assigning Authority"))
+    bRes = bRes and ct.SetOOIIDAssigningAuthority(
+        DcsLongString("OOI ID Assigning Authority")
+    )
     # The OBJECT_OF_INSPECTION_ID_TYPE enumeration is situated in the binding code of the TDR Module.
     bRes = bRes and ct.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
@@ -345,15 +366,21 @@ def test_ct_linked_tdr():
     bRes = bRes and ct.SetScanType(CT.SCAN_TYPE.enumOperational)
     bRes = bRes and ct.SetSeriesDateAndTime(strDate, strTime)
     # The ACQUISITION_STATUS enumeration is situated in the binding code of the GeneralSeriesModule Module.
-    bRes = bRes and ct.SetSeriesAcquisitionStatus(GeneralSeriesModule.ACQUISITION_STATUS.enumSuccessful)
+    bRes = bRes and ct.SetSeriesAcquisitionStatus(
+        GeneralSeriesModule.ACQUISITION_STATUS.enumSuccessful
+    )
     bRes = bRes and ct.SetDeviceCalibrationDateAndTime(strDate, strTime)
     bRes = bRes and ct.SetDeviceSerialNumber(DcsLongString("123456987"))
     bRes = bRes and ct.SetMachineAddress(DcsShortText("Machine Address"))
     bRes = bRes and ct.SetMachineLocation(DcsLongString("Machine Location"))
     bRes = bRes and ct.SetMachineID(DcsShortString("Machine ID"))
     bRes = bRes and ct.SetDeviceManufacturer(DcsLongString("Device Manufacturer"))
-    bRes = bRes and ct.SetDeviceManufacturerModelName(DcsLongString("Device Manufacturer Model Name"))
-    bRes = bRes and ct.SetDeviceSoftwareVersion(DcsLongString("Device Software Version"))
+    bRes = bRes and ct.SetDeviceManufacturerModelName(
+        DcsLongString("Device Manufacturer Model Name")
+    )
+    bRes = bRes and ct.SetDeviceSoftwareVersion(
+        DcsLongString("Device Software Version")
+    )
     bRes = bRes and ct.SetSopInstanceCreationDateAndTime(strDate, strTime)
 
     ct.SetNumberOfSections(1)
@@ -370,7 +397,9 @@ def test_ct_linked_tdr():
     psection.SetPlaneOrientation(vecRowOrientation, vecColumnOrientation)
 
     # The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
-    psection.GetPixelData().Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 500, 500, 500)
+    psection.GetPixelData().Allocate(
+        Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 500, 500, 500
+    )
     psection.GetPixelData().GetUnsigned16().Zero(0)
 
     ptFirstFrameTopLeft = Point3Dfloat(-250, -250, -250)
@@ -415,29 +444,41 @@ def test_ct_linked_tdr():
 
     bRes = bRes and tdr.SetFrameOfReferenceUID(ct.GetFrameOfReferenceUID())
     # The ThreatType enumeration is situated in the binding code of the TDR Module.
-    bRes = bRes and tdr.AddPotentialThreatObject(nPTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage)
+    bRes = bRes and tdr.AddPotentialThreatObject(
+        nPTOIdentifier1, TDR.ThreatType.enumThreatTypeBaggage
+    )
     # The ThreatType enumeration is situated in the binding code of the TDR Module.
-    bRes = bRes and tdr.AddPotentialThreatObject(nPTOIdentifier2, TDR.ThreatType.enumThreatTypeBaggage)
+    bRes = bRes and tdr.AddPotentialThreatObject(
+        nPTOIdentifier2, TDR.ThreatType.enumThreatTypeBaggage
+    )
 
-    bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier1, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
-    bRes = bRes and tdr.AddReferencedInstance(nPTOIdentifier2, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0)
+    bRes = bRes and tdr.AddReferencedInstance(
+        nPTOIdentifier1, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0
+    )
+    bRes = bRes and tdr.AddReferencedInstance(
+        nPTOIdentifier2, ct.GetSopClassUID(), ct.GetSopInstanceUID(), 0
+    )
 
     # The ASSESSMENT_FLAG enumeration is situated in the binding code of the TDR Module.
     # The THREAT_CATEGORY enumeration is situated in the binding code of the TDR Module.
     # The ABILITY_ASSESSMENT enumeration is situated in the binding code of the TDR Module.
-    bRes = bRes and tdr.AddPTOAssessment(nPTOIdentifier1,
-                                         TDR.ASSESSMENT_FLAG.enumThreat,
-                                         TDR.THREAT_CATEGORY.enumProhibitedItem,
-                                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                                         DcsLongText("Weapon"),
-                                         float(98.0 / 100.0))
+    bRes = bRes and tdr.AddPTOAssessment(
+        nPTOIdentifier1,
+        TDR.ASSESSMENT_FLAG.enumThreat,
+        TDR.THREAT_CATEGORY.enumProhibitedItem,
+        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+        DcsLongText("Weapon"),
+        float(98.0 / 100.0),
+    )
 
-    bRes = bRes and tdr.AddPTOAssessment(nPTOIdentifier2,
-                                         TDR.ASSESSMENT_FLAG.enumNoThreat,
-                                         TDR.THREAT_CATEGORY.enumAnomaly,
-                                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                                         DcsLongText(""),
-                                         float(-10))
+    bRes = bRes and tdr.AddPTOAssessment(
+        nPTOIdentifier2,
+        TDR.ASSESSMENT_FLAG.enumNoThreat,
+        TDR.THREAT_CATEGORY.enumAnomaly,
+        TDR.ABILITY_ASSESSMENT.enumNoInterference,
+        DcsLongText(""),
+        float(-10),
+    )
 
     # float in Array1DPoint3D means that the type of the components of Array1DPoint3D is float
     # the supported types of Array1DPoint3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
@@ -460,26 +501,44 @@ def test_ct_linked_tdr():
     ptBase.Set(1, 2, 3)
     ptExtents.Set(50, 20, 200)
 
-    bRes = bRes and tdr.SetThreatRegionOfInterest(nPTOIdentifier1, ptBase, ptExtents, Bitmap(), 0)
+    bRes = bRes and tdr.SetThreatRegionOfInterest(
+        nPTOIdentifier1, ptBase, ptExtents, Bitmap(), 0
+    )
     bRes = bRes and tdr.SetBaggagePTODetails(nPTOIdentifier1, 1000, 5000, 0)
-    bRes = bRes and tdr.SetBaggagePTOLocationDescription(nPTOIdentifier1, DcsShortText("Corner Object"), 0)
+    bRes = bRes and tdr.SetBaggagePTOLocationDescription(
+        nPTOIdentifier1, DcsShortText("Corner Object"), 0
+    )
 
     ptBase.Set(210, 210, 210)
     ptExtents.Set(81, 81, 81)
 
-    bRes = bRes and tdr.SetThreatRegionOfInterest(nPTOIdentifier2, ptBase, ptExtents, Bitmap(), 0)
+    bRes = bRes and tdr.SetThreatRegionOfInterest(
+        nPTOIdentifier2, ptBase, ptExtents, Bitmap(), 0
+    )
     bRes = bRes and tdr.SetBaggagePTODetails(nPTOIdentifier2, 20, 2, 0)
-    bRes = bRes and tdr.SetBaggagePTOLocationDescription(nPTOIdentifier2, DcsShortText("Corner Object"), 0)
+    bRes = bRes and tdr.SetBaggagePTOLocationDescription(
+        nPTOIdentifier2, DcsShortText("Corner Object"), 0
+    )
 
-    bRes = bRes and tdr.SetProcessingStartTime(nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
-    bRes = bRes and tdr.SetProcessingEndTime(nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
-    bRes = bRes and tdr.SetProcessingStartTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
-    bRes = bRes and tdr.SetProcessingEndTime(nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
+    bRes = bRes and tdr.SetProcessingStartTime(
+        nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+    )
+    bRes = bRes and tdr.SetProcessingEndTime(
+        nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+    )
+    bRes = bRes and tdr.SetProcessingStartTime(
+        nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+    )
+    bRes = bRes and tdr.SetProcessingEndTime(
+        nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+    )
 
     bRes = bRes and tdr.SetInstanceNumber(0)
     bRes = bRes and tdr.SetContentDateAndTime(strDate, strTime)
     bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
-    bRes = bRes and tdr.SetTDRTypeATR(DcsLongString("ATR Manufacturer"), DcsLongString("ATR Version"))
+    bRes = bRes and tdr.SetTDRTypeATR(
+        DcsLongString("ATR Manufacturer"), DcsLongString("ATR Version")
+    )
 
     bRes = bRes and tdr.SetImageScaleRepresentation(1)
 
@@ -491,7 +550,9 @@ def test_ct_linked_tdr():
     bRes = bRes and tdr.SetOOIIDType(ct.GetOOIIDType())
     bRes = bRes and tdr.SetOOIType(ct.GetOOIType())
     bRes = bRes and tdr.SetScanID(ct.GetScanID())
-    bRes = bRes and tdr.SetScanStartDateAndTime(ct.GetScanStartDate(), ct.GetScanStartTime())
+    bRes = bRes and tdr.SetScanStartDateAndTime(
+        ct.GetScanStartDate(), ct.GetScanStartTime()
+    )
     bRes = bRes and tdr.SetScanType(ct.GetScanType())
     bRes = bRes and tdr.SetSeriesDateAndTime(ct.GetSeriesDate(), ct.GetSeriesTime())
     bRes = bRes and tdr.SetSeriesAcquisitionStatus(ct.GetSeriesAcquisitionStatus())
@@ -514,11 +575,13 @@ def test_ct_linked_tdr():
     errorlogCT = ErrorLog()
     errorlogTDR = ErrorLog()
 
-    assert ct.Write(filenameCT, errorlogCT), \
-        f"Failed writing CT (CTwithTDR) : {filenameCT}\n{errorlogCT.GetErrorLog().Get()}"
+    assert ct.Write(
+        filenameCT, errorlogCT
+    ), f"Failed writing CT (CTwithTDR) : {filenameCT}\n{errorlogCT.GetErrorLog().Get()}"
 
-    assert tdr.Write(filenameTDR, errorlogTDR, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit), \
-        f"Failed writing TDR (CTwithTDR) : {filenameTDR}\n{errorlogTDR.GetErrorLog().Get()}"
+    assert tdr.Write(
+        filenameTDR, errorlogTDR, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
+    ), f"Failed writing TDR (CTwithTDR) : {filenameTDR}\n{errorlogTDR.GetErrorLog().Get()}"
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ class CTLoader(CT):
         Parameters
         ----------
         filename : str, optional
-            The name of the file to read. 
+            The name of the file to read.
             The default is None and will create an empty CT.
         """
         super().__init__()
@@ -34,7 +34,7 @@ class CTLoader(CT):
         if filename is not None:
             read_dcs(filename, dcs=self)
 
-    def write(self, filename :str) -> None:
+    def write(self, filename: str) -> None:
         """Writes the object to a file.
 
         Parameters
@@ -46,7 +46,7 @@ class CTLoader(CT):
 
     def get_data(self) -> list:
         """Get the data from the CT object.
-        
+
         Returns
         -------
         data_arrays : list
@@ -67,7 +67,9 @@ class CTLoader(CT):
                 height_size = volume.GetUnsigned16().GetHeight()
                 width_size = volume.GetUnsigned16().GetWidth()
 
-                data_array = np.zeros((depth_size, height_size, width_size), dtype=np.uint16)
+                data_array = np.zeros(
+                    (depth_size, height_size, width_size), dtype=np.uint16
+                )
 
                 for i in range(volume.GetDepth()):
                     xyPlane = volume.GetUnsigned16()[i]
@@ -77,10 +79,10 @@ class CTLoader(CT):
             next(sectionIt)
             sectionCount += 1
         return data_arrays
-    
+
     def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
         """Generate a TDR file from the CT object and detections.
-        
+
         Parameters
         ----------
         detection_boxes : list
@@ -101,47 +103,67 @@ class CTLoader(CT):
         bRes = bRes and tdr.SetSeriesInstanceUID(self.GetSeriesInstanceUID())
         tdr.GenerateSopInstanceUID()
         bRes = bRes and tdr.SetFrameOfReferenceUID(self.GetFrameOfReferenceUID())
-        
+
         bounds = Array1DPoint3Dfloat()
         bounds.SetSize(2, False)
         ptBase = Point3Dfloat()
         ptExtents = Point3Dfloat()
-        realworld_offset = [- dim // 2 for dim in self.get_data()[0].shape]
+        realworld_offset = [-dim // 2 for dim in self.get_data()[0].shape]
 
         for i, detection_box in enumerate(detection_boxes):
-            bRes = bRes and tdr.AddPotentialThreatObject(i, TDR.ThreatType.enumThreatTypeBaggage)
-            bRes = bRes and tdr.SetProcessingStartTime(i, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
-            bRes = bRes and tdr.AddReferencedInstance(i, self.GetSopClassUID(), self.GetSopInstanceUID(), 0)
-            bRes = bRes and tdr.AddPTOAssessment(i,
-                                         TDR.ASSESSMENT_FLAG.enumThreat,
-                                         TDR.THREAT_CATEGORY.enumProhibitedItem,
-                                         TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                                         DcsLongText(detection_box["label"]),
-                                         float(detection_box["confidence"]))
-            
+            bRes = bRes and tdr.AddPotentialThreatObject(
+                i, TDR.ThreatType.enumThreatTypeBaggage
+            )
+            bRes = bRes and tdr.SetProcessingStartTime(
+                i, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+            )
+            bRes = bRes and tdr.AddReferencedInstance(
+                i, self.GetSopClassUID(), self.GetSopInstanceUID(), 0
+            )
+            bRes = bRes and tdr.AddPTOAssessment(
+                i,
+                TDR.ASSESSMENT_FLAG.enumThreat,
+                TDR.THREAT_CATEGORY.enumProhibitedItem,
+                TDR.ABILITY_ASSESSMENT.enumNoInterference,
+                DcsLongText(detection_box["label"]),
+                float(detection_box["confidence"]),
+            )
+
             # Set the PTO bounding polygon
-            bounds[0].Set(realworld_offset[0] + detection_box["point1"][0], 
-                          realworld_offset[1] + detection_box["point1"][1], 
-                          realworld_offset[2] + detection_box["point1"][2])
-            bounds[1].Set(realworld_offset[0] + detection_box["point2"][0], 
-                          realworld_offset[1] + detection_box["point2"][1], 
-                          realworld_offset[2] + detection_box["point2"][2])
+            bounds[0].Set(
+                realworld_offset[0] + detection_box["point1"][0],
+                realworld_offset[1] + detection_box["point1"][1],
+                realworld_offset[2] + detection_box["point1"][2],
+            )
+            bounds[1].Set(
+                realworld_offset[0] + detection_box["point2"][0],
+                realworld_offset[1] + detection_box["point2"][1],
+                realworld_offset[2] + detection_box["point2"][2],
+            )
             bRes = bRes and tdr.SetThreatBoundingPolygon(i, bounds, 0)
 
             # Set the PTO mask
             ptBase.Set(*detection_box["point1"])
-            ptExtents.Set(detection_box["point2"][0] - detection_box["point1"][0],
-                          detection_box["point2"][1] - detection_box["point1"][1],
-                          detection_box["point2"][2] - detection_box["point1"][2])
+            ptExtents.Set(
+                detection_box["point2"][0] - detection_box["point1"][0],
+                detection_box["point2"][1] - detection_box["point1"][1],
+                detection_box["point2"][2] - detection_box["point1"][2],
+            )
 
-            bRes = bRes and tdr.SetThreatRegionOfInterest(i, ptBase, ptExtents, detection_box["mask"] or Bitmap(), 0)
+            bRes = bRes and tdr.SetThreatRegionOfInterest(
+                i, ptBase, ptExtents, detection_box["mask"] or Bitmap(), 0
+            )
             bRes = bRes and tdr.SetBaggagePTODetails(i, 0, 0, 0)
-            bRes = bRes and tdr.SetBaggagePTOLocationDescription(i, DcsShortText(detection_box["label"]), 0)
-            bRes = bRes and tdr.SetProcessingEndTime(i, DcsDateTime(DcsDate.Today(), DcsTime.Now()))
+            bRes = bRes and tdr.SetBaggagePTOLocationDescription(
+                i, DcsShortText(detection_box["label"]), 0
+            )
+            bRes = bRes and tdr.SetProcessingEndTime(
+                i, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+            )
 
         assert bRes, "Error setting TDR values"
 
         if output_file is not None:
             write_dcs(tdr, output_file)
-        
+
         return TDRLoader(tdr_object=tdr)
