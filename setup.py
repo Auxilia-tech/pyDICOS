@@ -123,10 +123,10 @@ class CMakeBuild(build_ext):
         )
 
 
-with open('README.md', 'r', encoding='utf-8') as f:
+with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
-with open("pydicos/version.py", "r") as fh:
+with open("pydicos/version.py") as fh:
     verstrline = fh.read()
     verstr = verstrline.split("=")[1].replace("'", "").strip()
 
@@ -136,32 +136,32 @@ setup(
     name="pydicos",
     python_requires=">=3",
     version=verstr,
-    license='MIT',
-    author='Louis Combaldieu',
-    author_email='louis.combaldieu@auxilia-tech.com',
+    license="MIT",
+    author="Louis Combaldieu",
+    author_email="louis.combaldieu@auxilia-tech.com",
     long_description=long_description,
-    long_description_content_type='text/markdown',
-    description='pyDICOS is a python package for working with DICOS files.',
-    packages=['pydicos'],
+    long_description_content_type="text/markdown",
+    description="pyDICOS is a python package for working with DICOS files.",
+    packages=["pydicos"],
     ext_modules=[CMakeExtension("pyDICOS")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
-    url='https://github.com/Auxilia-tech/pydicos',
-    download_url='https://github.com/Auxilia-tech/pydicos/',
-    keywords=['DICOS', 'Digital', 'Imaging', 'Communications', 'Security'],
+    url="https://github.com/Auxilia-tech/pydicos",
+    download_url="https://github.com/Auxilia-tech/pydicos/",
+    keywords=["DICOS", "Digital", "Imaging", "Communications", "Security"],
     install_requires=[
-        'numpy>=1.21',
+        "numpy>=1.21",
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11'
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Build Tools",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
 )

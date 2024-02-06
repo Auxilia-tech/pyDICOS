@@ -81,13 +81,16 @@ The stratovan exemple files were entirely translated in python.
 Here is a quick exemple for a script that reads a CT and a DX scan.
 
 ``` python
-from pydicos import CTLoader, DXLoader
+from pydicos import read_dcs
 
-ct_object = CTLoader(filename="SimpleCT/SimpleCT.dcs")
-data = ct_object.get_data() # 3-dimentionnal numpy array
+ct = read_dcs("SimpleCT/SimpleCT.dcs", "CT")
+data = ct.get_data() # list of 3-dimentionnal numpy arrays
 
-dx_object = DXLoader(filename="DXFiles/SimpleDX.dcs")
-data = dx_object.get_data() # 2-dimentionnal numpy array
+dx = read_dcs(filename="DXFiles/SimpleDX.dcs", "DX")
+data = dx.get_data() # 2-dimentionnal numpy array
+
+tdr = read_dcs("SimpleCT/SimpleCT.dcs", "TDR")
+data = tdr.get_data() # dictionnay of metadata
 ```
 
 More complex operations can be addressed by using the C++ functions directly. 
@@ -95,20 +98,23 @@ They can be invoked using the `pyDICOS` modules. For example, the previous
 script would look like this :
 
 ``` python
-from pyDICOS import CT, DX, ErrorLog, Filename
+from pyDICOS import CT, DX, TDR, ErrorLog, Filename
    
 ct, err, file = CT(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
 if not ct.Read(file, err, None):
    raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
 data = ... # This is very long, refer to pydicos._loaders::CTLoader.get_data for full script
 
-dx, err, file = DX(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
+dx, err, file = DX(), ErrorLog(), Filename("SimpleCT/SimpleDX.dcs")
 if not dx.Read(file, err, None):
    raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
 data = np.array(dx.GetXRayData().GetUnsigned16(), copy=False)
+
+tdr, err, file = TDR(), ErrorLog(), Filename("SimpleTDR/SimpleDX.dcs")
+if not tdr.Read(file, err, None):
+   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
 ```
-As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures.
-More classes and functions examples are available in the `tests` folder.
+As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`
 
 ## Contributing
 

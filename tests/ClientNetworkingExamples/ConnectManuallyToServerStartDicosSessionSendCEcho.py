@@ -1,7 +1,4 @@
-from pyDICOS import DcsClient
-from pyDICOS import DcsString
-from pyDICOS import Filename
-from pyDICOS import DcsApplicationEntity
+from pyDICOS import DcsApplicationEntity, DcsClient, DcsString, Filename
 
 
 def main():
@@ -16,7 +13,9 @@ def main():
         print("Connecting to server failed")
         print("Error log")
         print(client.GetErrorLog().GetErrorLog().Get())
-        client.GetErrorLog().WriteLog(Filename("ErrorLog - Server Connection Failed.txt"))
+        client.GetErrorLog().WriteLog(
+            Filename("ErrorLog - Server Connection Failed.txt")
+        )
         retVal = 1
 
     if client.StartDicosSession(DcsClient.SOPCLASSUID.enumSopEcho) == True:
@@ -25,10 +24,12 @@ def main():
         print("DICOS session failed")
         print("Error log:")
         print(client.GetErrorLog().GetErrorLog().Get())
-        client.GetErrorLog().WriteLog(Filename("ErrorLog - DICOS Session Start Failed.txt"))
+        client.GetErrorLog().WriteLog(
+            Filename("ErrorLog - DICOS Session Start Failed.txt")
+        )
         retVal = 1
 
-    if client.Echo() == True :
+    if client.Echo() == True:
         print("Echo success")
     else:
         print("Echo failed")
@@ -41,6 +42,6 @@ def main():
     client.DisconnectFromServer()
     return retVal
 
+
 if __name__ == "__main__":
     main()
-    
