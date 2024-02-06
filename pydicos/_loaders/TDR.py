@@ -106,8 +106,7 @@ class TDRLoader(TDR):
         )
         for i in range(PTOIds.GetSize()):
             self.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
-            # TODO: debug the following line
-            # self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+            self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
             data["PTOs"].append(
                 {
                     "Base": {"x": PTOBase.x, "y": PTOBase.y, "z": PTOBase.z},
