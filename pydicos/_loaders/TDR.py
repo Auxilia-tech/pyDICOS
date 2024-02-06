@@ -85,6 +85,7 @@ class TDRLoader(TDR):
         data = {
             "InstanceNumber": self.GetInstanceNumber(),
             "InstanceUID": self.GetScanInstanceUID().Get(),
+            "OOIID": self.GetOOIID().Get(),
             "ScanStartDateTime": DicosDateTime(
                 date=self.GetScanStartDate(), time=self.GetScanStartTime()
             ).as_dict(),
