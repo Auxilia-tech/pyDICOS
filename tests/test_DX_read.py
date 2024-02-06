@@ -1,6 +1,7 @@
 import numpy as np
-from pydicos import DXLoader
 import pytest
+
+from pydicos import DXLoader
 
 
 @pytest.mark.order(after="tests/test_DX_write.py::test_create_dx_processing")

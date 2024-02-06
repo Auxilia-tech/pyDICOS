@@ -1,10 +1,20 @@
-from pyDICOS import Vector3Dfloat
-from pyDICOS import CT, ErrorLog
-from pyDICOS import GeneralSeriesModule
-from pyDICOS import DcsString, DcsLongString, DcsShortString, DcsUniqueIdentifier, DcsApplicationEntity, DcsShortText, DcsDate, DcsTime
-from pyDICOS import TDR
-from pyDICOS import Volume
-from pyDICOS import Section
+from pyDICOS import (
+    CT,
+    TDR,
+    DcsApplicationEntity,
+    DcsDate,
+    DcsLongString,
+    DcsShortString,
+    DcsShortText,
+    DcsString,
+    DcsTime,
+    DcsUniqueIdentifier,
+    ErrorLog,
+    GeneralSeriesModule,
+    Section,
+    Vector3Dfloat,
+    Volume,
+)
 
 
 def Init(ct_object=None):

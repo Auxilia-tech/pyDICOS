@@ -1,15 +1,16 @@
-from pyDICOS import Filename
-from pyDICOS import ErrorLog
-from pyDICOS import Section
-from pyDICOS import CT
-from pyDICOS import Folder
-from pyDICOS import DcsLongString
-from pyDICOS import Vector3Dfloat
-from pyDICOS import Volume
-from pyDICOS import Array3DLargeS_UINT16
-from pyDICOS import Point3DS_UINT16
-
 import numpy as np
+from pyDICOS import (
+    CT,
+    Array3DLargeS_UINT16,
+    DcsLongString,
+    ErrorLog,
+    Filename,
+    Folder,
+    Point3DS_UINT16,
+    Section,
+    Vector3Dfloat,
+    Volume,
+)
 
 
 def GenerateCTSection(ct):

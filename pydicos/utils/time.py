@@ -1,4 +1,5 @@
-from pyDICOS import DcsDateTime, DcsDate, DcsTime
+from pyDICOS import DcsDate, DcsDateTime, DcsTime
+
 
 class DicosDateTime:
     def __init__(self, date: DcsDate = None, time: DcsTime = None, datetime: DcsDateTime = None) -> None:
