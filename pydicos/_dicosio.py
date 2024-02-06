@@ -87,7 +87,7 @@ def read_dcs(filename: str, dcs_type: str = None, dcs: DX|TDR|CT = None):
     dcs : DICOS
         The DICOS object read from the file.
     """
-    assert dcs_type or dcs, "A DICOS type or object must be provided"
+    assert dcs_type is not None or dcs is not None, "A DICOS type or object must be provided"
 
     if dcs is not None:
         if issubclass(type(dcs), CT):
