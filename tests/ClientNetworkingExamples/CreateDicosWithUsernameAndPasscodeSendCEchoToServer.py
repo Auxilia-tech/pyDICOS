@@ -8,7 +8,7 @@ def main():
     client.SetDestinationApplication(DcsApplicationEntity("Server"))
     client.SetPasscodeAndUserName(DcsString("Passcode"), DcsString("UserName"))
 
-    if client.ConnectToServer() == True:
+    if client.ConnectToServer():
         print("Connected to server")
     else:
         print("Connecting to server failed")
@@ -19,7 +19,7 @@ def main():
         )
         return 1
 
-    if client.StartDicosSession(DcsClient.SOPCLASSUID.enumSopEcho) == True:
+    if client.StartDicosSession(DcsClient.SOPCLASSUID.enumSopEcho):
         print("DICOS session started")
     else:
         print("DICOS session failed")

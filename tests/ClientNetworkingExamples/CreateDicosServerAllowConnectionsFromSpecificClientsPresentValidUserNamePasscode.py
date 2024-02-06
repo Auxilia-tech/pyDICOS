@@ -20,15 +20,12 @@ def main():
     server.DisableDataCompression()
     server.PrioritizeDataCompression(False)
 
-    if (
-        server.StartListening(
+    if server.StartListening(
             datacallback,
             authenticationcallback,
             IDcsServer.RETRIEVE_METHOD.enumMethodUserAPI,
             False,
-        )
-        == True
-    ):
+        ):
         print(
             "Failed to start DICOS server. IP:Port: ",
             server.GetIP(),
@@ -37,7 +34,7 @@ def main():
         )
         return 1
 
-    print("Press enter to stop server")
+    input("Press enter to stop server...")
     server.StopListening()
     return 0
 

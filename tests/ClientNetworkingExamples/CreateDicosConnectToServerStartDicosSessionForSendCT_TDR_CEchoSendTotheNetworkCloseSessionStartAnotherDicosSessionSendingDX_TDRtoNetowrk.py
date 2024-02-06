@@ -8,7 +8,7 @@ def main():
     client.SetSourceApplication(DcsApplicationEntity("ClientExample"))
     client.SetDestinationApplication(DcsApplicationEntity("Server"))
 
-    if client.ConnectToServer() == True:
+    if client.ConnectToServer():
         print("Connected to server")
     else:
         print("Connecting to server failed")
@@ -19,14 +19,11 @@ def main():
         )
         return 1
 
-    if (
-        client.StartDicosSession(
+    if client.StartDicosSession(
             DcsClient.SOPCLASSUID.enumSopEcho
             | DcsClient.SOPCLASSUID.enumSopCT
             | DcsClient.SOPCLASSUID.enumSopTDR
-        )
-        == True
-    ):
+        ):
         print("DICOS session started")
     else:
         print("DICOS session failed")
@@ -59,12 +56,9 @@ def main():
 
     client.StopDicosSession()
 
-    if (
-        client.StartDicosSession(
+    if client.StartDicosSession(
             DcsClient.SOPCLASSUID.enumSopDX | DcsClient.SOPCLASSUID.enumSopTDR
-        )
-        == True
-    ):
+        ):
         print("DICOS session 2 started")
     else:
         print("DICOS session 2 failed")

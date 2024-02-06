@@ -83,8 +83,7 @@ def main():
     errorlog = ErrorLog()
     Init(CTObject)
 
-    if (
-        CTObject.SendOverNetwork(
+    if not CTObject.SendOverNetwork(
             1000,  # Port
             DcsString("1.1.1.1"),  # IP Address
             DcsApplicationEntity(
@@ -96,9 +95,7 @@ def main():
             errorlog,
             DcsString(""),
             DcsString(""),
-        )
-        == False
-    ):
+        ):
         print("Failed to send data across network:")
         print(errorlog.GetErrorLog().Get())
         return 1

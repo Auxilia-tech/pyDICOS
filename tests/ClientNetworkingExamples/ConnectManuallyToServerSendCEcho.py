@@ -7,7 +7,7 @@ def main():
     client.SetServerPortandIP(1000, DcsString("1.1.1.1"))
     client.SetSourceApplication(DcsApplicationEntity("ClientExample"))
     client.SetDestinationApplication(DcsApplicationEntity("Server"))
-    if client.ConnectToServer() == True:
+    if client.ConnectToServer():
         print("Connected to server")
     else:
         print("Connecting to server failed")
