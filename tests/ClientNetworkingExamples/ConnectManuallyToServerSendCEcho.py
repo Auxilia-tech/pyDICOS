@@ -1,7 +1,4 @@
-from pyDICOS import DcsClient
-from pyDICOS import DcsString
-from pyDICOS import Filename
-from pyDICOS import DcsApplicationEntity
+from pyDICOS import DcsApplicationEntity, DcsClient, DcsString, Filename
 
 
 def main():
@@ -18,8 +15,8 @@ def main():
         print(client.GetErrorLog().GetErrorLog().Get())
         client.GetErrorLog().WriteLog(Filename("ErrorLog-EchoExample.txt"))
         retVal = 1
-    
-    if client.Echo() :
+
+    if client.Echo():
         print("Echo success")
     else:
         print("Echo failed")
@@ -30,6 +27,6 @@ def main():
     client.DisconnectFromServer()
     return retVal
 
+
 if __name__ == "__main__":
     main()
-    

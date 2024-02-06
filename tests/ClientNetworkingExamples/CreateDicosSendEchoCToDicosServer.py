@@ -1,7 +1,4 @@
-from pyDICOS import DcsClient
-from pyDICOS import DcsString
-from pyDICOS import Filename
-from pyDICOS import DcsApplicationEntity
+from pyDICOS import DcsApplicationEntity, DcsClient, DcsString, Filename
 
 
 def main():
@@ -9,7 +6,7 @@ def main():
     client.SetServerPortandIP(1000, DcsString("1.1.1.1"))
     client.SetSourceApplication(DcsApplicationEntity("ClientExample"))
     client.SetDestinationApplication(DcsApplicationEntity("Server"))
-    if client.Echo() :
+    if client.Echo():
         print("Echo success")
     else:
         print("Echo failed")
@@ -19,6 +16,6 @@ def main():
         return 1
     return 0
 
+
 if __name__ == "__main__":
     main()
-    

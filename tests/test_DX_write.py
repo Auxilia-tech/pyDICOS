@@ -1,15 +1,18 @@
-from pyDICOS import Filename
-from pyDICOS import Folder
-from pyDICOS import ErrorLog
-from pyDICOS import DX
-from pyDICOS import CT
-from pyDICOS import Vector3Dfloat
-from pyDICOS import Point3Dfloat
-from pyDICOS import Array1DS_UINT16
-from pyDICOS import Volume
-from pyDICOS import DcsLongString
-import numpy as np
 import math
+
+import numpy as np
+from pyDICOS import (
+    CT,
+    DX,
+    Array1DS_UINT16,
+    DcsLongString,
+    ErrorLog,
+    Filename,
+    Folder,
+    Point3Dfloat,
+    Vector3Dfloat,
+    Volume,
+)
 
 
 def test_create_dx_processing():
@@ -17,10 +20,12 @@ def test_create_dx_processing():
     # The PRESENTATION_INTENT_TYPE enumeration is situated in the binding code of the DX Module.
     # The PIXEL_DATA_CHARACTERISTICS enumeration is situated in the binding code of the DX Module.
     # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
-    dx = DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
-            DX.PRESENTATION_INTENT_TYPE.enumProcessing,
-            DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
-            CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    dx = DX(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
+        DX.PRESENTATION_INTENT_TYPE.enumProcessing,
+        DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
+        CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2,
+    )
 
     width = 256
     height = 128
@@ -50,15 +55,19 @@ def test_create_dx_processing():
     dxFilename = Filename(dxFolder, "SimpleProcessingDX.dcs")
 
     # The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
-    assert dx.Write(dxFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit), \
-        f"Simple DX Template Example unable to write DICOS File {dxFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert dx.Write(
+        dxFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
+    ), f"Simple DX Template Example unable to write DICOS File {dxFilename}\n{errorlog.GetErrorLog().Get()}"
 
     errorlog = ErrorLog()
     dxRead = DX()
     # You should set 'None' for the unused argument of the 'Read' function.
-    assert dxRead.Read(dxFilename, errorlog, None), \
-        f"Unable to read DX file {dxFilename}\n{errorlog.GetErrorLog().Get()}"
-    assert dxRead == dx, f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
+    assert dxRead.Read(
+        dxFilename, errorlog, None
+    ), f"Unable to read DX file {dxFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert (
+        dxRead == dx
+    ), f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
 def test_create_dx_presentation():
@@ -66,10 +75,12 @@ def test_create_dx_presentation():
     # The PRESENTATION_INTENT_TYPE enumeration is situated in the binding code of the DX Module.
     # The PIXEL_DATA_CHARACTERISTICS enumeration is situated in the binding code of the DX Module.
     # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
-    dx = DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBioSample,
-            DX.PRESENTATION_INTENT_TYPE.enumPresentation,
-            DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
-            CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    dx = DX(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBioSample,
+        DX.PRESENTATION_INTENT_TYPE.enumPresentation,
+        DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
+        CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2,
+    )
 
     width = 256
     height = 128
@@ -87,10 +98,16 @@ def test_create_dx_presentation():
     dx.SetWindowCenterAndWidth(1234, 500)
     windowCenter = 0
     windowWidth = 0
-    result, windowCenter, windowWidth = dx.GetWindowCenterAndWidth(windowCenter, windowWidth)
-    assert windowCenter == 1234 and windowWidth == 500, "Window Center and Width do not match"
+    result, windowCenter, windowWidth = dx.GetWindowCenterAndWidth(
+        windowCenter, windowWidth
+    )
+    assert (
+        windowCenter == 1234 and windowWidth == 500
+    ), "Window Center and Width do not match"
 
-    dx.SetWindowCenterAndWidthExplanation(DcsLongString("Window Center and Width for test screen"))
+    dx.SetWindowCenterAndWidthExplanation(
+        DcsLongString("Window Center and Width for test screen")
+    )
 
     # float in Array1DS_UINT16 means that the type of the elements of Array1D is float"
     # the supported types of Array1D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
@@ -101,7 +118,7 @@ def test_create_dx_presentation():
 
     buff = np.array(lut, copy=False)
     for i in range(lutSize):
-        buff[i] = lutMinValue + (math.sqrt((i)))
+        buff[i] = lutMinValue + (math.sqrt(i))
 
     firstValueMapped = 2000
     dx.SetLUTData(lut, firstValueMapped)
@@ -115,15 +132,19 @@ def test_create_dx_presentation():
     dxFolder = Folder("DXFiles")
     dxFilename = Filename(dxFolder, "SimplePresentationDX.dcs")
 
-    assert dx.Write(dxFilename, errorlog), \
-        f"Simple DX Template Example unable to write DICOS File {dxFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert dx.Write(
+        dxFilename, errorlog
+    ), f"Simple DX Template Example unable to write DICOS File {dxFilename}\n{errorlog.GetErrorLog().Get()}"
 
     errorlog = ErrorLog()
     dxRead = DX()
     # You should set 'None' for the unused argument of the 'Read' function.
-    assert dxRead.Read(dxFilename, errorlog, None), \
-        f"Unable to read DX file {dxFilename}\n{errorlog.GetErrorLog().Get()}"
-    assert dxRead == dx, f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
+    assert dxRead.Read(
+        dxFilename, errorlog, None
+    ), f"Unable to read DX file {dxFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert (
+        dxRead == dx
+    ), f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
 def test_create_dx_palette():
@@ -131,12 +152,16 @@ def test_create_dx_palette():
     # The PRESENTATION_INTENT_TYPE enumeration is situated in the binding code of the DX Module.
     # The PIXEL_DATA_CHARACTERISTICS enumeration is situated in the binding code of the DX Module.
     # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
-    dx = DX(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
-            DX.PRESENTATION_INTENT_TYPE.enumProcessing,
-            DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
-            CT.PHOTOMETRIC_INTERPRETATION.enumPaletteColor)
+    dx = DX(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeCargo,
+        DX.PRESENTATION_INTENT_TYPE.enumProcessing,
+        DX.PIXEL_DATA_CHARACTERISTICS.enumOriginal,
+        CT.PHOTOMETRIC_INTERPRETATION.enumPaletteColor,
+    )
     # The PRESENTATION_LUT_SHAPE enumeration is situated in the binding code of the DX Module.
-    assert dx.SetPresentationLUTShape(DX.PRESENTATION_LUT_SHAPE.enumIdentity), "Invalid Presentation LUT Shape"
+    assert dx.SetPresentationLUTShape(
+        DX.PRESENTATION_LUT_SHAPE.enumIdentity
+    ), "Invalid Presentation LUT Shape"
 
     nWidth = 256
     nHeight = 128
@@ -178,15 +203,19 @@ def test_create_dx_palette():
     dxFolder = Folder("DXFiles")
     dxFilename = Filename(dxFolder, "SimpleColorPaletteDX.dcs")
 
-    assert dx.Write(dxFilename, errorlog), \
-        f"Simple DX Template Example unable to write DICOS File {dxFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert dx.Write(
+        dxFilename, errorlog
+    ), f"Simple DX Template Example unable to write DICOS File {dxFilename}\n{errorlog.GetErrorLog().Get()}"
 
     errorlog = ErrorLog()
     dxRead = DX()
     # You should set 'None' for the unused argument of the 'Read' function.
-    assert dxRead.Read(dxFilename, errorlog, None), \
-        f"Unable to read DX file {dxFilename}\n{errorlog.GetErrorLog().Get()}"
-    assert dxRead == dx, f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
+    assert dxRead.Read(
+        dxFilename, errorlog, None
+    ), f"Unable to read DX file {dxFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert (
+        dxRead == dx
+    ), f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
 if __name__ == "__main__":
