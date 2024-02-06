@@ -7,26 +7,30 @@ def main():
     client.SetSourceApplication(DcsApplicationEntity("ClientExample"))
     client.SetDestinationApplication(DcsApplicationEntity("Server"))
     client.SetUserName(DcsString("UserName"))
-    
+
     if client.ConnectToServer() == True:
         print("Connected to server")
     else:
         print("Connecting to server failed")
         print("Error log")
         print(client.GetErrorLog().GetErrorLog().Get())
-        client.GetErrorLog().WriteLog(Filename("ErrorLog - Server Connection Failed.txt"))
+        client.GetErrorLog().WriteLog(
+            Filename("ErrorLog - Server Connection Failed.txt")
+        )
         return 1
-    
+
     if client.StartDicosSession(DcsClient.SOPCLASSUID.enumSopEcho) == True:
         print("DICOS session started")
     else:
         print("DICOS session failed")
         print("Error log:")
         print(client.GetErrorLog().GetErrorLog().Get())
-        client.GetErrorLog().WriteLog(Filename("ErrorLog - DICOS Session Start Failed.txt"))
+        client.GetErrorLog().WriteLog(
+            Filename("ErrorLog - DICOS Session Start Failed.txt")
+        )
         return 1
-    
-    if client.Echo() :
+
+    if client.Echo():
         print("Echo success")
     else:
         print("Echo failed")
@@ -38,6 +42,6 @@ def main():
     client.DisconnectFromServer()
     return 0
 
+
 if __name__ == "__main__":
     main()
-    

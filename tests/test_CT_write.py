@@ -86,10 +86,12 @@ def test_create_ct_files():
     # The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
     # The IMAGE_FLAVOR enumeration is situated in the binding code of the CT Module.
     # The PHOTOMETRIC_INTERPRETATION enumeration is situated in the binding code of the CT Module.
-    CTObject = CT(CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
-                CT.OOI_IMAGE_CHARACTERISTICS.enumHighEnergy,
-                CT.IMAGE_FLAVOR.enumVolume,
-                CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2)
+    CTObject = CT(
+        CT.OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
+        CT.OOI_IMAGE_CHARACTERISTICS.enumHighEnergy,
+        CT.IMAGE_FLAVOR.enumVolume,
+        CT.PHOTOMETRIC_INTERPRETATION.enumMonochrome2,
+    )
 
     CTObject.SetImageAcquisitionDuration(5.2)
     DCS = DcsLongString("HIGH ENERGY SCAN")
@@ -124,13 +126,17 @@ def test_create_ct_files():
     while volume_iterator != volume.End():
         cur_slice = volume_iterator.AsUnsigned16()
         cur_slice.Zero(slice_count)
-        b_res = (cur_slice.GetWidth() == 128) and (cur_slice.GetHeight() == 129) and b_res
+        b_res = (
+            (cur_slice.GetWidth() == 128) and (cur_slice.GetHeight() == 129) and b_res
+        )
         # we used next to increment the volume_iterator
         next(volume_iterator)
         slice_count += 1
 
-    assert slice_count == 100 or not b_res, "UserCTExample CreateCTSimple failed to verify slice count using iterator. " \
-                                            "Expected 100, got " + str(slice_count)
+    assert slice_count == 100 or not b_res, (
+        "UserCTExample CreateCTSimple failed to verify slice count using iterator. "
+        "Expected 100, got " + str(slice_count)
+    )
 
     CTObject = GenerateCTSection(CTObject)
     totalSliceCount = CTObject.GetSectionByIndex(0).GetDepth()
@@ -139,11 +145,15 @@ def test_create_ct_files():
     # S_UINT16 in Array3DLargeS_UINT16 means that the type of the components of Array3DLarge is S_UINT16"
     # the supported types of Array3DLarge are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
     # The VOLUME_MEMORY_POLICY enumeration is situated in the binding code of the CT Module.
-    vUnsigned16bitData = Array3DLargeS_UINT16(10, 20, 40, CT.VOLUME_MEMORY_POLICY.OWNS_SLICES)
-    vUnsigned16bitData.Zero(0xbeef)
+    vUnsigned16bitData = Array3DLargeS_UINT16(
+        10, 20, 40, CT.VOLUME_MEMORY_POLICY.OWNS_SLICES
+    )
+    vUnsigned16bitData.Zero(0xBEEF)
 
-    pSection2 = CTObject.AddSection(vUnsigned16bitData, CT.VOLUME_MEMORY_POLICY.DOES_NOT_OWN_SLICES)
-    b_res = (pSection2 is not None and b_res)
+    pSection2 = CTObject.AddSection(
+        vUnsigned16bitData, CT.VOLUME_MEMORY_POLICY.DOES_NOT_OWN_SLICES
+    )
+    b_res = pSection2 is not None and b_res
     assert b_res
     totalSliceCount += pSection2.GetDepth()
     assert totalSliceCount == 296
@@ -156,7 +166,6 @@ def test_create_ct_files():
         pSection = sectionIt.deref()
         pixel_data_type = pSection.GetPixelDataType()
         if Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit == pixel_data_type:
-
             volume_iterator = pSection.GetPixelData().Begin()
             while volume_iterator != pSection.GetPixelData().End():
                 cur_slice = volume_iterator.AsUnsigned16()
@@ -166,16 +175,19 @@ def test_create_ct_files():
         next(sectionIt)
         sectionCount += 1
 
-    b_res = ((0 != sectionCount) and b_res)
-    assert (sectionCount == 2) and (slice_count == totalSliceCount), 'UserCTExample CreateCTSimple failed to verify sections and slices using iterator'
+    b_res = (0 != sectionCount) and b_res
+    assert (
+        (sectionCount == 2) and (slice_count == totalSliceCount)
+    ), "UserCTExample CreateCTSimple failed to verify sections and slices using iterator"
 
     errorlog = ErrorLog()
     ctFolder = Folder("SimpleCT")
     ctFilename = Filename(ctFolder, "SimpleCT.dcs")
 
     # The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
-    assert CTObject.Write(ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit), \
-        f"UserCTExample CreateCTSimple unable to write DICOS File {ctFilename}\n{errorlog.GetErrorLog().Get()}"
+    assert CTObject.Write(
+        ctFilename, errorlog, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
+    ), f"UserCTExample CreateCTSimple unable to write DICOS File {ctFilename}\n{errorlog.GetErrorLog().Get()}"
 
     CTObject_c0 = CT()
     errorlog_c0 = ErrorLog()
@@ -201,7 +213,9 @@ def test_create_ct_files():
 
             next(sectionIt_c0)
     else:
-        raise RuntimeError(f"Failed to load SimpleCT0000 \n{errorlog_c0.GetErrorLog().Get()}")
+        raise RuntimeError(
+            f"Failed to load SimpleCT0000 \n{errorlog_c0.GetErrorLog().Get()}"
+        )
 
     CTObject_c1 = CT()
     errorlog_c1 = ErrorLog()
@@ -229,16 +243,44 @@ def test_create_ct_files():
 
             next(sectionIt_c1)
     else:
-        raise RuntimeError(f"Failed to load SimpleCT0001 \n{errorlog_c1.GetErrorLog().Get()}")
+        raise RuntimeError(
+            f"Failed to load SimpleCT0001 \n{errorlog_c1.GetErrorLog().Get()}"
+        )
 
-    print('Depth ', depth_size_c0, 'Height ', height_size_c0, 'Width ', width_size_c0, 'NB_Sections', section_size_c0)
-    print('Depth ', depth_size_c1, 'Height ', height_size_c1, 'Width ', width_size_c1, 'NB_Sections', section_size_c1)
+    print(
+        "Depth ",
+        depth_size_c0,
+        "Height ",
+        height_size_c0,
+        "Width ",
+        width_size_c0,
+        "NB_Sections",
+        section_size_c0,
+    )
+    print(
+        "Depth ",
+        depth_size_c1,
+        "Height ",
+        height_size_c1,
+        "Width ",
+        width_size_c1,
+        "NB_Sections",
+        section_size_c1,
+    )
 
-    assert depth_size_c0 == 40 and height_size_c0 == 20 and width_size_c0 == 10 and section_size_c0 == 1, \
-        "Simple CT Example original CT and read SimpleCT0000 are not equal"
+    assert (
+        depth_size_c0 == 40
+        and height_size_c0 == 20
+        and width_size_c0 == 10
+        and section_size_c0 == 1
+    ), "Simple CT Example original CT and read SimpleCT0000 are not equal"
 
-    assert depth_size_c1 == 256 and height_size_c1 == 256 and width_size_c1 == 256 and section_size_c1 == 1, \
-        "Simple CT Example original CT and read SimpleCT0001 are not equal"
+    assert (
+        depth_size_c1 == 256
+        and height_size_c1 == 256
+        and width_size_c1 == 256
+        and section_size_c1 == 1
+    ), "Simple CT Example original CT and read SimpleCT0001 are not equal"
 
 
 if __name__ == "__main__":

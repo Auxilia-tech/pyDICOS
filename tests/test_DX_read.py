@@ -10,7 +10,7 @@ def test_loading_from_file_processing():
     dx_object = DXLoader(filename="DXFiles/SimpleProcessingDX.dcs")
     data = dx_object.get_data()
     assert data.shape == (128, 256)
-    suite = np.array([i for i in range(128*256)]).reshape(128, 256)
+    suite = np.array([i for i in range(128 * 256)]).reshape(128, 256)
     assert np.all(data == suite)
 
 
@@ -20,7 +20,7 @@ def test_loading_from_file_presentation():
     dx_loader_file = DXLoader(filename="DXFiles/SimplePresentationDX.dcs")
     data = dx_loader_file.get_data()
     assert data.shape == (128, 256)
-    suite = np.array([i for i in range(128*256)]).reshape(128, 256)
+    suite = np.array([i for i in range(128 * 256)]).reshape(128, 256)
     assert np.all(data == suite)
 
 
@@ -30,7 +30,7 @@ def test_loading_from_file_palette():
     dx_loader_file = DXLoader(filename="DXFiles/SimpleColorPaletteDX.dcs")
     data = dx_loader_file.get_data()
     assert data.shape == (128, 256)
-    suite = np.array([[i]*256 for i in range(128)])
+    suite = np.array([[i] * 256 for i in range(128)])
     assert np.all(data == suite)
 
 

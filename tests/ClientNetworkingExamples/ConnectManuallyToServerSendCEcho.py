@@ -15,8 +15,8 @@ def main():
         print(client.GetErrorLog().GetErrorLog().Get())
         client.GetErrorLog().WriteLog(Filename("ErrorLog-EchoExample.txt"))
         retVal = 1
-    
-    if client.Echo() :
+
+    if client.Echo():
         print("Echo success")
     else:
         print("Echo failed")
@@ -27,6 +27,6 @@ def main():
     client.DisconnectFromServer()
     return retVal
 
+
 if __name__ == "__main__":
     main()
-    

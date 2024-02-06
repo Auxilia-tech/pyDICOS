@@ -22,7 +22,7 @@ class DXLoader(DX):
         if filename is not None:
             read_dcs(filename, dcs=self)
 
-    def write(self, filename :str) -> None:
+    def write(self, filename: str) -> None:
         """Writes the object to a file.
 
         Parameters
@@ -34,7 +34,7 @@ class DXLoader(DX):
 
     def get_data(self) -> np.ndarray:
         """Get the data from the DX object.
-        
+
         Returns
         -------
         data_array : numpy.ndarray
@@ -42,12 +42,12 @@ class DXLoader(DX):
         """
         imgPixelData = self.GetXRayData()
         vIndexData = imgPixelData.GetUnsigned16()
-        return np.array(vIndexData, copy=False) 
+        return np.array(vIndexData, copy=False)
 
     # Note: This function is not implemented in the Stratovan Toolkit yet.
     def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
         """Generate a TDR file from the DX object and detections.
-        
+
         Parameters
         ----------
         detection_boxes : list
