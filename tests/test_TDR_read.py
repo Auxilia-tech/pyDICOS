@@ -132,12 +132,12 @@ def test_loading_tdr_linked_ct():
     assert data["PTOs"][1]["ID"] == 1
     assert data["PTOs"][1]["Description"] == ""
     assert data["PTOs"][1]["Probability"] == -1
-    assert data["PTOs"][0]["Polygon"][0]["x"] == -40
-    assert data["PTOs"][0]["Polygon"][0]["y"] == -40
-    assert data["PTOs"][0]["Polygon"][0]["z"] == -40
-    assert data["PTOs"][0]["Polygon"][1]["x"] == 40
-    assert data["PTOs"][0]["Polygon"][1]["y"] == 40
-    assert data["PTOs"][0]["Polygon"][1]["z"] == 40
+    assert data["PTOs"][1]["Polygon"][0]["x"] == -40
+    assert data["PTOs"][1]["Polygon"][0]["y"] == -40
+    assert data["PTOs"][1]["Polygon"][0]["z"] == -40
+    assert data["PTOs"][1]["Polygon"][1]["x"] == 40
+    assert data["PTOs"][1]["Polygon"][1]["y"] == 40
+    assert data["PTOs"][1]["Polygon"][1]["z"] == 40
 
 
 if __name__ == "__main__":
