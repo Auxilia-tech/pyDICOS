@@ -115,7 +115,7 @@ def test_loading_tdr_linked_ct():
     assert data["PTOs"][0]["Extent"]["z"] == 200
     assert data["PTOs"][0]["ID"] == 0
     assert data["PTOs"][0]["Description"] == "Weapon"
-    assert data["PTOs"][0]["Probability"] == 0.98
+    assert data["PTOs"][0]["Probability"] == pytest.approx(0.98, 1e-6)
     assert data["PTOs"][0]["Polygon"][0]["x"] == -250
     assert data["PTOs"][0]["Polygon"][0]["y"] == -250
     assert data["PTOs"][0]["Polygon"][0]["z"] == -250
