@@ -15,7 +15,7 @@ from pyDICOS import (
 )
 
 
-def test_create_dx_processing():
+def test_create_dx_processing(session_cleanup):
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The PRESENTATION_INTENT_TYPE enumeration is situated in the binding code of the DX Module.
     # The PIXEL_DATA_CHARACTERISTICS enumeration is situated in the binding code of the DX Module.
@@ -53,6 +53,7 @@ def test_create_dx_processing():
     errorlog = ErrorLog()
     dxFolder = Folder("DXFiles")
     dxFilename = Filename(dxFolder, "SimpleProcessingDX.dcs")
+    session_cleanup.append("DXFiles")
 
     # The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
     assert dx.Write(
@@ -70,7 +71,7 @@ def test_create_dx_processing():
     ), f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_create_dx_presentation():
+def test_create_dx_presentation(session_cleanup):
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The PRESENTATION_INTENT_TYPE enumeration is situated in the binding code of the DX Module.
     # The PIXEL_DATA_CHARACTERISTICS enumeration is situated in the binding code of the DX Module.
@@ -131,6 +132,7 @@ def test_create_dx_presentation():
     errorlog = ErrorLog()
     dxFolder = Folder("DXFiles")
     dxFilename = Filename(dxFolder, "SimplePresentationDX.dcs")
+    session_cleanup.append("DXFiles")
 
     assert dx.Write(
         dxFilename, errorlog
@@ -147,7 +149,7 @@ def test_create_dx_presentation():
     ), f"DX file loaded from {dxFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_create_dx_palette():
+def test_create_dx_palette(session_cleanup):
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The PRESENTATION_INTENT_TYPE enumeration is situated in the binding code of the DX Module.
     # The PIXEL_DATA_CHARACTERISTICS enumeration is situated in the binding code of the DX Module.
@@ -202,6 +204,7 @@ def test_create_dx_palette():
     errorlog = ErrorLog()
     dxFolder = Folder("DXFiles")
     dxFilename = Filename(dxFolder, "SimpleColorPaletteDX.dcs")
+    session_cleanup.append("DXFiles")
 
     assert dx.Write(
         dxFilename, errorlog

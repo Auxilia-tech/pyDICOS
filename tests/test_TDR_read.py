@@ -3,7 +3,7 @@ import pytest
 from pydicos import TDRLoader
 
 
-@pytest.mark.order(after="tests/test_TDR_example.py::test_no_threat_tdr")
+@pytest.mark.order(after="tests/test_TDR_write.py::test_no_threat_tdr")
 def test_loading_no_threat():
     tdr_object = TDRLoader(filename="TDRFiles/SimpleBaggageNoThreatTDR.dcs")
     assert len(tdr_object) == 0
@@ -20,7 +20,7 @@ def test_loading_no_threat():
     assert data["PTOs"] == []
 
 
-@pytest.mark.order(after="tests/test_TDR_example.py::test_baggage_tdr")
+@pytest.mark.order(after="tests/test_TDR_write.py::test_baggage_tdr")
 def test_loading_baggage():
     tdr_object = TDRLoader(filename="TDRFiles/SimpleBaggageTDR.dcs")
     assert len(tdr_object) == 1
@@ -47,7 +47,7 @@ def test_loading_baggage():
     assert data["PTOs"][0]["Polygon"] == []
 
 
-@pytest.mark.order(after="tests/test_TDR_example.py::test_multiple_ptos_tdr")
+@pytest.mark.order(after="tests/test_TDR_write.py::test_multiple_ptos_tdr")
 def test_loading_multiple():
     tdr_object = TDRLoader(filename="TDRFiles/MultiplePTOsTDR.dcs")
     assert len(tdr_object) == 2
@@ -93,7 +93,7 @@ def test_loading_multiple():
     assert data["PTOs"][1]["Polygon"] == []
 
 
-@pytest.mark.order(after="tests/test_TDR_example.py::test_ct_linked_tdr")
+@pytest.mark.order(after="tests/test_TDR_write.py::test_ct_linked_tdr")
 def test_loading_tdr_linked_ct():
     tdr_object = TDRLoader(filename="CTwithTDR/TDR.dcs")
     assert len(tdr_object) == 2
