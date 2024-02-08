@@ -26,7 +26,7 @@ from pyDICOS import (
 )
 
 
-def test_no_threat_tdr():
+def test_no_threat_tdr(session_cleanup):
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -69,6 +69,7 @@ def test_no_threat_tdr():
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageNoThreatTDR.dcs")
+    session_cleanup.append("TDRFiles")
 
     assert tdr.Write(
         tdrFilename, errorlog
@@ -86,7 +87,7 @@ def test_no_threat_tdr():
     ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_baggage_tdr():
+def test_baggage_tdr(session_cleanup):
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -180,6 +181,7 @@ def test_baggage_tdr():
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageTDR.dcs")
+    session_cleanup.append("TDRFiles")
 
     assert tdr.Write(
         tdrFilename, errorlog
@@ -197,7 +199,7 @@ def test_baggage_tdr():
     ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_multiple_ptos_tdr():
+def test_multiple_ptos_tdr(session_cleanup):
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -310,6 +312,7 @@ def test_multiple_ptos_tdr():
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "MultiplePTOsTDR.dcs")
+    session_cleanup.append("TDRFiles")
 
     assert tdr.Write(
         tdrFilename, errorlog
@@ -327,7 +330,7 @@ def test_multiple_ptos_tdr():
     ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_ct_linked_tdr():
+def test_ct_linked_tdr(session_cleanup):
     bRes = True
     ct = CT()
     tdr = TDR()
@@ -571,6 +574,7 @@ def test_ct_linked_tdr():
     folder = Folder("CTwithTDR")
     filenameCT = Filename(folder, "CT.dcs")
     filenameTDR = Filename(folder, "TDR.dcs")
+    session_cleanup.append("CTwithTDR")
 
     errorlogCT = ErrorLog()
     errorlogTDR = ErrorLog()
