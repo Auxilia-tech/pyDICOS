@@ -7,6 +7,8 @@ from pyDICOS import (
     Bitmap,
     DcsLongString,
     Point3Dfloat,
+    DcsDate,
+    DcsTime,
 )
 
 from .._dicosio import read_dcs, write_dcs
@@ -87,11 +89,16 @@ class TDRLoader(TDR):
             "InstanceUID": self.GetScanInstanceUID().Get(),
             "OOIID": self.GetOOIID().Get(),
             "ScanStartDateTime": DicosDateTime(
-                date=self.GetScanStartDate(), time=self.GetScanStartTime()
+                date=self.GetScanStartDate(), 
+                time=self.GetScanStartTime(),
             ).as_dict(),
             "ProcessingTime": self.GetTotalProcessingTimeInMS(),
             "ScanType": self.GetScanType(),
             "AlarmDecision": self.GetAlarmDecision(),
+            "AlarmDecisionDateTime": DicosDateTime(
+                date=self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[1],
+                time=self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[2],
+            ).as_dict(),
             "ImageScaleRepresentation": self.GetImageScaleRepresentation(),
             "ATR": self.get_ATR_metadata().as_dict(),
             "PTOs": [],
