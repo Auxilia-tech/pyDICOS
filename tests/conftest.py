@@ -14,6 +14,7 @@ def session_cleanup():
     yield to_delete
     for folder in to_delete:
         if os.path.isdir(folder):
+            print(f"Cleaning up folder {folder}")
             shutil.rmtree(folder)
 
 def test_remove(session_cleanup):
