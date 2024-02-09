@@ -54,6 +54,7 @@ void export_Array1DPoint3D(py::module &m, const std::string & typestr){
         .def("GetCapacity", py::overload_cast<>(&Array1D<Point3D<T>>::GetCapacity, py::const_))
         .def("GetCapacity", py::overload_cast<S_UINT32&>(&Array1D<Point3D<T>>::GetCapacity, py::const_), py::arg("nCapacity"))
         .def("GetNumUnusedElements", &Array1D<Point3D<T>>::GetNumUnusedElements)
+        .def("__setitem__", [](Array1D<Point3D<T>>* ArrP3d, unsigned index, Point3D<T> val) { (*ArrP3d)[index] = val; })
         .def("__getitem__", (const Point3D<T>& (Array1D<Point3D<T>>::*)(S_UINT32) const) &Array1D<Point3D<T>>::operator[], py::arg("n"))
         .def("__getitem__", (Point3D<T>& (Array1D<Point3D<T>>::*)(S_UINT32)) &Array1D<Point3D<T>>::operator[], py::arg("n"))
         .def("GetBuffer", (const Point3D<T>* (Array1D<Point3D<T>>::*)() const) &Array1D<Point3D<T>>::GetBuffer, py::return_value_policy::reference_internal)

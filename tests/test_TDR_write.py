@@ -26,7 +26,7 @@ from pyDICOS import (
 )
 
 
-def test_no_threat_tdr(session_cleanup):
+def test_no_threat_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -69,7 +69,6 @@ def test_no_threat_tdr(session_cleanup):
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageNoThreatTDR.dcs")
-    session_cleanup.append("TDRFiles")
 
     assert tdr.Write(
         tdrFilename, errorlog
@@ -87,7 +86,7 @@ def test_no_threat_tdr(session_cleanup):
     ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_baggage_tdr(session_cleanup):
+def test_baggage_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -181,7 +180,6 @@ def test_baggage_tdr(session_cleanup):
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "SimpleBaggageTDR.dcs")
-    session_cleanup.append("TDRFiles")
 
     assert tdr.Write(
         tdrFilename, errorlog
@@ -199,7 +197,7 @@ def test_baggage_tdr(session_cleanup):
     ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_multiple_ptos_tdr(session_cleanup):
+def test_multiple_ptos_tdr():
     TDRInstanceNumber = 1234
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The TDR_TYPE enumeration is situated in the binding code of the TDR Module.
@@ -299,9 +297,9 @@ def test_multiple_ptos_tdr(session_cleanup):
     bp = Array1DPoint3Dfloat()
     bp.SetSize(3, False)
 
-    bp[0].Set(1, 2, 3)
-    bp[1].Set(3, 4, 5)
-    bp[2].Set(5, 6, 7)
+    bp[0] = Point3Dfloat(1, 2, 3)
+    bp[1] = Point3Dfloat(3, 4, 5)
+    bp[2] = Point3Dfloat(6, 7, 8)
     tdr.SetThreatBoundingPolygon(PTOIdentifier1, bp, 0)
 
     CTReferenceUID = DcsUniqueIdentifier("1235.23456.568678.34546")
@@ -312,7 +310,6 @@ def test_multiple_ptos_tdr(session_cleanup):
     errorlog = ErrorLog()
     tdrFolder = Folder("TDRFiles")
     tdrFilename = Filename(tdrFolder, "MultiplePTOsTDR.dcs")
-    session_cleanup.append("TDRFiles")
 
     assert tdr.Write(
         tdrFilename, errorlog
@@ -330,7 +327,7 @@ def test_multiple_ptos_tdr(session_cleanup):
     ), f"TDR file loaded from {tdrFilename} does not match original.\n{errorlog.GetErrorLog().Get()}"
 
 
-def test_ct_linked_tdr(session_cleanup):
+def test_ct_linked_tdr():
     bRes = True
     ct = CT()
     tdr = TDR()
@@ -488,13 +485,13 @@ def test_ct_linked_tdr(session_cleanup):
     # Array1DPoint3D means that the type of the components of Array1D is Point3D
     bounds = Array1DPoint3Dfloat()
     bounds.SetSize(2, False)
-    bounds[0].Set(-250, -250, -250)
-    bounds[1].Set(-200, -230, -50)
+    bounds[0] = Point3Dfloat(-250, -250, -250)
+    bounds[1] = Point3Dfloat(-200, -230, -50)
 
     bRes = bRes and tdr.SetThreatBoundingPolygon(0, bounds, 0)
 
-    bounds[0].Set(float(-40), float(-40), float(-40))
-    bounds[1].Set(float(40), float(40), float(40))
+    bounds[0] = Point3Dfloat(float(-40), float(-40), float(-40))
+    bounds[1] = Point3Dfloat(float(40), float(40), float(40))
 
     bRes = bRes and tdr.SetThreatBoundingPolygon(1, bounds, 0)
 
@@ -574,7 +571,6 @@ def test_ct_linked_tdr(session_cleanup):
     folder = Folder("CTwithTDR")
     filenameCT = Filename(folder, "CT.dcs")
     filenameTDR = Filename(folder, "TDR.dcs")
-    session_cleanup.append("CTwithTDR")
 
     errorlogCT = ErrorLog()
     errorlogTDR = ErrorLog()
