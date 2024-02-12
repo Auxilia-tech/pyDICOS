@@ -1,20 +1,20 @@
 name: run-tests
 
 on:
-  workflow_call:
-    inputs:
-      os:
-        required: false
-        type: string
-        default: ubuntu
-      python-version:
-        required: false
-        type: string
-        default: 3.10
-      upload-coverage:
-        required: false
-        type: boolean
-        default: false
+#  workflow_call:
+#    inputs:
+#      os:
+#        required: false
+#        type: string
+#        default: ubuntu
+#      python-version:
+#        required: false
+#        type: string
+#        default: 3.10
+#      upload-coverage:
+#        required: false
+#        type: boolean
+#        default: false
   push:
     branches:
       - feature/workflow
@@ -22,7 +22,7 @@ on:
 jobs:
   build:
     name: Build distribution 📦
-    runs-on: ${{ inputs.os }}-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
@@ -32,10 +32,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set up Python ${{ inputs.python-version }}
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ inputs.python-version }}
+        python-version: 3.10
 
     - name: Download DICOS installer
       env:
