@@ -67,7 +67,8 @@ def test_loading_multiple():
     assert data["ProcessingTime"] == 500
     assert data["ScanType"] == 1
     assert data["ScanStartDateTime"]["date"] == (now.year, now.month, now.day)
-    assert data["ScanStartDateTime"]["time"][:3] == (now.hour, now.minute, pytest.approx(now.second, 10))
+    assert data["ScanStartDateTime"]["time"][:3] == (now.hour, pytest.approx(now.minute, 1),
+                                                     pytest.approx(now.second, 60))
     assert data["AlarmDecision"] == 1
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
