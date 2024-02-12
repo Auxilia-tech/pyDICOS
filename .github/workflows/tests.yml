@@ -50,6 +50,7 @@ jobs:
 
     - name: Run tests
       run: |
+        pip install dist/$(ls dist/ | head -1)
         pip install pytest pytest-cov pytest-xprocess pytest-order
         pytest --cov pydicos tests/
 
