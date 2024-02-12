@@ -31,8 +31,8 @@ jobs:
     - name: Download DICOS installer
       env:
         AWS_DEFAULT_REGION: 'eu-west-3'
-        AWS_ACCESS_KEY_ID: ${{ secrets.GH_S3_AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.GH_S3_AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
       run: |
         aws s3 cp s3://dicos-installer/sdicos_lin_ubuntu-20-${{ matrix.bits }}b_r20230925_${{ matrix.bits }}b.run installer.run
         chmod +x installer.run
