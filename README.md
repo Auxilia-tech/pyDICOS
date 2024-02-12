@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 [![publish-pypi-deploy](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml/badge.svg)](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml)
+[![codecov](https://codecov.io/gh/Auxilia-tech/pyDICOS/graph/badge.svg?token=BJ9INN7187)](https://codecov.io/gh/Auxilia-tech/pyDICOS)
 
 ## Motivations
 
@@ -36,31 +37,36 @@ We firmly believe that by releasing this library, we will encourage and support 
 
 ### Building from source
 
-To setup the build environment, run the following command to install required dependencies
+To setup the build environment, clone the repository, create your virtual environment and install required dependencies
 
-```
+```bash
+git clone https://github.com/Auxilia-tech/pyDICOS
+cd pyDICOS
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
 Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit) in the `opt` folder. If the library is already installed in another folder, skip this step and change the SDICOS path variable in `setup.sh`.
-```
+```bash
 chmod +x ./sdicos_lin_ubuntu-20-{version}.run
 ./sdicos_lin_ubuntu-20-{version}.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+chmod 755 -R /opt/stratovan/sdicos
 ```
 
 To generate a python wheel :
 
-```
+```bash
 chmod +x setup.sh
 ./setup.sh
 ```
 
-The lib wheel should be produced in the `dist` folder and can be installed _via_ `pip`.
+The lib wheel should be produced in the `dist` folder and can be installed _via_ `pip` in any local virtual environment.
 
 ### 🚧 Using Pypi index 🚧
 
 Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
-```
+```bash
 pip install pydicos
 ```
 This install method has not been released yet.
@@ -80,7 +86,7 @@ The stratovan exemple files were entirely translated in python.
 
 Here is a quick exemple for a script that reads a CT and a DX scan.
 
-``` python
+```python
 from pydicos import read_dcs
 
 ct = read_dcs("SimpleCT/SimpleCT.dcs", "CT")
@@ -97,7 +103,7 @@ More complex operations can be addressed by using the C++ functions directly.
 They can be invoked using the `pyDICOS` modules. For example, the previous 
 script would look like this :
 
-``` python
+```python
 from pyDICOS import CT, DX, TDR, ErrorLog, Filename
    
 ct, err, file = CT(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
@@ -119,7 +125,7 @@ As you can see, `pyDICOS` is the direct translation of the C++ classes and metho
 ### Testing
 
 The library can be tested via `pytest`
-``` bash
+```bash
 pytest tests/
 ```
 
