@@ -301,7 +301,7 @@ def test_multiple_ptos_tdr(session_cleanup):
 
     bp[0] = Point3Dfloat(1, 2, 3)
     bp[1] = Point3Dfloat(3, 4, 5)
-    bp[2] = Point3Dfloat(6, 7, 8)
+    bp[2] = Point3Dfloat(5, 6, 7)
     tdr.SetThreatBoundingPolygon(PTOIdentifier1, bp, 0)
 
     CTReferenceUID = DcsUniqueIdentifier("1235.23456.568678.34546")
