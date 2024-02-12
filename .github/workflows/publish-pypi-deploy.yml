@@ -40,6 +40,7 @@ jobs:
     - name: Build wheels
       uses: pypa/cibuildwheel@v2.16.2
       env:
+        CIBW_ENVIRONMENT: SDICOS_PATH=/opt/stratovan/sdicos
         CIBW_BUILD: cp3${{ matrix.python_version }}-manylinux_x86_64
         CIBW_BEFORE_ALL: ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos && chmod 755 -R /opt/stratovan/sdicos
       with:
