@@ -1,25 +1,15 @@
 name: run-tests
 
 on:
-  workflow_call:
-    inputs:
-      os:
-        required: true
-        type: string
-        default: ubuntu
-      python-version:
-        required: true
-        type: string
-        default: 3.10
-      upload-coverage:
-        required: false
-        type: boolean
-        default: false
+  push:
+    branches:
+      - main
+      - feature/workflow
 
 jobs:
   build:
     name: Build distribution 📦
-    runs-on: ${{ inputs.os }}-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
@@ -29,10 +19,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set up Python ${{ inputs.python-version }}
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ inputs.python-version }}
+        python-version: "3.10"
 
     - name: Download DICOS installer
       env:
@@ -59,10 +49,12 @@ jobs:
         pip install dist/$(ls dist/ | head -1)
         pip install pytest pytest-cov pytest-xprocess pytest-order
         export PYTHONPATH=$PWD
-        pytest --cov pydicos tests/
+        pytest --cov-report=xml --cov=pydicos tests/
 
     - name: Upload coverage reports to Codecov
-      if: inputs.upload-coverage
       uses: codecov/codecov-action@v4.0.1
       with:
+        files: ./coverage.xml
         env_vars: inputs.os, inputs.python-version
+        token: ${{ secrets.CODECOV_TOKEN }}
+        verbose: true
