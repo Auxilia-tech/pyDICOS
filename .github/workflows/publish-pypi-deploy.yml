@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - workflow
   pull_request:
     branches:
       - main
@@ -35,12 +36,13 @@ jobs:
       run: |
         aws s3 cp s3://dicos-installer/sdicos_lin_ubuntu-20-${{ matrix.bits }}b_r20230925_${{ matrix.bits }}b.run installer.run
         chmod +x installer.run
+        ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+        chmod 755 -R /opt/stratovan/sdicos
 
     - name: Build wheels
       uses: pypa/cibuildwheel@v2.16.2
       env:
         CIBW_BUILD: cp3${{ matrix.python_version }}-manylinux_x86_64
-        CIBW_BEFORE_ALL: ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
       with:
         config-file: pyproject.toml
 
