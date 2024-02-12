@@ -49,6 +49,12 @@ jobs:
         pip install pytest
         pytest tests/
 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      env:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: Auxilia-tech/pyDICOS
+
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
       with:
