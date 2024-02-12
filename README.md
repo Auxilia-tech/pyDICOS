@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 [![publish-pypi-deploy](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml/badge.svg)](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml)
+[![codecov](https://codecov.io/gh/Auxilia-tech/pyDICOS/graph/badge.svg?token=BJ9INN7187)](https://codecov.io/gh/Auxilia-tech/pyDICOS)
 
 ## Motivations
 
