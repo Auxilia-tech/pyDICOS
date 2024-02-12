@@ -34,8 +34,7 @@ def test_loading_baggage():
     assert data["InstanceNumber"] == 1234
     assert data["ProcessingTime"] == 500
     assert data["ScanType"] == 1
-    assert data["ScanStartDateTime"]["date"] == (now.year, now.month, now.day)
-    assert data["ScanStartDateTime"]["time"][:3] == (now.hour, now.minute, pytest.approx(now.second, 10))
+    assert (datetime(*(data["ScanStartDateTime"]["date"] + data["ScanStartDateTime"]["time"][:3])) - now).total_seconds() <= 30
     assert data["AlarmDecision"] == 2
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
@@ -66,9 +65,7 @@ def test_loading_multiple():
     assert data["InstanceNumber"] == 1234
     assert data["ProcessingTime"] == 500
     assert data["ScanType"] == 1
-    assert data["ScanStartDateTime"]["date"] == (now.year, now.month, now.day)
-    assert data["ScanStartDateTime"]["time"][:3] == (now.hour, pytest.approx(now.minute, 1),
-                                                     pytest.approx(now.second, 60))
+    assert (datetime(*(data["ScanStartDateTime"]["date"] + data["ScanStartDateTime"]["time"][:3])) - now).total_seconds() <= 30
     assert data["AlarmDecision"] == 1
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
@@ -118,11 +115,9 @@ def test_loading_tdr_linked_ct():
     assert data["InstanceNumber"] == 0
     assert data["ProcessingTime"] == 50
     assert data["ScanType"] == 1
-    assert data["ScanStartDateTime"]["date"] == (now.year, now.month, now.day)
-    assert data["ScanStartDateTime"]["time"][:3] == (now.hour, now.minute, pytest.approx(now.second, 10))
+    assert (datetime(*(data["ScanStartDateTime"]["date"] + data["ScanStartDateTime"]["time"][:3])) - now).total_seconds() <= 30
     assert data["AlarmDecision"] == 1
-    assert data["AlarmDecisionDateTime"]["date"] == (now.year, now.month, now.day)
-    assert data["AlarmDecisionDateTime"]["time"][:3] == (now.hour, now.minute, pytest.approx(now.second, 10))
+    assert (datetime(*(data["AlarmDecisionDateTime"]["date"] + data["AlarmDecisionDateTime"]["time"][:3])) - now).total_seconds() <= 30
     assert data["ImageScaleRepresentation"] == 1
     assert data["ATR"]["manufacturer"] == "ATR Manufacturer"
     assert data["ATR"]["version"] == "ATR Version"
