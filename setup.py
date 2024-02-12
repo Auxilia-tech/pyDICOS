@@ -3,6 +3,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+import sysconfig
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
@@ -48,6 +49,8 @@ class CMakeBuild(build_ext):
             f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}{os.sep}",
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
+            f"-DPYTHON_INCLUDE_DIR={sysconfig.get_path('include')}",
+            f"-DPYTHON_LIBRARY={sysconfig.get_config_var('LIBDIR')}",
         ]
         build_args = []
         # Adding CMake arguments set as environment variable
