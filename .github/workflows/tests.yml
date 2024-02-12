@@ -1,20 +1,6 @@
 name: run-tests
 
 on:
-#  workflow_call:
-#    inputs:
-#      os:
-#        required: false
-#        type: string
-#        default: ubuntu
-#      python-version:
-#        required: false
-#        type: string
-#        default: 3.10
-#      upload-coverage:
-#        required: false
-#        type: boolean
-#        default: false
   push:
     branches:
       - feature/workflow
@@ -65,7 +51,6 @@ jobs:
         pytest --cov-report=xml --cov=pydicos tests/
 
     - name: Upload coverage reports to Codecov
-      if: inputs.upload-coverage
       uses: codecov/codecov-action@v4.0.1
       with:
         files: ./coverage.xml
