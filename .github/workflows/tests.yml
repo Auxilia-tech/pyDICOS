@@ -4,11 +4,11 @@ on:
   workflow_call:
     inputs:
       os:
-        required: true
+        required: false
         type: string
         default: ubuntu
       python-version:
-        required: true
+        required: false
         type: string
         default: 3.10
       upload-coverage:
