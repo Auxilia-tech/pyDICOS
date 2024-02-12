@@ -1,0 +1,60 @@
+name: publish-pypi
+
+on:
+  push:
+    branches:
+      - main
+      - feature/workflow
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build distribution 📦
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        bits : [ '64' ]
+        python_version : [ '10' ]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.${{ matrix.python_version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.${{ matrix.python_version }}"
+
+    - name: Download DICOS installer
+      env:
+        AWS_DEFAULT_REGION: 'eu-west-3'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
+      run: |
+        aws s3 cp s3://dicos-installer/sdicos_lin_ubuntu-20-${{ matrix.bits }}b_r20230925_${{ matrix.bits }}b.run installer.run
+        chmod +x installer.run
+
+    - name: Install DICOS
+      run: |
+        ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+        chmod 755 -R /opt/stratovan/sdicos
+
+    - name: Build
+      run: |
+        pip install -r requirements.txt
+        chmod +x setup.sh
+        ./setup.sh
+
+    - name: Run tests
+      run: |
+        pip install pytest pytest-cov pytest-xprocess pytest-order
+        pytest --cov pydicos tests/
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      env:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: Auxilia-tech/pyDICOS
