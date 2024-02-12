@@ -48,7 +48,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pip install pytest
+        pip install pytest wheelhouse/$(ls wheelhouse | head -1)
         pytest tests/
 
     - name: Upload coverage reports to Codecov
