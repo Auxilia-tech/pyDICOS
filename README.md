@@ -116,6 +116,13 @@ if not tdr.Read(file, err, None):
 ```
 As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`
 
+### Testing
+
+The library can be tested via `pytest`
+``` bash
+pytest tests/
+```
+
 ## Contributing
 
 As our resources are limited, we very much value your contributions, be it bug fixes, new core features, or documentation improvements.
