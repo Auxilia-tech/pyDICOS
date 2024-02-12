@@ -46,6 +46,7 @@ Install the [Stratovan toolkit](https://www.stratovan.com/products/dicos-toolkit
 ```
 chmod +x ./sdicos_lin_ubuntu-20-{version}.run
 ./sdicos_lin_ubuntu-20-{version}.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+chmod 755 -R /opt/stratovan/sdicos
 ```
 
 To generate a python wheel :
