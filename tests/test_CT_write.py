@@ -81,7 +81,7 @@ def GenerateCTSection(ct):
     return ct
 
 
-def test_create_ct_files():
+def test_create_ct_files(session_cleanup):
     # The OBJECT_OF_INSPECTION_TYPE enumeration is situated in the binding code of the CT Module.
     # The OOI_IMAGE_CHARACTERISTICS enumeration is situated in the binding code of the CT Module.
     # The IMAGE_FLAVOR enumeration is situated in the binding code of the CT Module.
@@ -183,6 +183,7 @@ def test_create_ct_files():
     errorlog = ErrorLog()
     ctFolder = Folder("SimpleCT")
     ctFilename = Filename(ctFolder, "SimpleCT.dcs")
+    session_cleanup.append("SimpleCT")
 
     # The TRANSFER_SYNTAX enumeration is situated in the binding code of the CT Module.
     assert CTObject.Write(

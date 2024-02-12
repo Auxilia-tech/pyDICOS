@@ -7,6 +7,8 @@ from pyDICOS import (
     Bitmap,
     DcsLongString,
     Point3Dfloat,
+    DcsDate,
+    DcsTime,
 )
 
 from .._dicosio import read_dcs, write_dcs
@@ -85,12 +87,18 @@ class TDRLoader(TDR):
         data = {
             "InstanceNumber": self.GetInstanceNumber(),
             "InstanceUID": self.GetScanInstanceUID().Get(),
+            "OOIID": self.GetOOIID().Get(),
             "ScanStartDateTime": DicosDateTime(
-                date=self.GetScanStartDate(), time=self.GetScanStartTime()
+                date=self.GetScanStartDate(), 
+                time=self.GetScanStartTime(),
             ).as_dict(),
             "ProcessingTime": self.GetTotalProcessingTimeInMS(),
             "ScanType": self.GetScanType(),
             "AlarmDecision": self.GetAlarmDecision(),
+            "AlarmDecisionDateTime": DicosDateTime(
+                date=self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[1],
+                time=self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[2],
+            ).as_dict(),
             "ImageScaleRepresentation": self.GetImageScaleRepresentation(),
             "ATR": self.get_ATR_metadata().as_dict(),
             "PTOs": [],
@@ -106,8 +114,7 @@ class TDRLoader(TDR):
         )
         for i in range(PTOIds.GetSize()):
             self.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
-            # TODO: debug the following line
-            # self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+            self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
             data["PTOs"].append(
                 {
                     "Base": {"x": PTOBase.x, "y": PTOBase.y, "z": PTOBase.z},
