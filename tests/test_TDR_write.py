@@ -590,7 +590,7 @@ def test_ct_linked_tdr(session_cleanup):
 
 
 if __name__ == "__main__":
-    test_no_threat_tdr()
-    test_baggage_tdr()
-    test_multiple_ptos_tdr()
-    test_ct_linked_tdr()
+    test_no_threat_tdr([])
+    test_baggage_tdr([])
+    test_multiple_ptos_tdr([])
+    test_ct_linked_tdr([])

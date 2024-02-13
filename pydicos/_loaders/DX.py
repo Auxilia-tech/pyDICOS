@@ -1,7 +1,6 @@
 import numpy as np
-from pyDICOS import DX
+from pyDICOS import DX, ErrorLog, Filename
 
-from .._dicosio import read_dcs, write_dcs
 from .TDR import TDRLoader
 
 
@@ -20,7 +19,21 @@ class DXLoader(DX):
         super().__init__()
 
         if filename is not None:
-            read_dcs(filename, dcs=self)
+            self.read(filename)
+
+    def read(self, filename: str) -> None:
+        """Reads the object from a file.
+
+        Parameters
+        ----------
+        filename : str
+            The name of the file to read.
+        """
+        _err = ErrorLog()
+        if not self.Read(Filename(filename), _err, None):
+            raise RuntimeError(
+            f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
+        )
 
     def write(self, filename: str) -> None:
         """Writes the object to a file.
@@ -30,7 +43,11 @@ class DXLoader(DX):
         filename : str
             The name of the file to write.
         """
-        write_dcs(self, filename=filename)
+        _err = ErrorLog()
+        if not self.Write(Filename(filename), _err):
+            raise RuntimeError(
+            f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
+        )
 
     def get_data(self) -> np.ndarray:
         """Get the data from the DX object.

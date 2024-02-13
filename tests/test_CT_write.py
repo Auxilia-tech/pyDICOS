@@ -285,4 +285,4 @@ def test_create_ct_files(session_cleanup):
 
 
 if __name__ == "__main__":
-    test_create_ct_files()
+    test_create_ct_files([])

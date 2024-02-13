@@ -1,12 +1,12 @@
 import pytest
 from datetime import datetime
-from pydicos import TDRLoader
+from pydicos import dcsread
 
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_no_threat_tdr")
 def test_loading_no_threat():
     now = datetime.now()
-    tdr_object = TDRLoader(filename="TDRFiles/SimpleBaggageNoThreatTDR.dcs")
+    tdr_object = dcsread(filename="TDRFiles/SimpleBaggageNoThreatTDR.dcs")
     assert len(tdr_object) == 0
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
@@ -28,7 +28,7 @@ def test_loading_no_threat():
 @pytest.mark.order(after="tests/test_TDR_write.py::test_baggage_tdr")
 def test_loading_baggage():
     now = datetime.now()
-    tdr_object = TDRLoader(filename="TDRFiles/SimpleBaggageTDR.dcs")
+    tdr_object = dcsread(filename="TDRFiles/SimpleBaggageTDR.dcs")
     assert len(tdr_object) == 1
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
@@ -59,7 +59,7 @@ def test_loading_baggage():
 @pytest.mark.order(after="tests/test_TDR_write.py::test_multiple_ptos_tdr")
 def test_loading_multiple():
     now = datetime.now()
-    tdr_object = TDRLoader(filename="TDRFiles/MultiplePTOsTDR.dcs")
+    tdr_object = dcsread(filename="TDRFiles/MultiplePTOsTDR.dcs")
     assert len(tdr_object) == 2
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
@@ -109,7 +109,7 @@ def test_loading_multiple():
 @pytest.mark.order(after="tests/test_TDR_write.py::test_ct_linked_tdr")
 def test_loading_tdr_linked_ct():
     now = datetime.now()
-    tdr_object = TDRLoader(filename="CTwithTDR/TDR.dcs")
+    tdr_object = dcsread(filename="CTwithTDR/TDR.dcs")
     assert len(tdr_object) == 2
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 0
