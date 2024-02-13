@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from pydicos import dcsread
+from pydicos import dcsread, dcswrite
 
 
 @pytest.mark.order(after="tests/test_DX_write.py::test_create_dx_processing")
@@ -12,6 +12,7 @@ def test_loading_from_file_processing():
     assert data.shape == (128, 256)
     suite = np.array([i for i in range(128 * 256)]).reshape(128, 256)
     assert np.all(data == suite)
+    dcswrite(dx_object, "DXFiles/SimpleProcessingDX2.dcs")
 
 
 @pytest.mark.order(after="tests/test_DX_write.py::test_create_dx_presentation")
