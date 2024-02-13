@@ -222,6 +222,6 @@ def test_create_dx_palette(session_cleanup):
 
 
 if __name__ == "__main__":
-    test_create_dx_processing()
-    test_create_dx_presentation()
-    test_create_dx_palette()
+    test_create_dx_processing([])
+    test_create_dx_presentation([])
+    test_create_dx_palette([])

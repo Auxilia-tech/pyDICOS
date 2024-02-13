@@ -1,15 +1,13 @@
-from pydicos import CTLoader, DXLoader, TDRLoader
+from ._loaders import CTLoader, DXLoader, TDRLoader
 
 
-def dcsread(filename: str, dcs_type: str = None, dcs = None):
+def dcsread(filename: str, dcs = None):
     """Read a DICOS file.
 
     Parameters
     ----------
     filename : str
         The name of the file to read.
-    dcs_type : str, optional
-        The DICOS object type to read. Must be one of "CT", "DX", or "TDR".
     dcs : DX|TDR|CT, optional
         The DICOS object instance that will load the data in-place.
 
@@ -18,22 +16,20 @@ def dcsread(filename: str, dcs_type: str = None, dcs = None):
     dcs : DICOS
         The DICOS object read from the file.
     """
-    assert (
-        dcs_type is not None or dcs is not None
-    ), "A DICOS type or object must be provided"
-
     if dcs is not None:
         dcs.read(filename)
         return dcs
 
-    if dcs_type == "CT":
-        return CTLoader(filename)
-    elif dcs_type == "DX":
-        return DXLoader(filename)
-    elif dcs_type == "TDR":
-        return TDRLoader(filename)
-    else:
-        raise ValueError(f"Invalid DICOS type: {dcs_type}")
+    for DCSLoader in [CTLoader, DXLoader, TDRLoader]:
+        try:
+            dcs = DCSLoader()
+            dcs.read(filename)
+            return dcs
+        except:
+            print(f"failed with {DCSLoader}")
+            pass
+
+    raise ValueError(f"Invalid DICOS file: {filename}")
 
 
 def dcswrite(dcs, filename: str):
