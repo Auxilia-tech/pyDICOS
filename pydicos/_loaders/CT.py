@@ -11,9 +11,10 @@ from pyDICOS import (
     DcsTime,
     Point3Dfloat,
     Volume,
+    Filename,
+    ErrorLog,
 )
 
-from .._dicosio import read_dcs, write_dcs
 from .TDR import TDRLoader
 
 
@@ -32,7 +33,21 @@ class CTLoader(CT):
         super().__init__()
 
         if filename is not None:
-            read_dcs(filename, dcs=self)
+            self.read(filename)
+
+    def read(self, filename: str) -> None:
+        """Reads the object from a file.
+
+        Parameters
+        ----------
+        filename : str
+            The name of the file to read.
+        """
+        _err = ErrorLog()
+        if not self.Read(Filename(filename), _err, None):
+            raise RuntimeError(
+            f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
+        )
 
     def write(self, filename: str) -> None:
         """Writes the object to a file.
@@ -42,7 +57,13 @@ class CTLoader(CT):
         filename : str
             The name of the file to write.
         """
-        write_dcs(self, filename=filename)
+        _err = ErrorLog()
+        if not self.Write(
+            Filename(filename), _err, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
+        ):
+            raise RuntimeError(
+            f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
+        )
 
     def get_data(self) -> list:
         """Get the data from the CT object.
@@ -164,6 +185,6 @@ class CTLoader(CT):
         assert bRes, "Error setting TDR values"
 
         if output_file is not None:
-            write_dcs(tdr, output_file)
+            tdr.write(output_file)
 
         return TDRLoader(tdr_object=tdr)

@@ -66,11 +66,12 @@ The lib wheel should be produced in the `dist` folder and can be installed _via_
 
 ### 🚧 Using Pypi index 🚧
 
+🚧 This install method has not been released yet. 🚧
+
 Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
 ```bash
 pip install pydicos
 ```
-This install method has not been released yet.
 
 ## Usage
 
@@ -88,16 +89,19 @@ The stratovan exemple files were entirely translated in python.
 Here is a quick exemple for a script that reads a CT and a DX scan.
 
 ```python
-from pydicos import read_dcs
+from pydicos import dcsread, dcswrite
 
-ct = read_dcs("SimpleCT/SimpleCT.dcs", "CT")
+ct = dcsread("SimpleCT/SimpleCT.dcs")
 data = ct.get_data() # list of 3-dimentionnal numpy arrays
+dcswrite(ct, "SimpleCT/SimpleCT_2.dcs")
 
-dx = read_dcs(filename="DXFiles/SimpleDX.dcs", "DX")
+dx = dcsread("DXFiles/SimpleDX.dcs")
 data = dx.get_data() # 2-dimentionnal numpy array
+dcswrite(dx, "DXFiles/SimpleDX_2.dcs")
 
-tdr = read_dcs("SimpleCT/SimpleCT.dcs", "TDR")
+tdr = dcsread("SimpleTDR/SimpleTDR.dcs")
 data = tdr.get_data() # dictionnay of metadata
+dcswrite(tdr, "SimpleTDR/SimpleTDR_2.dcs")
 ```
 
 More complex operations can be addressed by using the C++ functions directly. 
@@ -109,19 +113,27 @@ from pyDICOS import CT, DX, TDR, ErrorLog, Filename
    
 ct, err, file = CT(), ErrorLog(), Filename("SimpleCT/SimpleCT.dcs")
 if not ct.Read(file, err, None):
-   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
+   raise RuntimeError(f"Failed to read DICOS file: {file.Get()}\n{err.GetErrorLog().Get()}")
 data = ... # This is very long, refer to pydicos._loaders::CTLoader.get_data for full script
+if not ct.Write(Filename("SimpleCT/SimpleCT_2.dcs"), err):
+   raise RuntimeError(f"Failed to write DICOS file: SimpleCT/SimpleCT_2.dcs\n{err.GetErrorLog().Get()}")
 
-dx, err, file = DX(), ErrorLog(), Filename("SimpleCT/SimpleDX.dcs")
+dx, err, file = DX(), ErrorLog(), Filename("SimpleDX/SimpleDX.dcs")
 if not dx.Read(file, err, None):
-   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
+   raise RuntimeError(f"Failed to read DICOS file: {file.Get()}\n{err.GetErrorLog().Get()}")
 data = np.array(dx.GetXRayData().GetUnsigned16(), copy=False)
+if not dx.Write(Filename("SimpleDX/SimpleDX_2.dcs"), err):
+   raise RuntimeError(f"Failed to write DICOS file: SimpleDX/SimpleDX_2.dcs\n{err.GetErrorLog().Get()}")
 
-tdr, err, file = TDR(), ErrorLog(), Filename("SimpleTDR/SimpleDX.dcs")
+tdr, err, file = TDR(), ErrorLog(), Filename("SimpleTDR/SimpleTDR.dcs")
 if not tdr.Read(file, err, None):
-   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}")
+   raise RuntimeError(f"Failed to read DICOS file: {filename}\n{err.GetErrorLog().Get()}")
+data = ... # This is very long, refer to pydicos._loaders::TDRLoader.get_data for full script
+if not tdr.Write(Filename("SimpleTDR/SimpleTDR_2.dcs"), err):
+   raise RuntimeError(f"Failed to write DICOS file: SimpleTDR/SimpleTDR_2.dcs\n{err.GetErrorLog().Get()}")
 ```
-As you can see, `pyDICOS` is the direct translation of the C++ classes and methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`
+As you can see, `pyDICOS` is the direct translation of the C++ classes and in-place methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`. 
+More details in (architecture)[pydicos/README.md].
 
 ### Testing
 

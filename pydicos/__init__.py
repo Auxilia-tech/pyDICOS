@@ -1,4 +1,4 @@
-from ._dicosio import read_dcs, write_dcs
+from ._dicosio import dcsread, dcswrite
 from ._loaders import *
 from .utils.time import DicosDateTime
 from pydicos.version import _version as __version__
