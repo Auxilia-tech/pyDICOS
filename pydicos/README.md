@@ -6,87 +6,222 @@
 <img width="850" src="../assets/architecture.svg">
 </div>
 
-## DICOS methods
-
-### CT
-
-ct.ADD_SLICE_FAILURE_POLICY           ct.GetScanStartTime                   ct.SetFrameOfReferenceUID
-ct.AddSection                         ct.GetScanType                        ct.SetImageAcquisitionDateAndTime
-ct.Begin                              ct.GetSectionByIndex                  ct.SetImageAcquisitionDuration
-ct.End                                ct.GetSeriesAcquisitionStatus         ct.SetImageType
-ct.FreeMemory                         ct.GetSeriesDate                      ct.SetInstanceNumber
-ct.GenerateScanInstanceUID            ct.GetSeriesInstanceUID               ct.SetMachineAddress
-ct.GenerateSeriesInstanceUID          ct.GetSeriesTime                      ct.SetMachineID
-ct.GenerateSopInstanceUID             ct.GetSopClassUID                     ct.SetMachineLocation
-ct.GetContentDate                     ct.GetSopInstanceUID                  ct.SetNumberOfSections
-ct.GetContentTime                     ct.HasBurnedInAnnotation              ct.SetOOIID
-ct.GetFrameOfReferenceUID             ct.IMAGE_FLAVOR                       ct.SetOOIIDAssigningAuthority
-ct.GetImageAcquisitionDate            ct.Initialize                         ct.SetOOIIDType
-ct.GetImageAcquisitionDuration        ct.IsCDI                              ct.SetOOIType
-ct.GetImageAcquisitionTime            ct.IsSDI                              ct.SetPhotometricInterpretation
-ct.GetImageFlavor                     ct.IsStandard                         ct.SetSDI
-ct.GetImageType                       ct.OBJECT_OF_INSPECTION_TYPE          ct.SetScanDescription
-ct.GetInstanceNumber                  ct.OOI_IMAGE_CHARACTERISTICS          ct.SetScanID
-ct.GetModality                        ct.PHOTOMETRIC_INTERPRETATION         ct.SetScanInstanceUID
-ct.GetNumberOfFilesToCreate           ct.Read                               ct.SetScanStartDateAndTime
-ct.GetNumberOfSections                ct.SCAN_TYPE                          ct.SetScanType
-ct.GetOOIID                           ct.SendOverNetwork                    ct.SetSeriesAcquisitionStatus
-ct.GetOOIIDAssigningAuthority         ct.SetBurnedInAnnotation              ct.SetSeriesDateAndTime
-ct.GetOOIIDType                       ct.SetCDI                             ct.SetSeriesInstanceUID
-ct.GetOOIImageCharacteristics         ct.SetContentDateAndTime              ct.SetSopInstanceCreationDateAndTime
-ct.GetOOIType                         ct.SetDeviceCalibrationDateAndTime    ct.SetStandard
-ct.GetPhotometricInterpretation       ct.SetDeviceManufacturer              ct.TRANSFER_SYNTAX
-ct.GetScanID                          ct.SetDeviceManufacturerModelName     ct.VOLUME_MEMORY_POLICY
-ct.GetScanInstanceUID                 ct.SetDeviceSerialNumber              ct.Write
-ct.GetScanStartDate                   ct.SetDeviceSoftwareVersion  
-
-### DX
-
-dx.GetBlueLUT                          dx.Initialize                          dx.SetLUTData
-dx.GetGreenLUT                         dx.PIXEL_DATA_CHARACTERISTICS          dx.SetPresentationLUTShape
-dx.GetLUTData                          dx.PRESENTATION_INTENT_TYPE            dx.SetWindowCenterAndWidth
-dx.GetModality                         dx.PRESENTATION_LUT_SHAPE              dx.SetWindowCenterAndWidthExplanation
-dx.GetPresentationLUTShape             dx.Read                                dx.SetXRayTubeCurrent
-dx.GetRedLUT                           dx.SetImageOrientation                 dx.Validate
-dx.GetWindowCenterAndWidth             dx.SetImagePosition                    dx.Write
-dx.GetXRayData                         dx.SetKVP 
-
-### TDR
-
-tdr.ABILITY_ASSESSMENT                        tdr.GetPTOAssessmentProbability               tdr.SetFrameOfReferenceUID
-tdr.ABORT_FLAG                                tdr.GetPTOIds                                 tdr.SetImageScaleRepresentation
-tdr.ABORT_REASON                              tdr.GetPTOProcessingTime                      tdr.SetInstanceNumber
-tdr.ADDITIONAL_INSPECTION_SELECTION_CRITERIA  tdr.GetScanInstanceUID                        tdr.SetMachineAddress
-tdr.ALARM_DECISION                            tdr.GetScanStartDate                          tdr.SetMachineID
-tdr.ASSESSMENT_FLAG                           tdr.GetScanStartTime                          tdr.SetMachineLocation
-tdr.AddPTOAssessment                          tdr.GetScanType                               tdr.SetOOIID
-tdr.AddPotentialThreatObject                  tdr.GetSeriesAcquisitionStatus                tdr.SetOOIIDAssigningAuthority
-tdr.AddReferencedInstance                     tdr.GetSeriesDate                             tdr.SetOOIIDType
-tdr.AddReferencedSopInstance                  tdr.GetSeriesInstanceUID                      tdr.SetOOIType
-tdr.GenerateSopInstanceUID                    tdr.GetSeriesTime                             tdr.SetOperatorTDR
-tdr.GetATRInfo                                tdr.GetSopInstanceUID                         tdr.SetPTOProcessingTime
-tdr.GetAbortFlag                              tdr.GetTDRType                                tdr.SetProcessingEndTime
-tdr.GetAbortReason                            tdr.GetThreatBoundingPolygon                  tdr.SetProcessingStartTime
-tdr.GetAdditionalInspectionCriteria           tdr.GetThreatRegionOfInterest                 tdr.SetScanID
-tdr.GetAlarmDecision                          tdr.GetTotalProcessingTimeInMS                tdr.SetScanInstanceUID
-tdr.GetAlarmDecisionDateTime                  tdr.Initialize                                tdr.SetScanStartDateAndTime
-tdr.GetBaggagePTODetails                      tdr.OBJECT_OF_INSPECTION_GENDER               tdr.SetScanType
-tdr.GetContentDate                            tdr.OBJECT_OF_INSPECTION_ID_TYPE              tdr.SetSeriesAcquisitionStatus
-tdr.GetContentTime                            tdr.Read                                      tdr.SetSeriesDateAndTime
-tdr.GetFrameOfReferenceUID                    tdr.SetAbortFlag                              tdr.SetSeriesInstanceUID
-tdr.GetImageScaleRepresentation               tdr.SetAdditionalInspectionCriteria           tdr.SetSopInstanceCreationDateAndTime
-tdr.GetInstanceNumber                         tdr.SetAlarmDecision                          tdr.SetTDRType
-tdr.GetModality                               tdr.SetAlarmDecisionDateTime                  tdr.SetTDRTypeATR
-tdr.GetNumAlarmObjects                        tdr.SetBaggagePTODetails                      tdr.SetThreatBoundingPolygon
-tdr.GetNumPTOs                                tdr.SetBaggagePTOLocationDescription          tdr.SetThreatRegionOfInterest
-tdr.GetNumberOfObjects                        tdr.SetContentDateAndTime                     tdr.SetTotalProcessingTimeInMS
-tdr.GetOOIID                                  tdr.SetDeviceCalibrationDateAndTime           tdr.TDR_TYPE
-tdr.GetOOIIDAssigningAuthority                tdr.SetDeviceManufacturer                     tdr.THREAT_CATEGORY
-tdr.GetOOIIDType                              tdr.SetDeviceManufacturerModelName            tdr.ThreatType
-tdr.GetOperatorTDR                            tdr.SetDeviceSerialNumber                     tdr.Write
-tdr.GetPTOAssessmentDescription               tdr.SetDeviceSoftwareVersion     
-
 ## Pure-python functions
 
 - dcsread
 - dcswrite
+
+## DICOS methods
+
+### CT
+
+- ct.ADD_SLICE_FAILURE_POLICY
+- ct.AddSection
+- ct.Begin
+- ct.End
+- ct.FreeMemory
+- ct.GenerateScanInstanceUID
+- ct.GenerateSeriesInstanceUID
+- ct.GenerateSopInstanceUID
+- ct.GetContentDate
+- ct.GetContentTime
+- ct.GetFrameOfReferenceUID
+- ct.GetImageAcquisitionDate
+- ct.GetImageAcquisitionDuration
+- ct.GetImageAcquisitionTime
+- ct.GetImageFlavor
+- ct.GetImageType
+- ct.GetInstanceNumber
+- ct.GetModality
+- ct.GetNumberOfFilesToCreate
+- ct.GetNumberOfSections
+- ct.GetOOIID
+- ct.GetOOIIDAssigningAuthority
+- ct.GetOOIIDType
+- ct.GetOOIImageCharacteristics
+- ct.GetOOIType
+- ct.GetPhotometricInterpretation
+- ct.GetScanID
+- ct.GetScanInstanceUID
+- ct.GetScanStartDate
+- ct.GetScanStartTime
+- ct.GetScanType
+- ct.GetSectionByIndex
+- ct.GetSeriesAcquisitionStatus
+- ct.GetSeriesDate
+- ct.GetSeriesInstanceUID
+- ct.GetSeriesTime
+- ct.GetSopClassUID
+- ct.GetSopInstanceUID
+- ct.HasBurnedInAnnotation
+- ct.IMAGE_FLAVOR
+- ct.Initialize
+- ct.IsCDI
+- ct.IsSDI
+- ct.IsStandard
+- ct.OBJECT_OF_INSPECTION_TYPE
+- ct.OOI_IMAGE_CHARACTERISTICS
+- ct.PHOTOMETRIC_INTERPRETATION
+- ct.Read
+- ct.SCAN_TYPE
+- ct.SendOverNetwork
+- ct.SetBurnedInAnnotation
+- ct.SetCDI
+- ct.SetContentDateAndTime
+- ct.SetDeviceCalibrationDateAndTime
+- ct.SetDeviceManufacturer
+- ct.SetDeviceManufacturerModelName
+- ct.SetDeviceSerialNumber
+- ct.SetDeviceSoftwareVersion
+- ct.SetFrameOfReferenceUID
+- ct.SetImageAcquisitionDateAndTime
+- ct.SetImageAcquisitionDuration
+- ct.SetImageType
+- ct.SetInstanceNumber
+- ct.SetMachineAddress
+- ct.SetMachineID
+- ct.SetMachineLocation
+- ct.SetNumberOfSections
+- ct.SetOOIID
+- ct.SetOOIIDAssigningAuthority
+- ct.SetOOIIDType
+- ct.SetOOIType
+- ct.SetPhotometricInterpretation
+- ct.SetSDI
+- ct.SetScanDescription
+- ct.SetScanID
+- ct.SetScanInstanceUID
+- ct.SetScanStartDateAndTime
+- ct.SetScanType
+- ct.SetSeriesAcquisitionStatus
+- ct.SetSeriesDateAndTime
+- ct.SetSeriesInstanceUID
+- ct.SetSopInstanceCreationDateAndTime
+- ct.SetStandard
+- ct.TRANSFER_SYNTAX
+- ct.VOLUME_MEMORY_POLICY
+- ct.Write
+
+### DX
+
+- dx.GetBlueLUT
+- dx.GetGreenLUT
+- dx.GetLUTData
+- dx.GetModality
+- dx.GetPresentationLUTShape
+- dx.GetRedLUT
+- dx.GetWindowCenterAndWidth
+- dx.GetXRayData
+- dx.Initialize
+- dx.PIXEL_DATA_CHARACTERISTICS
+- dx.PRESENTATION_INTENT_TYPE
+- dx.PRESENTATION_LUT_SHAPE
+- dx.Read
+- dx.SetImageOrientation
+- dx.SetImagePosition
+- dx.SetKVP
+- dx.SetLUTData
+- dx.SetPresentationLUTShape
+- dx.SetWindowCenterAndWidth
+- dx.SetWindowCenterAndWidthExplanation
+- dx.SetXRayTubeCurrent
+- dx.Validate
+- dx.Write
+
+### TDR
+
+- tdr.ABILITY_ASSESSMENT
+- tdr.ABORT_FLAG
+- tdr.ABORT_REASON
+- tdr.ADDITIONAL_INSPECTION_SELECTION_CRITERIA
+- tdr.ALARM_DECISION
+- tdr.ASSESSMENT_FLAG
+- tdr.AddPTOAssessment
+- tdr.AddPotentialThreatObject
+- tdr.AddReferencedInstance
+- tdr.AddReferencedSopInstance
+- tdr.GenerateSopInstanceUID
+- tdr.GetATRInfo
+- tdr.GetAbortFlag
+- tdr.GetAbortReason
+- tdr.GetAdditionalInspectionCriteria
+- tdr.GetAlarmDecision
+- tdr.GetAlarmDecisionDateTime
+- tdr.GetBaggagePTODetails
+- tdr.GetContentDate
+- tdr.GetContentTime
+- tdr.GetFrameOfReferenceUID
+- tdr.GetImageScaleRepresentation
+- tdr.GetInstanceNumber
+- tdr.GetModality
+- tdr.GetNumAlarmObjects
+- tdr.GetNumPTOs
+- tdr.GetNumberOfObjects
+- tdr.GetOOIID
+- tdr.GetOOIIDAssigningAuthority
+- tdr.GetOOIIDType
+- tdr.GetOperatorTDR
+- tdr.GetPTOAssessmentDescription
+- tdr.GetPTOAssessmentProbability
+- tdr.GetPTOIds
+- tdr.GetPTOProcessingTime
+- tdr.GetScanInstanceUID
+- tdr.GetScanStartDate
+- tdr.GetScanStartTime
+- tdr.GetScanType
+- tdr.GetSeriesAcquisitionStatus
+- tdr.GetSeriesDate
+- tdr.GetSeriesInstanceUID
+- tdr.GetSeriesTime
+- tdr.GetSopInstanceUID
+- tdr.GetTDRType
+- tdr.GetThreatBoundingPolygon
+- tdr.GetThreatRegionOfInterest
+- tdr.GetTotalProcessingTimeInMS
+- tdr.Initialize
+- tdr.OBJECT_OF_INSPECTION_GENDER
+- tdr.OBJECT_OF_INSPECTION_ID_TYPE
+- tdr.Read
+- tdr.SetAbortFlag
+- tdr.SetAdditionalInspectionCriteria
+- tdr.SetAlarmDecision
+- tdr.SetAlarmDecisionDateTime
+- tdr.SetBaggagePTODetails
+- tdr.SetBaggagePTOLocationDescription
+- tdr.SetContentDateAndTime
+- tdr.SetDeviceCalibrationDateAndTime
+- tdr.SetDeviceManufacturer
+- tdr.SetDeviceManufacturerModelName
+- tdr.SetDeviceSerialNumber
+- tdr.SetDeviceSoftwareVersion
+- tdr.SetFrameOfReferenceUID
+- tdr.SetImageScaleRepresentation
+- tdr.SetInstanceNumber
+- tdr.SetMachineAddress
+- tdr.SetMachineID
+- tdr.SetMachineLocation
+- tdr.SetOOIID
+- tdr.SetOOIIDAssigningAuthority
+- tdr.SetOOIIDType
+- tdr.SetOOIType
+- tdr.SetOperatorTDR
+- tdr.SetPTOProcessingTime
+- tdr.SetProcessingEndTime
+- tdr.SetProcessingStartTime
+- tdr.SetScanID
+- tdr.SetScanInstanceUID
+- tdr.SetScanStartDateAndTime
+- tdr.SetScanType
+- tdr.SetSeriesAcquisitionStatus
+- tdr.SetSeriesDateAndTime
+- tdr.SetSeriesInstanceUID
+- tdr.SetSopInstanceCreationDateAndTime
+- tdr.SetTDRType
+- tdr.SetTDRTypeATR
+- tdr.SetThreatBoundingPolygon
+- tdr.SetThreatRegionOfInterest
+- tdr.SetTotalProcessingTimeInMS
+- tdr.TDR_TYPE
+- tdr.THREAT_CATEGORY
+- tdr.ThreatType
+- tdr.Write
