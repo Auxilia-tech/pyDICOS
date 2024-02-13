@@ -117,11 +117,18 @@ class CTLoader(CT):
         output_file : str, optional
             The name of the file to write. The default is None.
         """
-        tdr = TDR()
+        for field in ["label", "point1", "point2", "confidence", "mask"]:
+            for box in detection_boxes:
+                assert field in box
+    
+        tdr = TDRLoader()
         bRes = True
+        bRes = bRes and tdr.SetOOIType(self.GetOOIType())
         bRes = bRes and tdr.SetOOIID(self.GetOOIID())
+        bRes = bRes and tdr.SetOOIIDType(self.GetOOIIDType())
         bRes = bRes and tdr.SetScanInstanceUID(self.GetScanInstanceUID())
         bRes = bRes and tdr.SetSeriesInstanceUID(self.GetSeriesInstanceUID())
+        bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
         tdr.GenerateSopInstanceUID()
         bRes = bRes and tdr.SetFrameOfReferenceUID(self.GetFrameOfReferenceUID())
 
@@ -151,12 +158,12 @@ class CTLoader(CT):
             )
 
             # Set the PTO bounding polygon
-            bounds[0].Set(
+            bounds[0] = Point3Dfloat(
                 realworld_offset[0] + detection_box["point1"][0],
                 realworld_offset[1] + detection_box["point1"][1],
                 realworld_offset[2] + detection_box["point1"][2],
             )
-            bounds[1].Set(
+            bounds[1] = Point3Dfloat(
                 realworld_offset[0] + detection_box["point2"][0],
                 realworld_offset[1] + detection_box["point2"][1],
                 realworld_offset[2] + detection_box["point2"][2],
@@ -187,4 +194,4 @@ class CTLoader(CT):
         if output_file is not None:
             tdr.write(output_file)
 
-        return TDRLoader(tdr_object=tdr)
+        return tdr
