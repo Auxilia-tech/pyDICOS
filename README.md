@@ -133,7 +133,7 @@ if not tdr.Write(Filename("SimpleTDR/SimpleTDR_2.dcs"), err):
    raise RuntimeError(f"Failed to write DICOS file: SimpleTDR/SimpleTDR_2.dcs\n{err.GetErrorLog().Get()}")
 ```
 As you can see, `pyDICOS` is the direct translation of the C++ classes and in-place methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`. 
-More details in (architecture)[pydicos/README.md].
+More details in [architecture](pydicos/README.md).
 
 ### Testing
 
