@@ -86,7 +86,7 @@ pip install pydicos
 Refer to our [exemple files](https://github.com/Auxilia-tech/pyDICOS/tests) to explore the binded methods.
 The stratovan exemple files were entirely translated in python.
 
-Here is a quick exemple for a script that reads a CT and a DX scan.
+Here is a quick exemple for a script that reads and rewrites a CT and DX scan, and a TDR.
 
 ```python
 from pydicos import dcsread, dcswrite
@@ -103,6 +103,8 @@ tdr = dcsread("SimpleTDR/SimpleTDR.dcs")
 data = tdr.get_data() # dictionnay of metadata
 dcswrite(tdr, "SimpleTDR/SimpleTDR_2.dcs")
 ```
+
+### Advanced usage
 
 More complex operations can be addressed by using the C++ functions directly. 
 They can be invoked using the `pyDICOS` modules. For example, the previous 
@@ -132,7 +134,8 @@ data = ... # This is very long, refer to pydicos._loaders::TDRLoader.get_data fo
 if not tdr.Write(Filename("SimpleTDR/SimpleTDR_2.dcs"), err):
    raise RuntimeError(f"Failed to write DICOS file: SimpleTDR/SimpleTDR_2.dcs\n{err.GetErrorLog().Get()}")
 ```
-As you can see, `pyDICOS` is the direct translation of the C++ classes and in-place methods signatures. The objects of the `pydicos` library inherit the methods available in `pyDICOS`. 
+As you can see, `pyDICOS` is the direct translation of the C++ classes and in-place method signatures. 
+The objects of the `pydicos` library inherit the methods available in `pyDICOS`. 
 More details in [architecture](pydicos/README.md).
 
 ### Testing
