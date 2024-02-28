@@ -74,12 +74,12 @@ class DXLoader(DX):
         width, height = data.shape
 
         dxData = self.GetXRayData()
-        dxData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, width, height)
+        dxData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, height, width)
         rawData = dxData.GetUnsigned16()
 
         for row in range(height):
             for col in range(width):
-                rawData.Set(col, row, data[row, col])
+                rawData.Set(row, col, data[col, row])
 
     # Note: This function is not implemented in the Stratovan Toolkit yet.
     def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
