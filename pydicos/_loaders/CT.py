@@ -112,22 +112,21 @@ class CTLoader(CT):
         
         self.SetNumberOfSections(len(data))
     
-        for i, array in enumerate(data):
+        for n, array in enumerate(data):
             assert array.ndim == 3, "Data must be 3D"
             assert array.dtype == np.uint16, "Data must be uint16"
             depth, height, width = array.shape
 
-            section = self.GetSectionByIndex(i)
-            section.SetPixelDataType(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit)
+            section = self.GetSectionByIndex(n)
             volume = section.GetPixelData()
             volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, depth, height, width)
             sectionData = volume.GetUnsigned16()
             
             for i in range(volume.GetDepth()):
                 xyPlane = sectionData[i]
-                for j in range(1, xyPlane.GetHeight()):
-                    for k in range(1, xyPlane.GetWidth()):
-                        xyPlane.Set(j, k, array[i, j, k])
+                for j in range(xyPlane.GetHeight()):
+                    for k in range(xyPlane.GetWidth()):
+                        xyPlane.Set(k, j, array[i, j, k])
 
     def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
         """Generate a TDR file from the CT object and detections.
