@@ -110,14 +110,14 @@ class CTLoader(CT):
             A list of 3D NumPy arrays.
         """
         
-        self.SetNumberOfSections(len(data))
+        self.SetNumberOfSections(1)
     
         for n, array in enumerate(data):
             assert array.ndim == 3, "Data must be 3D"
             assert array.dtype == np.uint16, "Data must be uint16"
             depth, height, width = array.shape
 
-            section = self.GetSectionByIndex(n)
+            section = self.GetSectionByIndex(0)
             volume = section.GetPixelData()
             volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, width, height, depth)
             sectionData = volume.GetUnsigned16()
