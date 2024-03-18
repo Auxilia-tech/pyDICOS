@@ -3,6 +3,34 @@
  
 using namespace SDICOS;
 
+void set_data(Volume& volume, py::array_t<uint16_t, py::array::c_style | py::array::forcecast> array_3d_np) {
+
+    if (array_3d_np.ndim() != 3) {
+        throw std::invalid_argument("Input array must have three dimensions.");
+    }
+    if (!array_3d_np.dtype().is(py::dtype::of<uint16_t>())) {
+    throw std::invalid_argument("Input array must have uint16_t data type.");
+    }
+
+    uint16_t* array_3d_np_ptr = static_cast<uint16_t*>(array_3d_np.request().ptr);
+
+    auto shape = array_3d_np.shape();
+    size_t depth = shape[0];
+    size_t height = shape[1];
+    size_t width = shape[2];
+
+    std::cout <<depth << height << width << std::endl;
+
+    volume.Allocate(ImageDataBase::IMAGE_DATA_TYPE::enumUnsigned16Bit, width, height, depth);
+
+    SDICOS::S_UINT32 z;
+    SDICOS::Array3DLarge<SDICOS::S_UINT16>* array3d_large = volume.GetUnsigned16();
+    for(z = 0; z < depth; z++){
+        SDICOS::S_UINT16* target_slice = array3d_large->GetSlice(z)->GetBuffer();
+        uint16_t* source_slice = array_3d_np_ptr + z * width * height;
+        memcpy(target_slice, source_slice, width * height * sizeof(SDICOS::S_UINT16));
+    }
+}
 
 
 void export_Volume(py::module &m)
@@ -99,6 +127,7 @@ void export_Volume(py::module &m)
         .def("GetDepth", &Volume::GetDepth)
         .def("GetCapacity", &Volume::GetCapacity)
         .def("Begin", &Volume::Begin)
-        .def("End", &Volume::End);
-  
+        .def("End", &Volume::End)
+        .def_static("set_data", &set_data, "Set volume data from NumPy array", py::arg("volume"), py::arg("data"));
+
 }
