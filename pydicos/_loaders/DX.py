@@ -1,5 +1,5 @@
 import numpy as np
-from pyDICOS import DX, ErrorLog, Filename
+from pyDICOS import DX, ErrorLog, Filename, Volume
 
 from .TDR import TDRLoader
 
@@ -60,6 +60,26 @@ class DXLoader(DX):
         imgPixelData = self.GetXRayData()
         vIndexData = imgPixelData.GetUnsigned16()
         return np.array(vIndexData, copy=False)
+    
+    def set_data(self, data: np.ndarray) -> None:
+        """Set the data in the DX object.
+
+        Parameters
+        ----------
+        data : numpy.ndarray
+            A 2D NumPy array.
+        """
+        assert data.ndim == 2, "Data must be 2D"
+        assert data.dtype == np.uint16, "Data must be uint16"
+        width, height = data.shape
+
+        dxData = self.GetXRayData()
+        dxData.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, height, width)
+        rawData = dxData.GetUnsigned16()
+
+        for row in range(height):
+            for col in range(width):
+                rawData.Set(row, col, data[col, row])
 
     # Note: This function is not implemented in the Stratovan Toolkit yet.
     def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:

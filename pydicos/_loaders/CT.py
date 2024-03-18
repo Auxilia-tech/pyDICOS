@@ -100,6 +100,25 @@ class CTLoader(CT):
             next(sectionIt)
             sectionCount += 1
         return data_arrays
+    
+    def set_data(self, data: list) -> None:
+        """Set the data in the CT object.
+
+        Parameters
+        ----------
+        data : list
+            A list of 3D NumPy arrays.
+        """
+
+        self.SetNumberOfSections(len(data))
+
+        for n, array in enumerate(data):
+            assert array.ndim == 3, "Data must be 3D"
+            assert array.dtype == np.uint16, "Data must be uint16"
+
+            section = self.GetSectionByIndex(n)
+            volume = section.GetPixelData()
+            volume.set_data(volume, array)
 
     def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
         """Generate a TDR file from the CT object and detections.
