@@ -253,11 +253,13 @@ class TDRLoader(TDR):
                     assert field in pto, f"PTO must have {field} field"
 
                 self.AddPotentialThreatObject(pto["ID"], TDR.ThreatType.enumThreatTypeBaggage)
+                threat_bitmap = Bitmap(*pto["Bitmap"].shape)
+                # threat_bitmap.SetData(pto["Bitmap"].tobytes()) # TODO: Implement this
                 self.SetThreatRegionOfInterest(
                     pto["ID"],
                     Point3Dfloat(pto["Base"]["x"], pto["Base"]["y"], pto["Base"]["z"]),
                     Point3Dfloat(pto["Extent"]["x"], pto["Extent"]["y"], pto["Extent"]["z"]),
-                    Bitmap(*pto["Bitmap"].shape),
+                    threat_bitmap, 
                     0,
                 )
 
@@ -292,7 +294,7 @@ class TDRLoader(TDR):
         return self.GetNumPTOs()
 
 
-DATA_TEMPLATE = {
+TDR_DATA_TEMPLATE = {
     "InstanceNumber": 0,
     "InstanceUID": "",
     "OOIID": "",
