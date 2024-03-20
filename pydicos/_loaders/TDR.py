@@ -249,12 +249,13 @@ class TDRLoader(TDR):
             assert isinstance(data["PTOs"], list), "PTOs must be a list"
             for pto in data["PTOs"]:
                 assert isinstance(pto, dict), "PTOs must be a list of dicts"
-                for field in ["Base", "Extent", "Bitmap", "ID"]:
+                for field in ["Base", "Extent", "ID"]:
                     assert field in pto, f"PTO must have {field} field"
 
                 self.AddPotentialThreatObject(pto["ID"], TDR.ThreatType.enumThreatTypeBaggage)
-                threat_bitmap = Bitmap(*pto["Bitmap"].shape)
-                # threat_bitmap.SetData(pto["Bitmap"].tobytes()) # TODO: Implement this
+                threat_bitmap = Bitmap()
+                # if "Bitmap" in pto:
+                #     threat_bitmap.SetData(pto["Bitmap"].tobytes()) # TODO: Implement this
                 self.SetThreatRegionOfInterest(
                     pto["ID"],
                     Point3Dfloat(pto["Base"]["x"], pto["Base"]["y"], pto["Base"]["z"]),
@@ -276,9 +277,9 @@ class TDRLoader(TDR):
                     self.DeleteAssessments(pto["ID"])
                     self.AddPTOAssessment(
                         pto["ID"],
-                        pto["Assessment"].get("flag", TDR.ASSESSMENT_FLAG.enumUnknown),
-                        pto["Assessment"].get("category", TDR.THREAT_CATEGORY.enumAnomaly),
-                        pto["Assessment"].get("ability", TDR.ABILITY_ASSESSMENT.enumNoInterference),
+                        pto["Assessment"].get("flag", ASSESSMENT_FLAG.enumUnknown),
+                        pto["Assessment"].get("category", THREAT_CATEGORY.enumAnomaly),
+                        pto["Assessment"].get("ability", ABILITY_ASSESSMENT.enumNoInterference),
                         DcsLongText(pto["Assessment"].get("description", "")),
                         pto["Assessment"].get("probability", -1)
                     )
