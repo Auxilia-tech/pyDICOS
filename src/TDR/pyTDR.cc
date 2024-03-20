@@ -310,11 +310,15 @@ void export_TDR(py::module &m)
         
         .def("SetAlarmDecision", &TDR::SetAlarmDecision, py::arg("alarmDecision"))
         .def("GetAlarmDecision", &TDR::GetAlarmDecision)
+
         .def("SetAlarmDecisionDateTime", &TDR::SetAlarmDecisionDateTime, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
-        
         .def("GetAlarmDecisionDateTime", [](TDR &self, DcsDate& alarmDecisionDate, DcsTime& alarmDecisionTime) {
             return std::make_tuple(self.GetAlarmDecisionDateTime(alarmDecisionDate, alarmDecisionTime), alarmDecisionDate, alarmDecisionTime);
             }, py::arg("alarmDecisionDate"), py::arg("alarmDecisionTime"))
+
+        .def("SetContentDateAndTime", &TDR::SetContentDateAndTime, py::arg("contentCreationDate"), py::arg("contentCreationTime"))
+        .def("GetContentDate", &TDR::GetContentDate)
+        .def("GetContentTime", &TDR::GetContentTime)
 
         .def("SetAbortFlag", &TDR::SetAbortFlag, 
                               py::arg("abortFlag"), 
@@ -394,13 +398,21 @@ void export_TDR(py::module &m)
                                           py::arg("threatType"),  
                                           py::arg("nNumPTORepresentations") = 1)
 
+        .def("SetPTOAssessment", &TDR::SetPTOAssessment, 
+                                  py::arg("PTOIdentifier"), 
+                                  py::arg("assessmentFlag") = TDRTypes::AssessmentSequence::AssessmentItem::enumUnknown,
+                                  py::arg("threatCategory") = TDRTypes::AssessmentSequence::AssessmentItem::enumAnomaly,
+                                  py::arg("ability") = TDRTypes::AssessmentSequence::AssessmentItem::enumNoInterference,
+                                  py::arg("threatDescription") = "",
+                                  py::arg("assessmentProbability") = -1.0)
         .def("AddPTOAssessment", &TDR::AddPTOAssessment, 
                                   py::arg("PTOIdentifier"), 
                                   py::arg("assessmentFlag") = TDRTypes::AssessmentSequence::AssessmentItem::enumUnknown,  
                                   py::arg("threatCategory") = TDRTypes::AssessmentSequence::AssessmentItem::enumAnomaly,
                                   py::arg("ability") = TDRTypes::AssessmentSequence::AssessmentItem::enumNoInterference, 
                                   py::arg("threatDescription") = "",
-                                  py::arg("assessmentProbability") = -10.f)
+                                  py::arg("assessmentProbability") = -1.0)
+        .def("DeleteAssessments", &TDR::DeleteAssessments, py::arg("PTOIdentifier"))
         
         .def("SetBaggagePTODetails", &TDR::SetBaggagePTODetails, 
                               py::arg("PTOIdentifier"), 
@@ -438,6 +450,7 @@ void export_TDR(py::module &m)
                               py::arg("referencedSopInstanceUID"),
                               py::arg("nRepresentation"))
         .def("GetPTOIds", &TDR::GetPTOIds)
+
         .def("GetPTOAssessmentDescription", py::overload_cast<const S_UINT16, const S_UINT16>
                      (&PyTDR::TDR::GetPTOAssessmentDescription, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
         .def("GetPTOAssessmentDescription", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentDescription, py::const_))
@@ -445,6 +458,18 @@ void export_TDR(py::module &m)
         .def("GetPTOAssessmentProbability", py::overload_cast<const S_UINT16, const S_UINT16>
                      (&PyTDR::TDR::GetPTOAssessmentProbability, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
         .def("GetPTOAssessmentProbability", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentProbability, py::const_))
+
+        .def("GetPTOAssessmentFlag", py::overload_cast<const S_UINT16, const S_UINT16>
+                     (&PyTDR::TDR::GetPTOAssessmentFlag, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
+        .def("GetPTOAssessmentFlag", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentFlag, py::const_))
+
+        .def("GetPTOAssessmentAbility", py::overload_cast<const S_UINT16, const S_UINT16>
+                     (&PyTDR::TDR::GetPTOAssessmentAbility, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
+        .def("GetPTOAssessmentAbility", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentAbility, py::const_))
+
+        .def("GetPTOAssessmentThreatCategory", py::overload_cast<const S_UINT16, const S_UINT16>
+                     (&PyTDR::TDR::GetPTOAssessmentThreatCategory, py::const_), py::arg("PTOIdentifier"), py::arg("nAssessment") = 0)
+        .def("GetPTOAssessmentThreatCategory", py::overload_cast<>(&PyTDR::TDR::GetPTOAssessmentThreatCategory, py::const_))
 
         .def("SetOOIID", &TDR::SetOOIID, py::arg("strID"))
         .def("GetOOIID", &TDR::GetOOIID)

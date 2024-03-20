@@ -9,7 +9,7 @@ void set_data(Volume& volume, py::array_t<uint16_t, py::array::c_style | py::arr
         throw std::invalid_argument("Input array must have three dimensions.");
     }
     if (!array_3d_np.dtype().is(py::dtype::of<uint16_t>())) {
-    throw std::invalid_argument("Input array must have uint16_t data type.");
+        throw std::invalid_argument("Input array must have uint16_t data type.");
     }
 
     uint16_t* array_3d_np_ptr = static_cast<uint16_t*>(array_3d_np.request().ptr);
@@ -19,7 +19,7 @@ void set_data(Volume& volume, py::array_t<uint16_t, py::array::c_style | py::arr
     size_t height = shape[1];
     size_t width = shape[2];
 
-    std::cout <<depth << height << width << std::endl;
+    // std::cout <<depth << height << width << std::endl;
 
     volume.Allocate(ImageDataBase::IMAGE_DATA_TYPE::enumUnsigned16Bit, width, height, depth);
 
