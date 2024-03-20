@@ -104,6 +104,8 @@ data = tdr.get_data() # dictionnay of metadata
 dcswrite(tdr, "SimpleTDR/SimpleTDR_2.dcs")
 ```
 
+✨ NEW : refer to [our notebook](notebooks/tutorial.ipynb) tutorial for instructions and examples to change an object main attribute.
+
 ### Advanced usage
 
 More complex operations can be addressed by using the C++ functions directly. 
