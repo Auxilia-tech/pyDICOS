@@ -10,6 +10,8 @@
 
 - dcsread
 - dcswrite
+- get_data
+- set_data
 
 ## DICOS methods
 
