@@ -48,7 +48,6 @@ jobs:
       run: |
         pip install dist/$(ls dist/ | head -1)
         pip install pytest pytest-cov pytest-xprocess pytest-order
-        export PYTHONPATH=$PWD
         pytest --cov-report=xml --cov=pydicos tests/
 
     - name: Upload coverage reports to Codecov
