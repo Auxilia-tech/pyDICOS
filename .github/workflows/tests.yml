@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/workflow
+  workflow_dispatch:
 
 jobs:
   build:
