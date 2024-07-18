@@ -39,21 +39,15 @@ jobs:
         chmod +x installer.run
 
     - name: Build wheels
-      uses: pypa/cibuildwheel@v2.16.2
+      uses: pypa/cibuildwheel@v2.19.2
       env:
         CIBW_ENVIRONMENT: SDICOS_PATH=/opt/stratovan/sdicos
         CIBW_BUILD: cp3${{ matrix.python_version }}-manylinux_x86_64
         CIBW_BEFORE_ALL: ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos && chmod 755 -R /opt/stratovan/sdicos
-        CIBW_TEST_REQUIRES: pytest pytest-cov pytest-xprocess pytest-order
-        CIBW_TEST_COMMAND: pytest --cov pydicos {package}/tests/
+        CIBW_TEST_REQUIRES: pytest pytest-xprocess pytest-order
+        CIBW_TEST_COMMAND: pytest {package}/tests/
       with:
         config-file: pyproject.toml
-
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
-      env:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        slug: Auxilia-tech/pyDICOS
 
     - name: Store the distribution packages
       uses: actions/upload-artifact@v3
@@ -63,7 +57,7 @@ jobs:
 
   publish-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
-    if : ${{ false && github.event_name == 'pull_request' }}
+    if : ${{ github.event_name == 'pull_request' }}
     needs:
     - build
     runs-on: ubuntu-latest
@@ -88,7 +82,7 @@ jobs:
 
   publish-pypi:
     name: Publish Python 🐍 distribution 📦 to PyPI
-    if : ${{ false && github.event_name == 'push' }}
+    if : ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     needs:
       - build
     runs-on: ubuntu-latest
