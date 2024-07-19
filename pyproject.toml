@@ -9,6 +9,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
+name = "pydicos" 
 dependencies = [
     "numpy<2.0.0"
 ]
