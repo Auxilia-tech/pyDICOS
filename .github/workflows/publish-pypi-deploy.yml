@@ -11,9 +11,62 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    name: Run tests and coverage upload
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        bits : [ '64' ]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Download DICOS installer
+      env:
+        AWS_DEFAULT_REGION: 'eu-west-3'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
+      run: |
+        aws s3 cp s3://dicos-installer/sdicos_lin_ubuntu-20-${{ matrix.bits }}b_r20230925_${{ matrix.bits }}b.run installer.run
+        chmod +x installer.run
+
+    - name: Install DICOS
+      run: |
+        ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos
+        chmod 755 -R /opt/stratovan/sdicos
+
+    - name: Build
+      run: |
+        pip install -r requirements.txt
+        chmod +x setup.sh
+        ./setup.sh
+
+    - name: Run tests
+      run: |
+        pip install dist/$(ls dist/ | head -1)
+        pip install pytest pytest-cov pytest-xprocess pytest-order
+        pytest --cov-report=xml --cov=pydicos tests/
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        files: ./coverage.xml
+        env_vars: inputs.os, inputs.python-version
+        token: ${{ secrets.CODECOV_TOKEN }}
+        verbose: true
+
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
+    needs:
+    - test
     strategy:
       fail-fast: true
       matrix:
@@ -45,7 +98,7 @@ jobs:
         CIBW_BUILD: cp3${{ matrix.python_version }}-manylinux_x86_64
         CIBW_BEFORE_ALL: ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos && chmod 755 -R /opt/stratovan/sdicos
         CIBW_TEST_REQUIRES: pytest pytest-xprocess pytest-order
-        CIBW_TEST_COMMAND: pytest {package}/tests/
+        # CIBW_TEST_COMMAND: pytest {package}/tests/ 
       with:
         config-file: pyproject.toml
 
@@ -57,7 +110,7 @@ jobs:
 
   publish-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
-    if : ${{ github.event_name == 'pull_request' }}
+    if : ${{ github.event_name != 'push' || github.ref != 'refs/heads/main' }}
     needs:
     - build
     runs-on: ubuntu-latest
@@ -82,7 +135,7 @@ jobs:
 
   publish-pypi:
     name: Publish Python 🐍 distribution 📦 to PyPI
-    if : ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    if : ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs:
       - build
     runs-on: ubuntu-latest
