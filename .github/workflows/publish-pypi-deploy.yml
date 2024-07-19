@@ -99,7 +99,7 @@ jobs:
         CIBW_BEFORE_ALL: ./installer.run --unattendedmodeui none --mode unattended --prefix /opt/stratovan/sdicos && chmod 755 -R /opt/stratovan/sdicos
         CIBW_TEST_REQUIRES: pytest pytest-xprocess pytest-order
         CIBW_TEST_COMMAND: pytest {package}/tests/ 
-        CIBW_MANYLINUX_*_IMAGE: manylinux_2_28
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
       with:
         config-file: pyproject.toml
 
