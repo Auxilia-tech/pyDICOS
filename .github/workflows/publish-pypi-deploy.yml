@@ -63,7 +63,7 @@ jobs:
 
   build:
     name: Build distribution 📦
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs:
     - test
     strategy:
@@ -71,8 +71,19 @@ jobs:
       matrix:
         bits : [ '64' ]
         python_version : [ '7', '8', '9', '10', '11' ]
+        include:
+          - os: ubuntu-latest
+            cibw_archs: 'x86_64'
+          - os: ubuntu-latest
+            cibw_archs: 'aarch64'
 
     steps:
+    - name: Set up QEMU
+      if: matrix.cibw_archs == 'aarch64'
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: arm64
+    
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -100,6 +111,7 @@ jobs:
         CIBW_TEST_REQUIRES: pytest pytest-xprocess pytest-order
         CIBW_TEST_COMMAND: pytest {package}/tests/ 
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+        CIBW_ARCHS: ${{ matrix.cibw_archs }}
       with:
         config-file: pyproject.toml
 
@@ -154,5 +166,5 @@ jobs:
           path: dist
           merge-multiple: true
 
-      - name: publish to testpypi
+      - name: publish to pypi
         uses: pypa/gh-action-pypi-publish@release/v1
