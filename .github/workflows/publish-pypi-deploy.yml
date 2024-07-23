@@ -106,7 +106,7 @@ jobs:
         chmod +x installer.run
 
     - name: Build wheels for CPython 3.11
-      uses: pypa/cibuildwheel@7v2.19.2
+      uses: pypa/cibuildwheel@v2.19.2
       with:
         config-file: pyproject.toml
       env:
