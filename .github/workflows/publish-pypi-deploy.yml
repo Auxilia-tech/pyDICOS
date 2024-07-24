@@ -82,9 +82,10 @@ jobs:
           - os: ubuntu-latest
             cibw_archs: 'x86_64'
             bits: '64'
-          - os: ubuntu-latest
-            cibw_archs: 'aarch64'
-            bits: '64'
+          # NO aarch64 binaries provided for the DICOS toolkit
+          # - os: ubuntu-latest
+          #   cibw_archs: 'aarch64'
+          #   bits: '64'
 
     steps:
     - name: Set up QEMU
