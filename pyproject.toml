@@ -34,12 +34,11 @@ testpaths = ["tests"]
 [tool.cibuildwheel]
 # Setuptools bug causes collision between pypy and cpython artifacts
 before-build = "rm -rf {project}/build"
-# test-command = "pytest {project}/tests"
-# test-skip = ["*universal2:arm64"]
-# before-test = "pip install pytest pytest-order"
+manylinux-x86_64-image = "manylinux_2_28"
+
 
 [tool.ruff]
-extend-select = [
+lint.extend-select = [
   "B",    # flake8-bugbear
   "B904",
   "I",    # isort
@@ -47,7 +46,7 @@ extend-select = [
   "RUF",  # Ruff-specific
   "UP",   # pyupgrade
 ]
-extend-ignore = [
+lint.extend-ignore = [
   "E501",   # Line too long
 ]
 target-version = "py37"

@@ -2,7 +2,7 @@
 OS="`uname`"
 case $OS in
   'Linux')
-    PACKAGE_COMMAND='python3 setup.py bdist_wheel'
+    PACKAGE_COMMAND='python3 -m build --wheel'
     ;;
   *) 
     PACKAGE_COMMAND='echo "No support for OS: $OS"'
