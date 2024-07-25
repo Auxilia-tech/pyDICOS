@@ -116,9 +116,11 @@ class TDRLoader(TDR):
                 - PTOs : list, the list of PTOs.
         """
         data = {
+            "TDRType": self.GetTDRType(),
             "InstanceNumber": self.GetInstanceNumber(),
             "InstanceUID": self.GetScanInstanceUID().Get(),
             "OOIID": self.GetOOIID().Get(),
+            "OOIType": self.GetOOIType(),
             "ContentDateAndTime": DicosDateTime(
                 date=self.GetContentDate(), 
                 time=self.GetContentTime(),
@@ -170,6 +172,15 @@ class TDRLoader(TDR):
                         "ability": self.GetPTOAssessmentAbility(PTOIds[i], 0),
                         "description": self.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
                         "probability": self.GetPTOAssessmentProbability(PTOIds[i], 0),
+                    },
+                    "PTOProcessingTime": {
+                        "ProcessingStartTime": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1]).as_dict(),
+                        "ProcessingEndTime": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[2]).as_dict(),
+                        "fTotalTimeMS": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[2]) - DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1])
+                    },
+                    "ReferencedInstance": {
+                        "SopClassUID": self.GetSopClassUID().Get(),
+                        "SopInstanceUID": self.GetSopInstanceUID().Get()
                     },
                 }
             )
