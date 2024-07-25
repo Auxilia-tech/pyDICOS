@@ -3,7 +3,7 @@ from pyDICOS import DcsDate, DcsDateTime, DcsTime
 
 class DicosDateTime:
     def __init__(
-        self, date: DcsDate = None, time: DcsTime = None, datetime: DcsDateTime = None
+            self, date: DcsDate = None, time: DcsTime = None, datetime: DcsDateTime = None
     ) -> None:
         """Initialize the DicosDateTime class.
 
@@ -49,6 +49,27 @@ class DicosDateTime:
             The string representation of the DicosDateTime class.
         """
         return f"DicosDateTime({self.as_dict()})"
+
+    def __sub__(self, other) -> int:
+        """Get the substraction of two DateTimes in ms
+
+        Returns
+        -------
+        int
+            The substraction of two DateTimes in ms
+        """
+        assert type(other) == DicosDateTime, \
+            "You can only substract DicosDateTimes objects from each other"
+        dct1 = self.as_dict()
+        dct2 = other.as_dict()
+        diffms = dct1["time"][3] - dct2["time"][3]
+        diffsec = dct1["time"][2] - dct2["time"][2]
+        diffmin = dct1["time"][1] - dct2["time"][1]
+        diffhour = dct1["time"][0] - dct2["time"][0]
+        diffday = dct1["date"][2] - dct2["date"][2]
+        diffmonth = dct1["date"][1] - dct2["date"][1]
+        diffyear = dct1["date"][0] - dct2["date"][0]
+        return diffms + 1000 * (diffsec + 60 * (diffmin + 60 * (diffhour + 24 * (diffday + 30 * (diffmonth + 12 * diffyear)))))
 
     def as_dict(self) -> dict:
         """Get the DicosDateTime class as a dictionary.

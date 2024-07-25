@@ -350,8 +350,8 @@ class TDRLoader(TDR):
                     assert isinstance(ProcessingEndTime, dict), "ProcessingEndTime must be a dict"
                     self.SetPTOProcessingTime(
                         pto["ID"],
-                        DcsDateTime(DcsDate(ProcessingStartTime["date"]), DcsTime(*ProcessingStartTime["time"])),
-                        DcsDateTime(DcsDate(ProcessingEndTime["date"]), DcsTime(*ProcessingEndTime["time"])),
+                        DcsDateTime(DcsDate(*ProcessingStartTime["date"]), DcsTime(*ProcessingStartTime["time"])),
+                        DcsDateTime(DcsDate(*ProcessingEndTime["date"]), DcsTime(*ProcessingEndTime["time"])),
                         pto["PTOProcessingTime"]["fTotalTimeMS"])
 
     def __len__(self) -> int:
@@ -409,7 +409,7 @@ TDR_DATA_TEMPLATE = {
             "PTOProcessingTime" : {
                 "ProcessingStartTime" : {"date" : (0, 0, 0), "time" : (0, 0, 0, 0)},
                 "ProcessingEndTime" : {"date" : (0, 0, 0), "time" : (0, 0, 0, 0)},
-                "fTotalTimeMS" : 50
+                "fTotalTimeMS" : 0
             }
         }
     ],
