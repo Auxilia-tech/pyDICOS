@@ -1,4 +1,5 @@
 from ._loaders import CTLoader, DXLoader, TDRLoader
+import logging
 
 
 def dcsread(filename: str, dcs = None):
@@ -26,7 +27,7 @@ def dcsread(filename: str, dcs = None):
             dcs.read(filename)
             return dcs
         except:
-            print(f"failed with {DCSLoader}")
+            logging.debug(f"Loading failed with {DCSLoader}")
             pass
 
     raise ValueError(f"Invalid DICOS file: {filename}")
