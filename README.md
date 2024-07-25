@@ -36,7 +36,15 @@ We firmly believe that by releasing this library, we will encourage and support 
 
 ## Install
 
-### Building from source
+### ✨ NEW ✨ Using Pypi index (recommended)
+
+Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
+```bash
+pip install pydicos
+```
+This method is only available for linux on x86 and arm64 platform.
+
+### Building from source (dev mode)
 
 To setup the build environment, clone the repository, create your virtual environment and install required dependencies
 
@@ -63,15 +71,6 @@ chmod +x setup.sh
 ```
 
 The lib wheel should be produced in the `dist` folder and can be installed _via_ `pip` in any local virtual environment.
-
-### 🚧 Using Pypi index 🚧
-
-🚧 This install method has not been released yet. 🚧
-
-Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
-```bash
-pip install pydicos
-```
 
 ## Usage
 

@@ -153,7 +153,7 @@ setup(
     download_url="https://github.com/Auxilia-tech/pydicos/",
     keywords=["DICOS", "Digital", "Imaging", "Communications", "Security"],
     install_requires=[
-        "numpy>=1.21",
+        "numpy<2.0.0",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
