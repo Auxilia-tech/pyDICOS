@@ -20,8 +20,7 @@ def test_loading_no_threat():
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
     assert data["ImageScaleRepresentation"] == 10
-    assert data["TDRType"] == ???
-    assert data["00IType"] == ???
+    assert data["TDRType"] == 1
     assert data["ATR"]["manufacturer"] == "Alchemy"
     assert data["ATR"]["version"] == "0.999"
     assert data["ATR"]["parameters"]["random"] == "true"
@@ -43,8 +42,7 @@ def test_loading_baggage():
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
     assert data["ImageScaleRepresentation"] == 10
-    assert data["TDRType"] == ???
-    assert data["00IType"] == ???
+    assert data["TDRType"] == 1
     assert data["ATR"]["manufacturer"] == "Alchemy"
     assert data["ATR"]["version"] == "0.999"
     assert data["ATR"]["parameters"]["random"] == "true"
@@ -60,9 +58,7 @@ def test_loading_baggage():
     assert data["PTOs"][0]["Assessment"]["description"] == "Flammable Liquid"
     assert data["PTOs"][0]["Assessment"]["probability"] == -1
     assert data["PTOs"][0]["Polygon"] == []
-    assert data["PTOs"][0]["ReferencedInstance"] == []
-    assert data["PTOs"][0]["PTOProcessingTime"] == []
-    assert np.all(data["PTOs"][0]["Bitmap"] == np.zeros(0, dtype=np.uint16))
+    assert data["PTOs"][0]["ReferencedInstance"]["SopClassUID"] == "1.2.840.10008.5.1.4.1.1.501.3"
 
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_multiple_ptos_tdr")
@@ -79,8 +75,7 @@ def test_loading_multiple():
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
     assert data["ImageScaleRepresentation"] == 10
-    assert data["TDRType"] == ???
-    assert data["00IType"] == ???
+    assert data["TDRType"] == 1
     assert data["ATR"]["manufacturer"] == "Alchemy"
     assert data["ATR"]["version"] == "0.999"
     assert data["ATR"]["parameters"]["random"] == "true"
@@ -104,9 +99,7 @@ def test_loading_multiple():
     assert data["PTOs"][0]["Polygon"][2]["x"] == 5
     assert data["PTOs"][0]["Polygon"][2]["y"] == 6
     assert data["PTOs"][0]["Polygon"][2]["z"] == 7
-    assert data["PTOs"][0]["ReferencedInstance"] == []
-    assert data["PTOs"][0]["PTOProcessingTime"] == []
-    assert np.all(data["PTOs"][0]["Bitmap"] == np.zeros(0, dtype=np.uint16))
+    assert data["PTOs"][0]["ReferencedInstance"]["SopClassUID"] == "1.2.840.10008.5.1.4.1.1.501.3"
 
     assert data["PTOs"][1]["Base"]["x"] == 12
     assert data["PTOs"][1]["Base"]["y"] == 23
@@ -118,9 +111,7 @@ def test_loading_multiple():
     assert data["PTOs"][1]["Assessment"]["description"] == "Flammable Liquid"
     assert data["PTOs"][1]["Assessment"]["probability"] == -1
     assert data["PTOs"][1]["Polygon"] == []
-    assert data["PTOs"][1]["ReferencedInstance"] == []
-    assert data["PTOs"][1]["PTOProcessingTime"] == []
-    assert np.all(data["PTOs"][0]["Bitmap"] == np.zeros(0, dtype=np.uint16))
+    assert data["PTOs"][1]["ReferencedInstance"]["SopClassUID"] == "1.2.840.10008.5.1.4.1.1.501.3"
 
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_ct_linked_tdr")
@@ -136,8 +127,8 @@ def test_loading_tdr_linked_ct():
     assert data["AlarmDecision"] == 1
     assert (datetime(*(data["AlarmDecisionDateTime"]["date"] + data["AlarmDecisionDateTime"]["time"][:3])) - now).total_seconds() <= 30
     assert data["ImageScaleRepresentation"] == 1
-    assert data["TDRType"] == ???
-    assert data["00IType"] == ???
+    assert data["TDRType"] == 1
+    assert data["OOIType"] == 3
     assert data["ATR"]["manufacturer"] == "ATR Manufacturer"
     assert data["ATR"]["version"] == "ATR Version"
     assert data["ATR"]["parameters"] == {}
@@ -157,9 +148,7 @@ def test_loading_tdr_linked_ct():
     assert data["PTOs"][0]["Polygon"][1]["x"] == -200
     assert data["PTOs"][0]["Polygon"][1]["y"] == -230
     assert data["PTOs"][0]["Polygon"][1]["z"] == -50
-    assert data["PTOs"][0]["ReferencedInstance"] == []
-    assert data["PTOs"][0]["PTOProcessingTime"] == []
-    assert np.all(data["PTOs"][0]["Bitmap"] == np.zeros(0, dtype=np.uint16))
+    assert data["PTOs"][0]["ReferencedInstance"]["SopClassUID"] == "1.2.840.10008.5.1.4.1.1.501.3"
 
     assert data["PTOs"][1]["Base"]["x"] == 210
     assert data["PTOs"][1]["Base"]["y"] == 210
@@ -176,9 +165,7 @@ def test_loading_tdr_linked_ct():
     assert data["PTOs"][1]["Polygon"][1]["x"] == 40
     assert data["PTOs"][1]["Polygon"][1]["y"] == 40
     assert data["PTOs"][1]["Polygon"][1]["z"] == 40
-    assert data["PTOs"][1]["ReferencedInstance"] == []
-    assert data["PTOs"][1]["PTOProcessingTime"] == []
-    assert np.all(data["PTOs"][0]["Bitmap"] == np.zeros(0, dtype=np.uint16))
+    assert data["PTOs"][1]["ReferencedInstance"]["SopClassUID"] == "1.2.840.10008.5.1.4.1.1.501.3"
 
 
 def test_set_data():
@@ -187,6 +174,8 @@ def test_set_data():
     data = tdr_object.get_data()
     for pto_template, pto_data in zip(TDR_DATA_TEMPLATE["PTOs"], data["PTOs"]):
         assert np.all(pto_template.pop("Bitmap") == pto_data.pop("Bitmap"))
+        pto_template.pop("ReferencedInstance")
+        pto_data.pop("ReferencedInstance")
     assert data == TDR_DATA_TEMPLATE
 
 
