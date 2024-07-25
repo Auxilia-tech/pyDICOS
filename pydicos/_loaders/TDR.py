@@ -5,12 +5,14 @@ from pyDICOS import (
     Array1DPoint3Dfloat,
     Array1DS_UINT16,
     Bitmap,
+    MemoryBuffer,
     DcsLongString,
     DcsLongText,
     DcsUniqueIdentifier,
     Point3Dfloat,
     DcsDate,
     DcsTime,
+    DcsDateTime,
     ErrorLog,
     Filename,
     SCAN_TYPE,
@@ -18,6 +20,9 @@ from pyDICOS import (
     ASSESSMENT_FLAG,
     THREAT_CATEGORY,
     ABILITY_ASSESSMENT,
+    DcsUniqueIdentifier,
+    OBJECT_OF_INSPECTION_TYPE, 
+    TDR_TYPE
 )
 
 from ..utils.time import DicosDateTime
@@ -111,9 +116,11 @@ class TDRLoader(TDR):
                 - PTOs : list, the list of PTOs.
         """
         data = {
+            "TDRType": self.GetTDRType(),
             "InstanceNumber": self.GetInstanceNumber(),
             "InstanceUID": self.GetScanInstanceUID().Get(),
             "OOIID": self.GetOOIID().Get(),
+            "OOIType": self.GetOOIType(),
             "ContentDateAndTime": DicosDateTime(
                 date=self.GetContentDate(), 
                 time=self.GetContentTime(),
@@ -141,11 +148,19 @@ class TDRLoader(TDR):
         for i in range(PTOIds.GetSize()):
             self.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
             self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+
+            if bitmap.GetSize() != 0:
+                byte_array = np.frombuffer(bitmap.GetBitmap(), dtype=np.uint8)
+                bit_array = np.unpackbits(byte_array, bitorder="little")[:bitmap.GetNumBits()]
+                assert bit_array.shape[0] == bitmap.GetWidth()*bitmap.GetHeight()*bitmap.GetDepth(), "Failed to unpack bitmap"
+                bit_array = bit_array.reshape(bitmap.GetWidth(), bitmap.GetHeight(), bitmap.GetDepth())
+            else: 
+                bit_array = np.zeros((int(PTOExtent.x), int(PTOExtent.y), int(PTOExtent.z)), dtype=np.uint16)
             data["PTOs"].append(
                 {
                     "Base": {"x": PTOBase.x, "y": PTOBase.y, "z": PTOBase.z},
                     "Extent": {"x": PTOExtent.x, "y": PTOExtent.y, "z": PTOExtent.z},
-                    "Bitmap": np.array(bitmap.GetBitmap().GetData(), copy=False),
+                    "Bitmap": bit_array,
                     "Polygon": [
                         {"x": polygon[j].x, "y": polygon[j].y, "z": polygon[j].z}
                         for j in range(polygon.GetSize())
@@ -157,6 +172,15 @@ class TDRLoader(TDR):
                         "ability": self.GetPTOAssessmentAbility(PTOIds[i], 0),
                         "description": self.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
                         "probability": self.GetPTOAssessmentProbability(PTOIds[i], 0),
+                    },
+                    "PTOProcessingTime": {
+                        "ProcessingStartTime": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1]).as_dict(),
+                        "ProcessingEndTime": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[2]).as_dict(),
+                        "fTotalTimeMS": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[2]) - DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1])
+                    },
+                    "ReferencedInstance": {
+                        "SopClassUID": self.GetSopClassUID().Get(),
+                        "SopInstanceUID": self.GetSopInstanceUID().Get()
                     },
                 }
             )
@@ -180,6 +204,8 @@ class TDRLoader(TDR):
                 - AlarmDecisionDateTime : dict, the alarm decision date and time.
                 - ImageScaleRepresentation : int, the image scale representation.
                 - ATR : dict, the ATR metadata.
+                - TDRType : int, the TDR type.
+                - OOIType : int, the OOI type.
                 - PTOs : list, the list of PTOs. A PTO is a dict with the following keys:
                     - Base : dict, the base point of the PTO.
                     - Extent : dict, the extent of the PTO.
@@ -188,6 +214,8 @@ class TDRLoader(TDR):
                     - Probability : float, the probability of the PTO.
                     - Polygon : list, the list of points of the PTO polygon.
                     - ID : int, the ID of the PTO.
+                    - ReferencedInstance : dict, the referenced instance of the PTO.
+                    - PTOProcessingTime : dict, the processing time of the PTO.
         """
         if "InstanceNumber" in data:
             assert isinstance(data["InstanceNumber"], int), "InstanceNumber must be an integer"
@@ -244,6 +272,14 @@ class TDRLoader(TDR):
             for field in data["ATR"]:
                 assert field in ["manufacturer", "version", "parameters"], "ATR must have manufacturer, version and parameters fields only"
             self.set_ATR_metadata(ATRSettings(**data["ATR"]))
+        
+        if "TDRType" in data:
+            assert isinstance(data["TDRType"], TDR_TYPE), "TDRType must be a TDR_TYPE enum"
+            self.SetTDRType(data["TDRType"])
+
+        if "OOIType" in data:
+            assert isinstance(data["OOIType"], OBJECT_OF_INSPECTION_TYPE), "OOIType must be a OBJECT_OF_INSPECTION_TYPE enum"
+            self.SetOOIType(data["OOIType"])
 
         if "PTOs" in data:
             assert isinstance(data["PTOs"], list), "PTOs must be a list"
@@ -254,8 +290,19 @@ class TDRLoader(TDR):
 
                 self.AddPotentialThreatObject(pto["ID"], TDR.ThreatType.enumThreatTypeBaggage)
                 threat_bitmap = Bitmap()
-                # if "Bitmap" in pto:
-                #     threat_bitmap.SetData(pto["Bitmap"].tobytes()) # TODO: Implement this
+                if "Bitmap" in pto:
+                    assert isinstance(pto["Bitmap"], np.ndarray), "Bitmap must be a numpy array"
+                    assert pto["Bitmap"].ndim == 3, "Bitmap must be a 3D numpy array"
+                    assert pto["Bitmap"].shape == (pto["Extent"]["x"], pto["Extent"]["y"], pto["Extent"]["z"]), "Bitmap shape must match the extent"
+                    if pto["Bitmap"].sum() != 0:
+                        threat_bitmap.SetDims(pto["Bitmap"].shape[0], pto["Bitmap"].shape[1], pto["Bitmap"].shape[2], True)
+                        flat_bitmap = pto["Bitmap"].astype(np.uint8).ravel()
+                        byte_array = np.packbits(flat_bitmap, bitorder="little")
+                        byte_buffer = MemoryBuffer()
+                        byte_buffer.SetBuffer(byte_array.tobytes(), byte_array.size)
+                        threat_bitmap.SetBitmapData(byte_buffer, True)
+                        assert threat_bitmap.GetNumBits() == pto["Bitmap"].size, "Failed to set bitmap"
+
                 self.SetThreatRegionOfInterest(
                     pto["ID"],
                     Point3Dfloat(pto["Base"]["x"], pto["Base"]["y"], pto["Base"]["z"]),
@@ -283,6 +330,29 @@ class TDRLoader(TDR):
                         DcsLongText(pto["Assessment"].get("description", "")),
                         pto["Assessment"].get("probability", -1)
                     )
+                if "ReferencedInstance" in pto:
+                    assert isinstance(pto["ReferencedInstance"], dict), "ReferencedInstance must be a dict"
+                    for field in pto["ReferencedInstance"]:
+                        assert field in ["SopClassUID", "SopInstanceUID"], "ReferencedInstance must have SopClassUID and SopInstanceUID fields only"
+                    self.AddReferencedInstance(
+                        pto["ID"], 
+                        DcsUniqueIdentifier(pto["ReferencedInstance"]["SopClassUID"]),
+                        DcsUniqueIdentifier(pto["ReferencedInstance"]["SopInstanceUID"]),
+                        0 ) # Index for which PTO Representation Sequence Item
+                    
+                if "PTOProcessingTime" in pto:
+                    assert isinstance(pto["PTOProcessingTime"], dict), "PTOProcessingTime must be a dict"
+                    for field in pto["PTOProcessingTime"]:
+                        assert field in ["ProcessingStartTime", "ProcessingEndTime", "fTotalTimeMS"], "PTOProcessingTime must have ProcessingStartTime, ProcessingEndTime and fTotalTimeMS fields only"
+                    ProcessingStartTime = pto["PTOProcessingTime"]["ProcessingStartTime"]
+                    ProcessingEndTime = pto["PTOProcessingTime"]["ProcessingEndTime"]
+                    assert isinstance(ProcessingStartTime, dict), "ProcessingStartTime must be a dict"
+                    assert isinstance(ProcessingEndTime, dict), "ProcessingEndTime must be a dict"
+                    self.SetPTOProcessingTime(
+                        pto["ID"],
+                        DcsDateTime(DcsDate(*ProcessingStartTime["date"]), DcsTime(*ProcessingStartTime["time"])),
+                        DcsDateTime(DcsDate(*ProcessingEndTime["date"]), DcsTime(*ProcessingEndTime["time"])),
+                        pto["PTOProcessingTime"]["fTotalTimeMS"])
 
     def __len__(self) -> int:
         """Get the number of PTO.
@@ -316,6 +386,8 @@ TDR_DATA_TEMPLATE = {
         "version": "",
         "parameters": {"param1": "value1", "param2": "value2"},
     },
+    "TDRType" : TDR_TYPE.enumMachine,
+    "OOIType" : OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
     "PTOs": [
         {
             "Base": {"x": 0, "y": 0, "z": 0},
@@ -329,6 +401,15 @@ TDR_DATA_TEMPLATE = {
                 "ability": ABILITY_ASSESSMENT.enumNoInterference,
                 "description": "",
                 "probability": -1.0,
+            },
+            "ReferencedInstance": {
+                "SopClassUID": "0",
+                "SopInstanceUID": "0",
+            },
+            "PTOProcessingTime" : {
+                "ProcessingStartTime" : {"date" : (0, 0, 0), "time" : (0, 0, 0, 0)},
+                "ProcessingEndTime" : {"date" : (0, 0, 0), "time" : (0, 0, 0, 0)},
+                "fTotalTimeMS" : 0
             }
         }
     ],

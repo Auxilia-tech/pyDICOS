@@ -292,6 +292,7 @@ void export_TDR(py::module &m)
         .def("GetContentTime", &TDR::GetContentTime)
         .def("SetTDRType", &TDR::SetTDRType, py::arg("tdrType"))
         .def("GetTDRType", &TDR::GetTDRType)
+        .def("GetSopClassUID", &TDR::GetSopClassUID)
         
         .def("SetTDRTypeATR", &TDR::SetTDRTypeATR, py::arg("atrManufacturer"), 
                                                    py::arg("atrVersion"), 
@@ -480,6 +481,7 @@ void export_TDR(py::module &m)
         .def("SetOOIIDType", &TDR::SetOOIIDType, py::arg("nType"))
         .def("GetOOIIDType", &TDR::GetOOIIDType)
         .def("SetOOIType", &IODCommon::SetOOIType, py::arg("nType"))
+        .def("GetOOIType", &TDR::GetOOIType)
         .def("SetThreatBoundingPolygon", &TDR::SetThreatBoundingPolygon, py::arg("PTOIdentifier"), py::arg("controlPoints"), py::arg("nRepresentation"))
         .def("SetScanInstanceUID", &IODCommon::SetScanInstanceUID, py::arg("strScanUID"))
         .def("GetScanInstanceUID", &IODCommon::GetScanInstanceUID)
