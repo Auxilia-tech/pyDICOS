@@ -36,13 +36,14 @@ We firmly believe that by releasing this library, we will encourage and support 
 
 ## Install
 
+⚠️ pyDICOS is currently only available for linux on x86 platform.
+
 ### ✨ NEW ✨ Using Pypi index (recommended)
 
 Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
 ```bash
 pip install pydicos
 ```
-This method is only available for linux on x86 and arm64 platform.
 
 ### Building from source (dev mode)
 
@@ -103,7 +104,7 @@ data = tdr.get_data() # dictionnay of metadata
 dcswrite(tdr, "SimpleTDR/SimpleTDR_2.dcs")
 ```
 
-✨ NEW : refer to [our notebook](notebooks/tutorial.ipynb) tutorial for instructions and examples to change an object main attribute.
+✨ NEW ✨ : refer to [our notebook](notebooks/tutorial.ipynb) tutorial for instructions and examples to change an object main attribute.
 
 ### Advanced usage
 
