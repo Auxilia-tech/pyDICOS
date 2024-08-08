@@ -4,6 +4,7 @@ from pyDICOS import (
     TDR,
     Array1DPoint3Dfloat,
     Bitmap,
+    MemoryBuffer,
     DcsDate,
     DcsDateTime,
     DcsLongText,
@@ -132,7 +133,7 @@ class CTLoader(CT):
                 - "point1": The first point of the detection box (front top left).
                 - "point2": The second point of the detection box (back bottom right).
                 - "confidence": The confidence of the detection box.
-                - "mask": The mask of the detection, can be None.
+                - "mask": The mask of the detection, a 3D NumPy array. Can be None.
         output_file : str, optional
             The name of the file to write. The default is None.
         """
@@ -148,6 +149,7 @@ class CTLoader(CT):
         bRes = bRes and tdr.SetScanInstanceUID(self.GetScanInstanceUID())
         bRes = bRes and tdr.SetSeriesInstanceUID(self.GetSeriesInstanceUID())
         bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
+        bRes = bRes and tdr.SetImageScaleRepresentation(1)
         tdr.GenerateSopInstanceUID()
         bRes = bRes and tdr.SetFrameOfReferenceUID(self.GetFrameOfReferenceUID())
 
@@ -196,9 +198,21 @@ class CTLoader(CT):
                 detection_box["point2"][1] - detection_box["point1"][1],
                 detection_box["point2"][2] - detection_box["point1"][2],
             )
-
+            threat_bitmap = Bitmap()
+            if detection_box["mask"] is not None:
+                assert isinstance(detection_box["mask"], np.ndarray), "Bitmap must be a numpy array"
+                assert detection_box["mask"].ndim == 3, "Bitmap must be a 3D numpy array"
+                assert detection_box["mask"].shape == (detection_box["point2"][0] - detection_box["point1"][0], detection_box["point2"][1] - detection_box["point1"][1], detection_box["point2"][2] - detection_box["point1"][2]), "Bitmap must match the bounding box"
+                if detection_box["mask"].sum() != 0:
+                    threat_bitmap.SetDims(detection_box["mask"].shape[0], detection_box["mask"].shape[1], detection_box["mask"].shape[2], True)
+                    flat_bitmap = detection_box["mask"].astype(np.uint8).ravel()
+                    byte_array = np.packbits(flat_bitmap, bitorder="little")
+                    byte_buffer = MemoryBuffer()
+                    byte_buffer.SetBuffer(byte_array.tobytes(), byte_array.size)
+                    threat_bitmap.SetBitmapData(byte_buffer, True)
+                    assert threat_bitmap.GetNumBits() == detection_box["mask"].size, "Failed to set bitmap"
             bRes = bRes and tdr.SetThreatRegionOfInterest(
-                i, ptBase, ptExtents, detection_box["mask"] or Bitmap(), 0
+                i, ptBase, ptExtents, threat_bitmap, 0
             )
             bRes = bRes and tdr.SetBaggagePTODetails(i, 0, 0, 0)
             bRes = bRes and tdr.SetBaggagePTOLocationDescription(
