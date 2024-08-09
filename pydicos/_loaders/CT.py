@@ -2,6 +2,7 @@ import numpy as np
 from pyDICOS import (
     CT,
     TDR,
+    DcsUniqueIdentifier,
     Array1DPoint3Dfloat,
     Bitmap,
     MemoryBuffer,
@@ -17,6 +18,7 @@ from pyDICOS import (
 )
 
 from .TDR import TDRLoader
+from .ATR import ATRSettings
 
 
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
@@ -121,26 +123,33 @@ class CTLoader(CT):
             volume = section.GetPixelData()
             volume.set_data(volume, array)
 
-    def generate_tdr(self, detection_boxes: list, output_file: str = None) -> TDRLoader:
+    def generate_tdr(self, data: dict, output_file: str = None) -> TDRLoader:
         """Generate a TDR file from the CT object and detections.
 
         Parameters
         ----------
-        detection_boxes : list
-            A list of detection boxes.
-            A detection box is a dictionary with the following keys:
-                - "label": The label of the detection box.
-                - "point1": The first point of the detection box (front top left).
-                - "point2": The second point of the detection box (back bottom right).
-                - "confidence": The confidence of the detection box.
-                - "mask": The mask of the detection, a 3D NumPy array. Can be None.
-        output_file : str, optional
-            The name of the file to write. The default is None.
+        data : dict
+            A dict of values.
+            The keys are:
+                - InstanceNumber : int, the instance number of the TDR.
+                - ContentDateAndTime : dict, the scan start date and time.
+                - ProcessingTime : int, the processing time.
+                - ScanType : int, the scan type.
+                - AlarmDecision : int, the alarm decision.
+                - AlarmDecisionDateTime : dict, the alarm decision date and time.
+                - ImageScaleRepresentation : int, the image scale representation.
+                - ATR : dict, the ATR metadata. See TDR_DATA_TEMPLATE for more information.
+                - PTOs : list, the list of PTOs. A PTO is a dict with the following keys:
+                    - Base : dict, the base point of the PTO.
+                    - Extent : dict, the extent of the PTO.
+                    - Bitmap : np.ndarray, the bitmap of the PTO.
+                    - Description : str, the description of the PTO.
+                    - Probability : float, the probability of the PTO.
+                    - Polygon : list, the list of points of the PTO polygon.
+                    - ID : int, the ID of the PTO.
+                    - ReferencedInstance : dict, the referenced instance of the PTO.
+                    - PTOProcessingTime : dict, the processing time of the PTO.
         """
-        for field in ["label", "point1", "point2", "confidence", "mask"]:
-            for box in detection_boxes:
-                assert field in box
-    
         tdr = TDRLoader()
         bRes = True
         bRes = bRes and tdr.SetOOIType(self.GetOOIType())
@@ -149,79 +158,130 @@ class CTLoader(CT):
         bRes = bRes and tdr.SetScanInstanceUID(self.GetScanInstanceUID())
         bRes = bRes and tdr.SetSeriesInstanceUID(self.GetSeriesInstanceUID())
         bRes = bRes and tdr.SetTDRType(TDR.TDR_TYPE.enumMachine)
-        bRes = bRes and tdr.SetImageScaleRepresentation(1)
         tdr.GenerateSopInstanceUID()
         bRes = bRes and tdr.SetFrameOfReferenceUID(self.GetFrameOfReferenceUID())
 
-        bounds = Array1DPoint3Dfloat()
-        bounds.SetSize(2, False)
-        ptBase = Point3Dfloat()
-        ptExtents = Point3Dfloat()
-        realworld_offset = [-dim // 2 for dim in self.get_data()[0].shape]
+        if "InstanceNumber" in data:
+            assert isinstance(data["InstanceNumber"], int), "InstanceNumber must be an integer"
+            tdr.SetInstanceNumber(data["InstanceNumber"])
+        
+        if "ContentDateAndTime" in data:
+            assert isinstance(data["ContentDateAndTime"], dict), "ContentDateAndTime must be a dict"
+            assert "date" in data["ContentDateAndTime"], "ContentDateAndTime must have a date"
+            assert isinstance(data["ContentDateAndTime"]["date"], (list, tuple)), "ContentDateAndTime date must be a list"
+            assert len(data["ContentDateAndTime"]["date"]) == 3, "ContentDateAndTime date must have 3 elements"
+            assert "time" in data["ContentDateAndTime"], "ContentDateAndTime must have a time"
+            assert isinstance(data["ContentDateAndTime"]["time"], (list, tuple)), "ContentDateAndTime time must be a list"
+            assert len(data["ContentDateAndTime"]["time"]) == 4, "ContentDateAndTime time must have 4 elements"
+            tdr.SetContentDateAndTime(DcsDate(*data["ContentDateAndTime"]["date"]), DcsTime(*data["ContentDateAndTime"]["time"]))
+        
+        if "ProcessingTime" in data:
+            assert isinstance(data["ProcessingTime"], (int, float)), "ProcessingTime must be a float or int"
+            tdr.SetTotalProcessingTimeInMS(data["ProcessingTime"])
+        
+        if "ScanType" in data:
+            assert isinstance(data["ScanType"], TDR.SCAN_TYPE), "ScanType must be a SCAN_TYPE enum"
+            tdr.SetScanType(data["ScanType"])
+        
+        if "AlarmDecision" in data:
+            assert isinstance(data["AlarmDecision"], TDR.ALARM_DECISION), "AlarmDecision must be an ALARM_DECISION enum"
+            tdr.SetAlarmDecision(data["AlarmDecision"])
+        
+        if "AlarmDecisionDateTime" in data:
+            assert isinstance(data["AlarmDecisionDateTime"], dict), "AlarmDecisionDateTime must be a dict"
+            assert "date" in data["AlarmDecisionDateTime"], "AlarmDecisionDateTime must have a date"
+            assert isinstance(data["AlarmDecisionDateTime"]["date"], (list, tuple)), "AlarmDecisionDateTime date must be a list"
+            assert len(data["AlarmDecisionDateTime"]["date"]) == 3, "AlarmDecisionDateTime date must have 3 elements"
+            assert "time" in data["AlarmDecisionDateTime"], "AlarmDecisionDateTime must have a time"
+            assert isinstance(data["AlarmDecisionDateTime"]["time"], (list, tuple)), "AlarmDecisionDateTime time must be a list"
+            assert len(data["AlarmDecisionDateTime"]["time"]) == 4, "AlarmDecisionDateTime time must have 4 elements"
+            tdr.SetAlarmDecisionDateTime(
+                DcsDate(*data["AlarmDecisionDateTime"]["date"]), DcsTime(*data["AlarmDecisionDateTime"]["time"])
+            )
+        
+        if "ImageScaleRepresentation" in data:
+            assert isinstance(data["ImageScaleRepresentation"], (float, int)), "ImageScaleRepresentation must be a float or int"
+            tdr.SetImageScaleRepresentation(data["ImageScaleRepresentation"])
+        
+        if "ATR" in data:
+            assert isinstance(data["ATR"], dict), "ATR must be a dict"
+            for field in data["ATR"]:
+                assert field in ["manufacturer", "version", "parameters"], "ATR must have manufacturer, version and parameters fields only"
+            tdr.set_ATR_metadata(ATRSettings(**data["ATR"]))
 
-        for i, detection_box in enumerate(detection_boxes):
-            bRes = bRes and tdr.AddPotentialThreatObject(
-                i, TDR.ThreatType.enumThreatTypeBaggage
-            )
-            bRes = bRes and tdr.SetProcessingStartTime(
-                i, DcsDateTime(DcsDate.Today(), DcsTime.Now())
-            )
-            bRes = bRes and tdr.AddReferencedInstance(
-                i, self.GetSopClassUID(), self.GetSopInstanceUID(), 0
-            )
-            bRes = bRes and tdr.AddPTOAssessment(
-                i,
-                TDR.ASSESSMENT_FLAG.enumThreat,
-                TDR.THREAT_CATEGORY.enumProhibitedItem,
-                TDR.ABILITY_ASSESSMENT.enumNoInterference,
-                DcsLongText(detection_box["label"]),
-                float(detection_box["confidence"]),
-            )
+        if "PTOs" in data:
+            assert isinstance(data["PTOs"], list), "PTOs must be a list"
+            for pto in data["PTOs"]:
+                assert isinstance(pto, dict), "PTOs must be a list of dicts"
+                for field in ["Base", "Extent", "ID"]:
+                    assert field in pto, f"PTO must have {field} field"
 
-            # Set the PTO bounding polygon
-            bounds[0] = Point3Dfloat(
-                realworld_offset[0] + detection_box["point1"][0],
-                realworld_offset[1] + detection_box["point1"][1],
-                realworld_offset[2] + detection_box["point1"][2],
-            )
-            bounds[1] = Point3Dfloat(
-                realworld_offset[0] + detection_box["point2"][0],
-                realworld_offset[1] + detection_box["point2"][1],
-                realworld_offset[2] + detection_box["point2"][2],
-            )
-            bRes = bRes and tdr.SetThreatBoundingPolygon(i, bounds, 0)
+                tdr.AddPotentialThreatObject(pto["ID"], TDR.ThreatType.enumThreatTypeBaggage)
+                threat_bitmap = Bitmap()
+                if "Bitmap" in pto:
+                    assert isinstance(pto["Bitmap"], np.ndarray), "Bitmap must be a numpy array"
+                    assert pto["Bitmap"].ndim == 3, "Bitmap must be a 3D numpy array"
+                    assert pto["Bitmap"].shape == (pto["Extent"]["x"], pto["Extent"]["y"], pto["Extent"]["z"]), "Bitmap shape must match the extent"
+                    if pto["Bitmap"].sum() != 0:
+                        threat_bitmap.SetDims(pto["Bitmap"].shape[0], pto["Bitmap"].shape[1], pto["Bitmap"].shape[2], True)
+                        flat_bitmap = pto["Bitmap"].astype(np.uint8).ravel()
+                        byte_array = np.packbits(flat_bitmap, bitorder="little")
+                        byte_buffer = MemoryBuffer()
+                        byte_buffer.SetBuffer(byte_array.tobytes(), byte_array.size)
+                        threat_bitmap.SetBitmapData(byte_buffer, True)
+                        assert threat_bitmap.GetNumBits() == pto["Bitmap"].size, "Failed to set bitmap"
 
-            # Set the PTO mask
-            ptBase.Set(*detection_box["point1"])
-            ptExtents.Set(
-                detection_box["point2"][0] - detection_box["point1"][0],
-                detection_box["point2"][1] - detection_box["point1"][1],
-                detection_box["point2"][2] - detection_box["point1"][2],
-            )
-            threat_bitmap = Bitmap()
-            if detection_box["mask"] is not None:
-                assert isinstance(detection_box["mask"], np.ndarray), "Bitmap must be a numpy array"
-                assert detection_box["mask"].ndim == 3, "Bitmap must be a 3D numpy array"
-                assert detection_box["mask"].shape == (detection_box["point2"][0] - detection_box["point1"][0], detection_box["point2"][1] - detection_box["point1"][1], detection_box["point2"][2] - detection_box["point1"][2]), "Bitmap must match the bounding box"
-                if detection_box["mask"].sum() != 0:
-                    threat_bitmap.SetDims(detection_box["mask"].shape[0], detection_box["mask"].shape[1], detection_box["mask"].shape[2], True)
-                    flat_bitmap = detection_box["mask"].astype(np.uint8).ravel()
-                    byte_array = np.packbits(flat_bitmap, bitorder="little")
-                    byte_buffer = MemoryBuffer()
-                    byte_buffer.SetBuffer(byte_array.tobytes(), byte_array.size)
-                    threat_bitmap.SetBitmapData(byte_buffer, True)
-                    assert threat_bitmap.GetNumBits() == detection_box["mask"].size, "Failed to set bitmap"
-            bRes = bRes and tdr.SetThreatRegionOfInterest(
-                i, ptBase, ptExtents, threat_bitmap, 0
-            )
-            bRes = bRes and tdr.SetBaggagePTODetails(i, 0, 0, 0)
-            bRes = bRes and tdr.SetBaggagePTOLocationDescription(
-                i, DcsShortText(detection_box["label"]), 0
-            )
-            bRes = bRes and tdr.SetProcessingEndTime(
-                i, DcsDateTime(DcsDate.Today(), DcsTime.Now())
-            )
+                tdr.SetThreatRegionOfInterest(
+                    pto["ID"],
+                    Point3Dfloat(pto["Base"]["x"], pto["Base"]["y"], pto["Base"]["z"]),
+                    Point3Dfloat(pto["Extent"]["x"], pto["Extent"]["y"], pto["Extent"]["z"]),
+                    threat_bitmap, 
+                    0,
+                )
 
+                if "Polygon" in pto:
+                    polygon = Array1DPoint3Dfloat()
+                    for point in pto["Polygon"]:
+                        polygon.Append(Point3Dfloat(point["x"], point["y"], point["z"]))
+                    tdr.SetThreatBoundingPolygon(pto["ID"], polygon, 0)
+
+                if "Assessment" in pto:
+                    assert isinstance(pto["Assessment"], dict), "Assessment must be a dict"
+                    for field in pto["Assessment"]:
+                        assert field in ["flag", "category", "ability", "description", "probability"], "Assessment must have flag, category, ability, description and probability fields only"
+                    tdr.DeleteAssessments(pto["ID"])
+                    tdr.AddPTOAssessment(
+                        pto["ID"],
+                        pto["Assessment"].get("flag", TDR.ASSESSMENT_FLAG.enumUnknown),
+                        pto["Assessment"].get("category", TDR.THREAT_CATEGORY.enumAnomaly),
+                        pto["Assessment"].get("ability", TDR.ABILITY_ASSESSMENT.enumNoInterference),
+                        DcsLongText(pto["Assessment"].get("description", "")),
+                        pto["Assessment"].get("probability", -1)
+                    )
+                if "ReferencedInstance" in pto:
+                    assert isinstance(pto["ReferencedInstance"], dict), "ReferencedInstance must be a dict"
+                    for field in pto["ReferencedInstance"]:
+                        assert field in ["SopClassUID", "SopInstanceUID"], "ReferencedInstance must have SopClassUID and SopInstanceUID fields only"
+                    tdr.AddReferencedInstance(
+                        pto["ID"], 
+                        DcsUniqueIdentifier(pto["ReferencedInstance"]["SopClassUID"]),
+                        DcsUniqueIdentifier(pto["ReferencedInstance"]["SopInstanceUID"]),
+                        0 ) # Index for which PTO Representation Sequence Item
+                    
+                if "PTOProcessingTime" in pto:
+                    assert isinstance(pto["PTOProcessingTime"], dict), "PTOProcessingTime must be a dict"
+                    for field in pto["PTOProcessingTime"]:
+                        assert field in ["ProcessingStartTime", "ProcessingEndTime", "fTotalTimeMS"], "PTOProcessingTime must have ProcessingStartTime, ProcessingEndTime and fTotalTimeMS fields only"
+                    ProcessingStartTime = pto["PTOProcessingTime"]["ProcessingStartTime"]
+                    ProcessingEndTime = pto["PTOProcessingTime"]["ProcessingEndTime"]
+                    assert isinstance(ProcessingStartTime, dict), "ProcessingStartTime must be a dict"
+                    assert isinstance(ProcessingEndTime, dict), "ProcessingEndTime must be a dict"
+                    tdr.SetPTOProcessingTime(
+                        pto["ID"],
+                        DcsDateTime(DcsDate(*ProcessingStartTime["date"]), DcsTime(*ProcessingStartTime["time"])),
+                        DcsDateTime(DcsDate(*ProcessingEndTime["date"]), DcsTime(*ProcessingEndTime["time"])),
+                        pto["PTOProcessingTime"]["fTotalTimeMS"])
+                
         assert bRes, "Error setting TDR values"
 
         if output_file is not None:
