@@ -9,6 +9,7 @@ from pyDICOS import (
     DcsDate,
     DcsDateTime,
     DcsLongText,
+    SCAN_TYPE,
     DcsShortText,
     DcsTime,
     Point3Dfloat,
@@ -180,7 +181,7 @@ class CTLoader(CT):
             tdr.SetTotalProcessingTimeInMS(data["ProcessingTime"])
         
         if "ScanType" in data:
-            assert isinstance(data["ScanType"], TDR.SCAN_TYPE), "ScanType must be a SCAN_TYPE enum"
+            assert isinstance(data["ScanType"], SCAN_TYPE), "ScanType must be a SCAN_TYPE enum"
             tdr.SetScanType(data["ScanType"])
         
         if "AlarmDecision" in data:
