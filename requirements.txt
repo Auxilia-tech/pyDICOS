@@ -3,3 +3,7 @@ pybind11[global]
 cmake
 wheel
 build
+
+# Testing
+pytest
+pytest-order

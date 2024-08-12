@@ -26,7 +26,7 @@ We firmly believe that by releasing this library, we will encourage and support 
  - Provide a pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
    - [x] First releases : DICOS protocol, client/server functions
-   - [x] Future release : more pure python functions to shave off heavy cpp signatures (`get_data` and `set_data`)
+   - [x] Future release : more pure python functions to shave off heavy cpp signatures (`get_data`, `set_data` and `CT::generate_tdr`)
    - [x] Future release : library indexed in Pypi 
    - [ ] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
