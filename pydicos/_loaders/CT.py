@@ -268,6 +268,8 @@ class CTLoader(CT):
                         DcsUniqueIdentifier(pto["ReferencedInstance"]["SopClassUID"]),
                         DcsUniqueIdentifier(pto["ReferencedInstance"]["SopInstanceUID"]),
                         0 ) # Index for which PTO Representation Sequence Item
+                else:
+                    bRes = bRes and tdr.AddReferencedInstance(pto["ID"], self.GetSopClassUID(), self.GetSopInstanceUID(), 0)
                     
                 if "PTOProcessingTime" in pto:
                     assert isinstance(pto["PTOProcessingTime"], dict), "PTOProcessingTime must be a dict"

@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from pydicos import dcsread, dcswrite, CTLoader
+from test_utils import get_tdr_data_output_template, get_pto_data, set_alarm_decision
 
 
 @pytest.mark.order(after="tests/test_CT_write.py::test_create_ct_files")
@@ -38,18 +39,14 @@ def test_loading_from_file_in_place():
 @pytest.mark.order(after="tests/test_TDR_write.py::test_ct_linked_tdr")
 def test_generate_tdr():
     ct_object = dcsread("CTwithTDR/CT.dcs")
-    tdr_object = ct_object.generate_tdr([{
-        "label": "razorblade",
-        "point1": [23, 45, 67],
-        "point2": [50, 100, 150],
-        "confidence": 0.78,
-        "mask": None
-    }], output_file = "CTwithTDR/TDR2.dcs")
+    tdr_data = get_tdr_data_output_template()
+    tdr_data["PTOs"] = []
+    tdr_data["PTOs"].append(get_pto_data(0, [5, 5, 5], [5, 5, 5], f"Label0", 0.7, np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8)))
+    tdr_data["PTOs"].append(get_pto_data(1, [40, 40, 40], [5, 5, 5], f"Label1", 0.7, np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8)))
+    set_alarm_decision(tdr_data)
+    tdr_object = ct_object.generate_tdr(tdr_data, output_file = "CTwithTDR/TDR2.dcs")
     print(tdr_object.get_data())
-    # TODO: write assert tests
-
-
-if __name__ == "__main__":
-    test_loading_from_file()
-    test_loading_from_file_in_place()
-    test_generate_tdr()
+    assert tdr_object.get_data()["PTOs"][0]["Assessment"]["probability"] == pytest.approx(0.7, 1e-6)
+    assert tdr_object.get_data()["AlarmDecision"] == 1
+    assert np.sum(tdr_object.get_data()["PTOs"][0]["Bitmap"]) == np.sum(np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8))
+    assert np.sum(tdr_object.get_data()["PTOs"][1]["Bitmap"]) == np.sum(np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8))
