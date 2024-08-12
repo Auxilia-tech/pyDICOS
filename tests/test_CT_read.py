@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from pydicos import dcsread, dcswrite, CTLoader
-from test_utils import get_tdr_data_output_template, get_pto_data, set_alarm_decision
+from tests.test_utils import get_tdr_data_output_template, get_pto_data, set_alarm_decision
 
 
 @pytest.mark.order(after="tests/test_CT_write.py::test_create_ct_files")
