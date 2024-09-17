@@ -1,6 +1,5 @@
 # pyDICOS
 
----
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 [![run-tests](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/tests.yml/badge.svg)](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/Auxilia-tech/pyDICOS/graph/badge.svg?token=BJ9INN7187)](https://codecov.io/gh/Auxilia-tech/pyDICOS)
