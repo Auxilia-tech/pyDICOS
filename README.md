@@ -1,9 +1,10 @@
 # pyDICOS
 
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
-[![publish-pypi](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml/badge.svg)](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/publish-pypi-deploy.yml)
 [![run-tests](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/tests.yml/badge.svg)](https://github.com/Auxilia-tech/pyDICOS/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/Auxilia-tech/pyDICOS/graph/badge.svg?token=BJ9INN7187)](https://codecov.io/gh/Auxilia-tech/pyDICOS)
+[![PyPI](https://img.shields.io/pypi/v/pydicos)](https://pypi.org/project/pydicos/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pydicos?label=pypi%20downloads)](https://pypi.org/project/pydicos/)
 
 ## Motivations
 
@@ -26,7 +27,7 @@ We firmly believe that by releasing this library, we will encourage and support 
  - Provide a pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
    - [x] First releases : DICOS protocol, client/server functions
-   - [x] Future release : more pure python functions to shave off heavy cpp signatures (`get_data`, `set_data` and `CT::generate_tdr`)
+   - [x] Future release : more pure python functions to shave off heavy cpp signatures (`dcsread`, `dcswrite`, `get_data`, `set_data` and `CT::generate_tdr`)
    - [x] Future release : library indexed in Pypi 
    - [ ] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
