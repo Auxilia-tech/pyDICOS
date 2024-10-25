@@ -152,17 +152,17 @@ class TDRLoader(TDR):
             if bitmap.GetSize() != 0:
                 byte_array = np.frombuffer(bitmap.GetBitmap(), dtype=np.uint8)
                 bit_array = np.unpackbits(byte_array, bitorder="little")[:bitmap.GetNumBits()]
-                assert bit_array.shape[0] == bitmap.GetWidth()*bitmap.GetHeight()*bitmap.GetDepth(), "Failed to unpack bitmap"
-                bit_array = bit_array.reshape(bitmap.GetWidth(), bitmap.GetHeight(), bitmap.GetDepth())
+                assert bit_array.shape[0] == bitmap.GetDepth()*bitmap.GetHeight()*bitmap.GetWidth(), "Failed to unpack bitmap"
+                bit_array = bit_array.reshape(bitmap.GetDepth(), bitmap.GetHeight(), bitmap.GetWidth())
             else: 
-                bit_array = np.zeros((int(PTOExtent.x), int(PTOExtent.y), int(PTOExtent.z)), dtype=np.uint16)
+                bit_array = np.zeros((int(PTOExtent.z), int(PTOExtent.y), int(PTOExtent.x)), dtype=np.uint16)
             data["PTOs"].append(
                 {
-                    "Base": {"x": PTOBase.x, "y": PTOBase.y, "z": PTOBase.z},
-                    "Extent": {"x": PTOExtent.x, "y": PTOExtent.y, "z": PTOExtent.z},
+                    "Base": {"z": PTOBase.z, "y": PTOBase.y, "x": PTOBase.x},
+                    "Extent": {"z": PTOExtent.z, "y": PTOExtent.y, "x": PTOExtent.x},
                     "Bitmap": bit_array,
                     "Polygon": [
-                        {"x": polygon[j].x, "y": polygon[j].y, "z": polygon[j].z}
+                        {"z": polygon[j].z, "y": polygon[j].y, "x": polygon[j].x}
                         for j in range(polygon.GetSize())
                     ],
                     "ID": PTOIds[i],
@@ -293,7 +293,7 @@ class TDRLoader(TDR):
                 if "Bitmap" in pto:
                     assert isinstance(pto["Bitmap"], np.ndarray), "Bitmap must be a numpy array"
                     assert pto["Bitmap"].ndim == 3, "Bitmap must be a 3D numpy array"
-                    assert pto["Bitmap"].shape == (pto["Extent"]["x"], pto["Extent"]["y"], pto["Extent"]["z"]), "Bitmap shape must match the extent"
+                    assert pto["Bitmap"].shape == (pto["Extent"]["z"], pto["Extent"]["y"], pto["Extent"]["x"]), "Bitmap shape must match the extent"
                     if pto["Bitmap"].sum() != 0:
                         threat_bitmap.SetDims(pto["Bitmap"].shape[0], pto["Bitmap"].shape[1], pto["Bitmap"].shape[2], True)
                         flat_bitmap = pto["Bitmap"].astype(np.uint8).ravel()
@@ -305,8 +305,8 @@ class TDRLoader(TDR):
 
                 self.SetThreatRegionOfInterest(
                     pto["ID"],
-                    Point3Dfloat(pto["Base"]["x"], pto["Base"]["y"], pto["Base"]["z"]),
-                    Point3Dfloat(pto["Extent"]["x"], pto["Extent"]["y"], pto["Extent"]["z"]),
+                    Point3Dfloat(pto["Base"]["z"], pto["Base"]["y"], pto["Base"]["x"]),
+                    Point3Dfloat(pto["Extent"]["z"], pto["Extent"]["y"], pto["Extent"]["x"]),
                     threat_bitmap, 
                     0,
                 )
@@ -314,7 +314,7 @@ class TDRLoader(TDR):
                 if "Polygon" in pto:
                     polygon = Array1DPoint3Dfloat()
                     for point in pto["Polygon"]:
-                        polygon.Append(Point3Dfloat(point["x"], point["y"], point["z"]))
+                        polygon.Append(Point3Dfloat(point["z"], point["y"], point["x"]))
                     self.SetThreatBoundingPolygon(pto["ID"], polygon, 0)
 
                 if "Assessment" in pto:
@@ -390,8 +390,8 @@ TDR_DATA_TEMPLATE = {
     "OOIType" : OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
     "PTOs": [
         {
-            "Base": {"x": 0, "y": 0, "z": 0},
-            "Extent": {"x": 0, "y": 0, "z": 0},
+            "Base": {"z": 0, "y": 0, "z": 0},
+            "Extent": {"z": 0, "y": 0, "z": 0},
             "Bitmap": np.zeros((0, 0, 0), dtype=np.uint16),
             "Polygon": [],
             "ID": 0,
