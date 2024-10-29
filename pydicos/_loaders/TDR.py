@@ -390,8 +390,8 @@ TDR_DATA_TEMPLATE = {
     "OOIType" : OBJECT_OF_INSPECTION_TYPE.enumTypeBaggage,
     "PTOs": [
         {
-            "Base": {"z": 0, "y": 0, "z": 0},
-            "Extent": {"z": 0, "y": 0, "z": 0},
+            "Base": {"z": 0, "y": 0, "x": 0},
+            "Extent": {"z": 0, "y": 0, "x": 0},
             "Bitmap": np.zeros((0, 0, 0), dtype=np.uint16),
             "Polygon": [],
             "ID": 0,
