@@ -31,6 +31,7 @@ def GenerateCTSection(ct):
     SectionObject.SetPlaneOrientation(VecRowOrientation, VecColumnOrientation)
     SectionObject.SetPositionInMM(-125, -125, 125)
     assert SectionObject.GetPositionInMM() == Point3Dfloat(-125, -125, 125)
+    assert (SectionObject.GetXPosition(), SectionObject.GetYPosition(), SectionObject.GetZPosition()) == (-125, -125, 125)
 
     fColumnSpacing = 1.0
     fRowSpacing = 1.0
@@ -39,6 +40,9 @@ def GenerateCTSection(ct):
 
     SectionObject.SetSpacingInMM(fColumnSpacing, fRowSpacing, fSliceSpacing)
     assert SectionObject.GetSpacingInMM() == Point3Dfloat(fColumnSpacing, fRowSpacing, fSliceSpacing)
+    assert (SectionObject.GetRowSpacing(), SectionObject.GetColumnSpacing(), SectionObject.GetSliceSpacing()) == \
+        (fColumnSpacing, fRowSpacing, fSliceSpacing)
+    assert SectionObject.IsSlicingDirection() == (not SectionObject.IsOppositeSlicingDirection())
     SectionObject.SetSliceThickness(fSliceThickness)
     assert SectionObject.GetSliceThickness() == fSliceThickness
 
