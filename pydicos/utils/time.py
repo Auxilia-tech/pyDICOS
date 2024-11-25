@@ -91,6 +91,6 @@ class DicosDateTime:
         Returns
         -------
         datetime
-            The DicosDateTime class as a datetime.datetime object.
+            The DicosDateTime class as a datetime object.
         """
         return datetime(*self.date.Get(0, 0, 0)[1:], *self.time.Get(0, 0, 0, 0)[1:])
