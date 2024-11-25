@@ -7,6 +7,7 @@ from pyDICOS import (
     Filename,
     Folder,
     Point3DS_UINT16,
+    Point3Dfloat,
     Section,
     Vector3Dfloat,
     Volume,
@@ -20,6 +21,7 @@ def GenerateCTSection(ct):
     SectionObject.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum)
     SectionObject.SetFocalSpotSizeInMM(10)
     SectionObject.SetKVP(7000)
+    assert SectionObject.GetKVP() == 7000
     assert ct.GetNumberOfSections() == 1
 
     # float in Vector3Dfloat means that the type of the components of Vector3D is float"
@@ -28,6 +30,7 @@ def GenerateCTSection(ct):
     VecColumnOrientation = Vector3Dfloat(0, 1, 0)
     SectionObject.SetPlaneOrientation(VecRowOrientation, VecColumnOrientation)
     SectionObject.SetPositionInMM(-125, -125, 125)
+    assert SectionObject.GetPositionInMM() == Point3Dfloat(-125, -125, 125)
 
     fColumnSpacing = 1.0
     fRowSpacing = 1.0
@@ -35,7 +38,9 @@ def GenerateCTSection(ct):
     fSliceThickness = 1.0
 
     SectionObject.SetSpacingInMM(fColumnSpacing, fRowSpacing, fSliceSpacing)
+    assert SectionObject.GetSpacingInMM() == Point3Dfloat(fColumnSpacing, fRowSpacing, fSliceSpacing)
     SectionObject.SetSliceThickness(fSliceThickness)
+    assert SectionObject.GetSliceThickness() == fSliceThickness
 
     volume = SectionObject.GetPixelData()
     # The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
