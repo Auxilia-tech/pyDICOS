@@ -393,6 +393,7 @@ def test_ct_linked_tdr(session_cleanup):
     psection.SetFilterMaterial(Section.FILTER_MATERIAL.enumAluminum)
     psection.SetFocalSpotSizeInMM(10)
     psection.SetKVP(7000)
+    assert psection.GetKVP() == 7000
 
     vecRowOrientation.Set(1, 0, 0)
     vecColumnOrientation.Set(0, 1, 0)
@@ -408,7 +409,14 @@ def test_ct_linked_tdr(session_cleanup):
     ptFirstFrameTopLeft = Point3Dfloat(-250, -250, -250)
 
     psection.SetPositionInMM(ptFirstFrameTopLeft)
+    assert psection.GetPositionInMM() == ptFirstFrameTopLeft
+    assert (psection.GetXPosition(), psection.GetYPosition(), psection.GetZPosition()) == \
+        (ptFirstFrameTopLeft.x, ptFirstFrameTopLeft.y, ptFirstFrameTopLeft.z)
+
     psection.SetSpacingInMM(1.0, 1.0, 1.0)
+    assert psection.GetSpacingInMM() == Point3Dfloat(1.0, 1.0, 1.0)
+    assert (psection.GetRowSpacing(), psection.GetColumnSpacing(), psection.GetSliceSpacing()) == (1.0, 1.0, 1.0)
+    assert psection.IsSlicingDirection() == (not psection.IsOppositeSlicingDirection())
     # S_UINT16 in Point3DS_UINT16 means that the type of the components of Point3D is S_UINT16
     # the supported types of Point3D are : S_UINT8, S_INT8, S_UINT16, S_INT16, float
     ptCenter = Point3DS_UINT16(250, 250, 250)

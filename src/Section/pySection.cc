@@ -5,7 +5,7 @@
  #include "SDICOS/ModuleCT.h"
  #include "SDICOS/Array1D.h"
  #include "SDICOS/Point3D.h"
-#include "SDICOS/Vector3D.h"
+ #include "SDICOS/Vector3D.h"
  #include "SDICOS/TemplateCommon.h"
  #include "SDICOS/TemplateBase.h"
  #include "SDICOS/ClientManager.h"
@@ -51,6 +51,7 @@ void export_SECTION(py::module &m)
         .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
         .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
         .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
+        .def("GetKVP", &Section::GetKVP)
         .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData), py::return_value_policy::reference_internal)
         .def("GetPixelData", py::overload_cast<>(&SectionCommon::GetPixelData, py::const_), py::return_value_policy::reference_internal)
         .def("GetPixelDataType", &SectionCommon::GetPixelDataType)
@@ -64,7 +65,18 @@ void export_SECTION(py::module &m)
         .def("SetSliceThickness", &SectionCommon::SetSliceThickness, py::arg("fSliceThickness"))
         .def("GetWidth",  &SectionCommon:: GetWidth)
         .def("GetHeight",  &SectionCommon:: GetHeight)
-        .def("GetDepth",  &SectionCommon:: GetDepth);
+        .def("GetDepth",  &SectionCommon:: GetDepth)
+        .def("GetSliceThickness", &SectionCommon::GetSliceThickness)
+        .def("GetSpacingInMM", &SectionCommon::GetSpacingInMM)
+        .def("GetPositionInMM", &SectionCommon::GetPositionInMM)
+        .def("GetXPosition", &SectionCommon::GetXPosition)
+        .def("GetYPosition", &SectionCommon::GetYPosition)
+        .def("GetZPosition", &SectionCommon::GetZPosition)
+        .def("GetRowSpacing", &SectionCommon::GetRowSpacing)
+        .def("GetColumnSpacing", &SectionCommon::GetColumnSpacing)
+        .def("GetSliceSpacing", &SectionCommon::GetSliceSpacing)
+        .def("IsSlicingDirection", &SectionCommon::IsSlicingDirection)
+        .def("IsOppositeSlicingDirection", &SectionCommon::IsOppositeSlicingDirection);
 
    
     py::class_<PySection, Section, SectionCommon>(m, "Section")
@@ -107,7 +119,6 @@ void export_SECTION(py::module &m)
         .def("GetRowOrientation", &SectionCommon::GetRowOrientation)
         .def("GetColumnOrientation", &SectionCommon::GetColumnOrientation)
         .def("SetSlicingDirection", &SectionCommon::SetSlicingDirection, py::arg("bPositive"))
-        .def("SetKVP", &Section::SetKVP, py::arg("fKVP"))
         .def("GetFocalSpotSize", py::overload_cast<>(&Section::GetFocalSpotSize, py::const_))
         .def("GetFocalSpotSize", py::overload_cast<float&, float&>(&Section::GetFocalSpotSize, py::const_), py::arg("fSmallSize"),  py::arg("fLargeSize"))
         .def("HasOneFocalSpotSize", &Section::HasOneFocalSpotSize)
@@ -121,5 +132,16 @@ void export_SECTION(py::module &m)
         .def("FreeMemory", &PySection::FreeMemory)
         .def("GetWidth",  &SectionCommon::GetWidth)
         .def("GetHeight",  &SectionCommon::GetHeight)
-        .def("GetDepth",  &SectionCommon::GetDepth);
+        .def("GetDepth",  &SectionCommon::GetDepth)
+        .def("GetSliceThickness", &SectionCommon::GetSliceThickness)
+        .def("GetSpacingInMM", &SectionCommon::GetSpacingInMM)
+        .def("GetPositionInMM", &SectionCommon::GetPositionInMM)
+        .def("GetXPosition", &SectionCommon::GetXPosition)
+        .def("GetYPosition", &SectionCommon::GetYPosition)
+        .def("GetZPosition", &SectionCommon::GetZPosition)
+        .def("GetRowSpacing", &SectionCommon::GetRowSpacing)
+        .def("GetColumnSpacing", &SectionCommon::GetColumnSpacing)
+        .def("GetSliceSpacing", &SectionCommon::GetSliceSpacing)
+        .def("IsSlicingDirection", &SectionCommon::IsSlicingDirection)
+        .def("IsOppositeSlicingDirection", &SectionCommon::IsOppositeSlicingDirection);
 }
