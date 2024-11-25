@@ -1,3 +1,4 @@
+from datetime import datetime
 from pyDICOS import DcsDate, DcsDateTime, DcsTime
 
 
@@ -83,3 +84,13 @@ class DicosDateTime:
             "date": self.date.Get(0, 0, 0)[1:],
             "time": self.time.Get(0, 0, 0, 0)[1:],
         }
+
+    def as_datetime(self) -> datetime:
+        """Get the DicosDateTime class as a datetime object.
+
+        Returns
+        -------
+        datetime
+            The DicosDateTime class as a datetime.datetime object.
+        """
+        return datetime(*self.date.Get(0, 0, 0)[1:], *self.time.Get(0, 0, 0, 0)[1:])
