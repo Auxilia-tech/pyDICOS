@@ -13,7 +13,7 @@ PyDICOS is intended to be a simple python wrapper of Stratovan's C++ [DICOS libr
 Note that this is **NOT** an open source implementation of the DICOS standard.
 
 PyDICOS relies on [pybind11](https://github.com/pybind/pybind11) to wrap DICOS user-level API to python.
-It depends on numpy to load data in python and can easily be installed _via_ `pip`.
+It depends on NumPy to load data in python and can easily be installed _via_ `pip`.
 
 PyDICOS is unrelated to [pydicom](https://github.com/pydicom/pydicom) in its implementation and contributors, 
 while being similar in its core spirit (enabling python data manipulations).
@@ -24,11 +24,11 @@ We firmly believe that by releasing this library, we will encourage and support 
 
 ## Scope
 
- - Provide a pythonized API for the DICOS toolkit
+ - Provide a Pythonized API for the DICOS toolkit
    - [x] First release : read/write functions for CT, DX and TDR, user-level API
    - [x] First releases : DICOS protocol, client/server functions
-   - [x] Future release : more pure python functions to shave off heavy cpp signatures (`dcsread`, `dcswrite`, `get_data`, `set_data` and `CT::generate_tdr`)
-   - [x] Future release : library indexed in Pypi 
+   - [x] Future release : more pure python functions to shave off heavy CPP signatures (`dcsread`, `dcswrite`, `get_data`, `set_data` and `CT::generate_tdr`)
+   - [x] Future release : library indexed in PyPi 
    - [ ] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
    - [ ] Out of scope for now : Module and Tag level APIs
@@ -37,11 +37,11 @@ We firmly believe that by releasing this library, we will encourage and support 
 
 ## Install
 
-⚠️ pyDICOS is currently only available for linux on x86 platform.
+⚠️ pyDICOS is currently only available for Linux on x86 platform.
 
-### ✨ NEW ✨ Using Pypi index (recommended)
+### ✨ NEW ✨ Using PyPi index (recommended)
 
-Using [pip](https://pip.pypa.io/en/stable/) directly from Pypi index :
+Using [pip](https://pip.pypa.io/en/stable/) directly from PyPi index :
 ```bash
 pip install pydicos
 ```
@@ -84,10 +84,10 @@ The lib wheel should be produced in the `dist` folder and can be installed _via_
 
 ### Script usage
 
-Refer to our [exemple files](https://github.com/Auxilia-tech/pyDICOS/tests) to explore the binded methods.
-The stratovan exemple files were entirely translated in python.
+Refer to our [example files](https://github.com/Auxilia-tech/pyDICOS/tree/main/tests) to explore the bound methods.
+The Stratovan example files were entirely translated in python.
 
-Here is a quick exemple for a script that reads and rewrites a CT and DX scan, and a TDR.
+Here is a quick example for a script that reads and rewrites a CT and DX scan, and a TDR.
 
 ```python
 from pydicos import dcsread, dcswrite
@@ -157,7 +157,7 @@ For more information, please read our [contribution guide](CONTRIBUTING.md).
 
 Many thanks to our main contributors :
 
- - [Ahmad Audi](https://github.com/AAUDI) is a freelance developper specialized in C++ and python. He is available for similar work on [upwork](https://www.upwork.com/freelancers/~01a066bd29ed6d1a64). [LinkedIn](https://www.linkedin.com/in/ahmadaudi/)
+ - [Ahmad Audi](https://github.com/AAUDI) is a freelance developer specialized in C++ and python. He is available for similar work on [upwork](https://www.upwork.com/freelancers/~01a066bd29ed6d1a64). [LinkedIn](https://www.linkedin.com/in/ahmadaudi/)
  - [Louis Combaldieu](https://github.com/lcombaldieu) is the cofounder and CTO of Auxilia. He specializes in deep learning and computer vision. Get in touch with him through our [contact form](https://www.auxilia-tech.com/contact) to learn more about pyDICOS and Auxilia's line of products.
 
 ## License
