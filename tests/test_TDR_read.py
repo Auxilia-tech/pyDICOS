@@ -2,13 +2,14 @@ import pytest
 from datetime import datetime
 import numpy as np
 import pydicos
+from pathlib import Path
 from pydicos import dcsread, TDR_DATA_TEMPLATE
 
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_no_threat_tdr")
 def test_loading_no_threat():
     now = datetime.now()
-    tdr_object = dcsread(filename="TDRFiles/SimpleBaggageNoThreatTDR.dcs")
+    tdr_object = dcsread(filename=Path("TDRFiles", "SimpleBaggageNoThreatTDR.dcs"))
     assert len(tdr_object) == 0
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
@@ -31,7 +32,7 @@ def test_loading_no_threat():
 @pytest.mark.order(after="tests/test_TDR_write.py::test_baggage_tdr")
 def test_loading_baggage():
     now = datetime.now()
-    tdr_object = dcsread(filename="TDRFiles/SimpleBaggageTDR.dcs")
+    tdr_object = dcsread(filename=Path("TDRFiles", "SimpleBaggageTDR.dcs"))
     assert len(tdr_object) == 1
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
