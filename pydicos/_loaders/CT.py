@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 from pyDICOS import (
     CT,
     TDR,
@@ -17,6 +18,7 @@ from pyDICOS import (
     Filename,
     ErrorLog,
 )
+from typing import Optional, Union
 
 from .TDR import TDRLoader
 from .ATR import ATRSettings
@@ -25,12 +27,12 @@ from .ATR import ATRSettings
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
 # The 'get_data' function returns a list of 2D NumPy arrays.
 class CTLoader(CT):
-    def __init__(self, filename: str = None) -> None:
+    def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
         """Initialize the CTLoader class.
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str|Path, optional
             The name of the file to read.
             The default is None and will create an empty CT.
         """
@@ -39,31 +41,31 @@ class CTLoader(CT):
         if filename is not None:
             self.read(filename)
 
-    def read(self, filename: str) -> None:
+    def read(self, filename: Union[str, Path]) -> None:
         """Reads the object from a file.
 
         Parameters
         ----------
-        filename : str
+        filename : str|Path
             The name of the file to read.
         """
         _err = ErrorLog()
-        if not self.Read(Filename(filename), _err, None):
+        if not self.Read(Filename(str(filename)), _err, None):
             raise RuntimeError(
             f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
 
-    def write(self, filename: str) -> None:
+    def write(self, filename: Union[str, Path]) -> None:
         """Writes the object to a file.
 
         Parameters
         ----------
-        filename : str
+        filename : str|Path
             The name of the file to write.
         """
         _err = ErrorLog()
         if not self.Write(
-            Filename(filename), _err, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
+            Filename(str(filename)), _err, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
         ):
             raise RuntimeError(
             f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}"

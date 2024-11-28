@@ -1,21 +1,22 @@
 import numpy as np
 import pytest
 import pydicos
+from pathlib import Path
 from pydicos import dcsread, dcswrite
 
 
 @pytest.mark.order(after="tests/test_DX_write.py::test_create_dx_processing")
 def test_loading_from_file_processing():
     # Test 1: Load DX from a file written with pyDICOS
-    dx_object = dcsread(filename="DXFiles/SimpleProcessingDX.dcs")
+    dx_object = dcsread(filename=Path("DXFiles", "SimpleProcessingDX.dcs"))
     data = dx_object.get_data()
     suite = np.array([i for i in range(128 * 256)]).reshape(128, 256)
     assert data.shape == (128, 256)
     assert np.all(data == suite)
-    dcswrite(dx_object, "DXFiles/SimpleProcessingDX2.dcs")
+    dcswrite(dx_object, Path("DXFiles","SimpleProcessingDX2.dcs"))
 
     # Test 2: Load DX from a file written with pydicos
-    dx_object_2 = dcsread(filename="DXFiles/SimpleProcessingDX2.dcs")
+    dx_object_2 = dcsread(filename=Path("DXFiles", "SimpleProcessingDX2.dcs"))
     data = dx_object_2.get_data()
     assert data.shape == (128, 256)
     assert np.all(data == suite)
@@ -31,7 +32,7 @@ def test_loading_from_file_processing():
 @pytest.mark.order(after="tests/test_DX_write.py::test_create_dx_presentation")
 def test_loading_from_file_presentation():
     # Test 4: Load DX from a file written with pyDICOS
-    dx_loader_file = dcsread(filename="DXFiles/SimplePresentationDX.dcs")
+    dx_loader_file = dcsread(filename=Path("DXFiles", "SimplePresentationDX.dcs"))
     data = dx_loader_file.get_data()
     assert data.shape == (128, 256)
     suite = np.array([i for i in range(128 * 256)]).reshape(128, 256)
