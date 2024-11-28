@@ -13,10 +13,12 @@ def test_datetime():
 
     now = DcsDateTime()
     now.SetNow()
-    pynow = datetime.now()
     t = DicosDateTime(datetime=now)
-    assert str(t)[-5] == str(pynow)[-5]
-    assert t.as_datetime() == pynow
+
+    pynow = datetime.now()
+
+    assert str(t)[:-5] == str(pynow)[:-5]
+    assert abs((pynow - t.as_datetime()).total_seconds()) < 10**-3
 
 def get_tdr_data_output_template() -> Dict:
     """
