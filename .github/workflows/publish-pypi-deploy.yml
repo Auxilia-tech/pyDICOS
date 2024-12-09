@@ -54,7 +54,7 @@ jobs:
         pytest --cov-report=xml --cov=pydicos tests/
 
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v5.0.7
+      uses: codecov/codecov-action@v5.1.1
       with:
         files: ./coverage.xml
         env_vars: inputs.os, inputs.python-version
