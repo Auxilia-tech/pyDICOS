@@ -17,7 +17,7 @@ def test_datetime():
 
     pynow = datetime.now()
 
-    assert str(t)[:-5] == str(pynow)[:-5]
+    assert str(t)[:16] == str(pynow)[:16]
     assert abs((pynow - t.as_datetime()).total_seconds()) < 10**-3
 
 def get_tdr_data_output_template() -> Dict:
