@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 from pyDICOS import (
     TDR,
     Array1DDcsLongString,
@@ -24,6 +25,7 @@ from pyDICOS import (
     OBJECT_OF_INSPECTION_TYPE, 
     TDR_TYPE
 )
+from typing import Optional, Union
 
 from ..utils.time import DicosDateTime
 from .ATR import ATRSettings
@@ -31,12 +33,12 @@ from .ATR import ATRSettings
 
 # This class can be utilized to load a TDR object by either reading a TDR file or using a provided TDR object.
 class TDRLoader(TDR):
-    def __init__(self, filename: str = None) -> None:
+    def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
         """Initialize the TDRLoader class.
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str|Path, optional
             The name of the file to read.
             The default is None and will create an empty TDR.
         """
@@ -45,30 +47,30 @@ class TDRLoader(TDR):
         if filename is not None:
             self.read(filename)
 
-    def read(self, filename: str) -> None:
+    def read(self, filename: Union[str, Path]) -> None:
         """Reads the object from a file.
 
         Parameters
         ----------
-        filename : str
+        filename : str|Path
             The name of the file to read.
         """
         _err = ErrorLog()
-        if not self.Read(Filename(filename), _err, None):
+        if not self.Read(Filename(str(filename)), _err, None):
             raise RuntimeError(
             f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
 
-    def write(self, filename: str) -> None:
+    def write(self, filename: Union[str, Path]) -> None:
         """Writes the object to a file.
 
         Parameters
         ----------
-        filename : str
+        filename : str|Path
             The name of the file to write.
         """
         _err = ErrorLog()
-        if not self.Write(Filename(filename), _err):
+        if not self.Write(Filename(str(filename)), _err):
             raise RuntimeError(
             f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )

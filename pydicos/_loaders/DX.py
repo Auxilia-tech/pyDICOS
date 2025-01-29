@@ -1,5 +1,7 @@
 import numpy as np
+from pathlib import Path
 from pyDICOS import DX, ErrorLog, Filename, Volume
+from typing import Optional, Union
 
 from .TDR import TDRLoader
 
@@ -7,12 +9,12 @@ from .TDR import TDRLoader
 # This class can be utilized to load a DX object by either reading a DX file or using a provided DX object.
 # The 'get_data' function returns 2D NumPy array.
 class DXLoader(DX):
-    def __init__(self, filename: str = None) -> None:
+    def __init__(self, filename: Optional[Union[str, Path]] = None) -> None:
         """Initialize the DXLoader class.
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str|Path, optional
             The name of the file to read.
             The default is None and will create an empty DX.
         """
@@ -21,30 +23,30 @@ class DXLoader(DX):
         if filename is not None:
             self.read(filename)
 
-    def read(self, filename: str) -> None:
+    def read(self, filename: Union[str, Path]) -> None:
         """Reads the object from a file.
 
         Parameters
         ----------
-        filename : str
+        filename : str|Path
             The name of the file to read.
         """
         _err = ErrorLog()
-        if not self.Read(Filename(filename), _err, None):
+        if not self.Read(Filename(str(filename)), _err, None):
             raise RuntimeError(
             f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
 
-    def write(self, filename: str) -> None:
+    def write(self, filename: Union[str, Path]) -> None:
         """Writes the object to a file.
 
         Parameters
         ----------
-        filename : str
+        filename : str|Path
             The name of the file to write.
         """
         _err = ErrorLog()
-        if not self.Write(Filename(filename), _err):
+        if not self.Write(Filename(str(filename)), _err):
             raise RuntimeError(
             f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
