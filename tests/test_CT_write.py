@@ -46,6 +46,10 @@ def GenerateCTSection(ct):
     SectionObject.SetSliceThickness(fSliceThickness)
     assert SectionObject.GetSliceThickness() == fSliceThickness
 
+    # Set the Rescale Type
+    SectionObject.SetRescaleType(DcsLongString("MHU"))
+    assert SectionObject.GetRescaleType().Get() == "MHU"
+
     volume = SectionObject.GetPixelData()
     # The IMAGE_DATA_TYPE enumeration is situated in the binding code of the Volume Module.
     volume.Allocate(Volume.IMAGE_DATA_TYPE.enumUnsigned16Bit, 256, 256, 256)
