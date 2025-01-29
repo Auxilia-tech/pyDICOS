@@ -11,6 +11,7 @@ from pyDICOS import (
     DcsLongText,
     SCAN_TYPE,
     DcsShortText,
+    DcsLongString,
     DcsTime,
     Point3Dfloat,
     Volume,
@@ -63,7 +64,7 @@ class CTLoader(CT):
         """
         _err = ErrorLog()
         if not self.Write(
-            Filename(filename), _err, CT.TRANSFER_SYNTAX.enumLittleEndianExplicit
+            Filename(filename), _err, CT.TRANSFER_SYNTAX.enumLosslessJPEG
         ):
             raise RuntimeError(
             f"Failed to write DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
@@ -121,6 +122,7 @@ class CTLoader(CT):
             assert array.dtype == np.uint16, "Data must be uint16"
 
             section = self.GetSectionByIndex(n)
+            section.SetRescaleType(DcsLongString("MHU"))
             volume = section.GetPixelData()
             volume.set_data(volume, array)
 
