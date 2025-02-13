@@ -36,31 +36,19 @@ jobs:
 
       - name: Install DICOS
         run: |
-          .\installer.exe --unattendedmodeui none --mode unattended --prefix "%SDICOS_PATH%" /silent
+          .\installer.exe --unattendedmodeui none --mode unattended --prefix ${{env.SDICOS_PATH}} /silent
 
       - name: Debug DICOS Installation
         run: |
           echo "🔍 Vérification des fichiers DICOS..."
-          Get-ChildItem -Path "%SDICOS_PATH%" -Recurse
+          Get-ChildItem -Path ${{env.SDICOS_PATH}} -Recurse
 
       - name: Verify DICOS Paths
         run: |
-          echo "SDICOS_PATH: %SDICOS_PATH%"
+          echo "SDICOS_PATH: ${{env.SDICOS_PATH}}
 
-      - name: Debug MSVC
-        run: |
-          echo "🔍 Vérification de MSVC..."
-          vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
-
-      # Vérification de l’installation correcte de MSVC et CMake
-      - name: Verify CMake and Compiler
-        run: |
-          echo "🔍 Vérification de CMake et MSVC..."
-          cmake --version
-          where cl.exe
-          where link.exe
-      
       - name: Manually Setup MSVC
+        shell: cmd
         run: |
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           where cl.exe
