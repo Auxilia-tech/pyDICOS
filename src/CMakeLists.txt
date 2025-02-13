@@ -33,6 +33,7 @@ pybind11_add_module(pyDICOS
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(MY_LIB_SUFFIX ".dll")
     set(DICOS_LIB_PATH "$ENV{SDICOS_LIB}/VS2022/DICOS_64R.lib")
+    message("DICOS_LIB_PATH : " "${MY_LIB_SUFFIX}")
 else()
     set(MY_LIB_SUFFIX ".so")
     set(DICOS_LIB_PATH "$ENV{SDICOS_PATH}/lib/libDICOS_64R.a")

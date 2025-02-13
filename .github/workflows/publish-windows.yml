@@ -35,17 +35,17 @@ jobs:
         with:
           python-version: "3.10"
 
-      # - name: Download DICOS Installer
-      #   env:
-      #     AWS_DEFAULT_REGION: 'eu-west-3'
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
-      #   run: |
-      #     aws s3 cp s3://dicos-installer/sdicos_win_vs2022_r20230925.exe installer.exe
+      - name: Download DICOS Installer
+        env:
+          AWS_DEFAULT_REGION: 'eu-west-3'
+          AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
+        run: |
+          aws s3 cp s3://dicos-installer/sdicos_win_vs2022_r20230925.exe installer.exe
 
-      # - name: Install DICOS
-      #   run: |
-      #     .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
+      - name: Install DICOS
+        run: |
+          .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
 
       - name: Build
         run: |
