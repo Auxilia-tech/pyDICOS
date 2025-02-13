@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - Al-dev-windows
+  pull_request:
+    branches:
+      - Al-dev-windows
   workflow_dispatch:
 
 jobs:
-  setup-windows:
-    name: Install DICOS & Verify Environment
+  test:
+    name: Run tests and coverage upload
     runs-on: windows-latest
     defaults:
       run:
@@ -23,13 +26,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with : 
-          clean : false
-
-      # Ajout de l’environnement MSVC (compilateur Visual Studio)
       - uses: ilammy/msvc-dev-cmd@v1.13.0
         with:
           arch: ${{ matrix.arch }}
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
       # - name: Download DICOS Installer
       #   env:
@@ -43,8 +47,14 @@ jobs:
       #   run: |
       #     .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
 
-      - name: Manually Setup MSVC
+      - name: Build
         run: |
-          where cl.exe
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          where cl.exe
+          pip install -r requirements.txt
+          setx SDICOS_PATH "${{env.SDICOS_PATH}}" /M
+          python -m build --wheel
+
+      - name: Run tests
+        run: |
+          for /f "delims=" %i in ('dir /b dist') do pip install dist\%i & exit
+          pip install pytest pytest-cov pytest-xprocess pytest-order
+          pytest --cov-report=xml --cov=pydicos tests/
