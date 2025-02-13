@@ -23,6 +23,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with : 
+          clean : false
 
       # Ajout de l’environnement MSVC (compilateur Visual Studio)
       - uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -42,6 +44,7 @@ jobs:
           .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
 
       - name: Debug DICOS Installation
+        shell : pwsh
         run: |
           echo "🔍 Vérification des fichiers DICOS..."
           Get-ChildItem -Path ${{env.SDICOS_PATH}} -Recurse
