@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from pyDICOS import DcsDate, DcsDateTime, DcsTime
 
 
@@ -93,4 +93,4 @@ class DicosDateTime:
         datetime
             The DicosDateTime class as a datetime object.
         """
-        return datetime(*self.date.Get(0, 0, 0)[1:], *self.time.Get(0, 0, 0, 0)[1:])
+        return datetime(*self.date.Get(0, 0, 0)[1:], *self.time.Get(0, 0, 0, 0)[1:], tzinfo=timezone.utc)

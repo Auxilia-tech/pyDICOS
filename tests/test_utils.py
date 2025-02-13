@@ -3,7 +3,7 @@ from typing import Dict, List
 import numpy as np
 from pydicos import DicosDateTime, TDR_DATA_TEMPLATE
 from pyDICOS import DcsDateTime, ALARM_DECISION, SCAN_TYPE, ABILITY_ASSESSMENT, THREAT_CATEGORY, ASSESSMENT_FLAG
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def test_datetime():
@@ -15,7 +15,7 @@ def test_datetime():
     now.SetNow()
     t = DicosDateTime(datetime=now)
 
-    pynow = datetime.now()
+    pynow = datetime.now(tz=timezone.utc)
 
     assert str(t)[:16] == str(pynow)[:16]
     assert abs((pynow - t.as_datetime()).total_seconds()) < 10**-3
