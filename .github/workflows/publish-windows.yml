@@ -10,6 +10,9 @@ jobs:
   setup-windows:
     name: Install DICOS & Verify Environment
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
     env:
         SDICOS_PATH: 'C:\Program Files (x86)\Stratovan Corporation\SDICOS-VS2022'
     strategy:
@@ -48,7 +51,6 @@ jobs:
           echo "SDICOS_PATH: ${{env.SDICOS_PATH}}
 
       - name: Manually Setup MSVC
-        shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           where cl.exe
