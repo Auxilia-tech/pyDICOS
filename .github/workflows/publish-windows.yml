@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         arch:
-          - x64
+          - amd64
 
     steps:
       - uses: actions/checkout@v4
@@ -33,13 +33,15 @@ jobs:
           aws s3 cp s3://dicos-installer/sdicos_win_vs2022_r20230925.exe installer.exe
 
       - name: Install DICOS
+        env:
+          SDICOS_PATH: 'C:\Program Files (x86)\Stratovan Corporation\SDICOS-VS2022'
         run: |
-          .\installer.exe /silent
+          .\installer.exe --unattendedmodeui none --mode unattended --prefix "%SDICOS_PATH%" /silent
 
       - name: Debug DICOS Installation
         run: |
           echo "🔍 Vérification des fichiers DICOS..."
-          Get-ChildItem -Path "C:\Program Files (x86)\Stratovan Corporation\SDICOS-VS2022" -Recurse
+          Get-ChildItem -Path "" -Recurse
 
       - name: Verify DICOS Paths
         run: |
