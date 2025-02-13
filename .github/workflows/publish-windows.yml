@@ -47,6 +47,12 @@ jobs:
         run: |
           .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
 
+      - name: Cache DICOS Install
+        uses: actions/cache@v3
+        with:
+          path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
+          key: dicos-install-${{ runner.os }}
+
       - name: Build
         run: |
           pip install -r requirements.txt
@@ -66,3 +72,94 @@ jobs:
           env_vars: inputs.os
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
+  build:
+    name: Build distribution 📦
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    needs:
+      - test
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1.13.0
+
+      - name: Restore Cached DICOS Install
+        uses: actions/cache@v3
+        with:
+          path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
+          key: dicos-install-${{ runner.os }}
+          
+      - name: Set Environment Variables
+        run: echo "SDICOS_PATH=C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022" >> $GITHUB_ENV
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install cibuildwheel
+        run: pip install cibuildwheel
+
+      - name: Build Wheels with cibuildwheel
+        run: |
+          cibuildwheel --output-dir wheelhouse
+
+      - name: Store Built Wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: wheelhouse/*.whl
+  
+  publish-testpypi:
+    name: Publish Python 🐍 distribution 📦 to TestPyPI
+    if : ${{ github.event_name == 'push' || github.ref != 'refs/heads/main' }}
+    needs:
+    - build
+    runs-on: windows-latest
+    permissions:
+      id-token: write
+    environment:
+      name: test
+      url: https://test.pypi.org/p/pyDICOS
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist
+        merge-multiple: true
+
+    - name : publish to testpypi
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+
+  publish-pypi:
+    name: Publish Python 🐍 distribution 📦 to PyPI
+    if : ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs:
+      - build
+    runs-on: windows-latest
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pydicos
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist
+          merge-multiple: true
+
+      - name: publish to pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
