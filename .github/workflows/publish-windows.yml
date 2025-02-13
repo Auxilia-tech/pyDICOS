@@ -1,0 +1,38 @@
+name: publish-windows
+
+on:
+  push:
+    branches:
+      - Al-dev-windows
+  workflow_dispatch:
+
+jobs:
+  setup-windows:
+    name: Install DICOS & Verify Environment
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download DICOS Installer
+        env:
+          AWS_DEFAULT_REGION: 'eu-west-3'
+          AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
+        run: |
+          aws s3 cp s3://dicos-installer/sdicos_win_vs2022_r20230925.exe installer.exe
+
+      - name: Install DICOS
+        run: |
+          .\installer.exe /silent
+
+      - name: Verify SDICOS_INCLUDE and SDICOS_LIB
+        run: |
+          echo SDICOS_INCLUDE=%SDICOS_INCLUDE%
+          echo SDICOS_LIB=%SDICOS_LIB%
+
+      - name: Verify CMake and Compiler
+        run: |
+          cmake --version
+          cl.exe
