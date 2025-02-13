@@ -39,7 +39,7 @@ jobs:
 
       - name: Install DICOS
         run: |
-          .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}" /silent
+          .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
 
       - name: Debug DICOS Installation
         run: |
