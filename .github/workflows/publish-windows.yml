@@ -42,10 +42,6 @@ jobs:
           echo "SDICOS_LIB: %SDICOS_LIB%"
           echo "SDICOS_PATH: %SDICOS_PATH%"
 
-          if exist "%SDICOS_INCLUDE%" (echo "✅ SDICOS_INCLUDE found") else (echo "❌ SDICOS_INCLUDE NOT FOUND")
-          if exist "%SDICOS_LIB%" (echo "✅ SDICOS_LIB found") else (echo "❌ SDICOS_LIB NOT FOUND")
-          if exist "%SDICOS_PATH%" (echo "✅ SDICOS_PATH found") else (echo "❌ SDICOS_PATH NOT FOUND")
-
       # Vérification de l’installation correcte de MSVC et CMake
       - name: Verify CMake and Compiler
         run: |
