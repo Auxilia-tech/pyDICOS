@@ -47,7 +47,7 @@ jobs:
         shell : pwsh
         run: |
           echo "🔍 Vérification des fichiers DICOS..."
-          Get-ChildItem -Path ${{env.SDICOS_PATH}} -Recurse
+          Get-ChildItem -Path "${{env.SDICOS_PATH}}" -Recurse
 
       - name: Verify DICOS Paths
         run: |
