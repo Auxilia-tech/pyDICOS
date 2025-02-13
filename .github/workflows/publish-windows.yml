@@ -55,7 +55,7 @@ jobs:
 
       - name: Run tests
         run: |
-          for /f "delims=" %i in ('dir /b dist') do pip install dist\%i & exit
+          for %f in (dist\pydicos-*.whl) do pip install "%f"
           pip install pytest pytest-cov pytest-xprocess pytest-order
           pytest --cov-report=xml --cov=pydicos tests/
 
