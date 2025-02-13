@@ -33,7 +33,7 @@ pybind11_add_module(pyDICOS
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(MY_LIB_SUFFIX ".dll")
     set(DICOS_LIB_PATH "$ENV{SDICOS_PATH}/lib/VS2022/DICOS_64R.lib")
-    message("DICOS_LIB_PATH : ${DICOS_LIB_PATH}")
+    target_link_libraries(pyDICOS ws2_32) # Fix error LNK2001
 else()
     set(MY_LIB_SUFFIX ".so")
     set(DICOS_LIB_PATH "$ENV{SDICOS_PATH}/lib/libDICOS_64R.a")
