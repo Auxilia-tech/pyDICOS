@@ -42,16 +42,27 @@ class CMakeBuild(build_ext):
         # Can be set with Conda-Build, for example.
         cmake_generator = os.environ.get("CMAKE_GENERATOR", "")
 
+        if sys.platform.startswith("win"):
+            import pybind11
+            venv_include = os.path.join(sys.prefix, "include")
+            cmake_args = [
+                f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}{os.sep}",
+                f"-DPYTHON_EXECUTABLE={sys.executable}",
+                f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
+                f"-DPYTHON_INCLUDE_DIR={venv_include if os.path.exists(venv_include) else sysconfig.get_path('include')}",
+                f"-Dpybind11_DIR={pybind11.get_cmake_dir()}"
+            ]
+        else:
         # Set Python_EXECUTABLE instead if you use PYBIND11_FINDPYTHON
         # EXAMPLE_VERSION_INFO shows you how to pass a value into the C++ code
         # from Python.
-        cmake_args = [
-            f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}{os.sep}",
-            f"-DPYTHON_EXECUTABLE={sys.executable}",
-            f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
-            f"-DPYTHON_INCLUDE_DIR={sysconfig.get_path('include')}",
-            f"-DPYTHON_LIBRARY={sysconfig.get_config_var('LIBDIR')}",
-        ]
+            cmake_args = [
+                f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}{os.sep}",
+                f"-DPYTHON_EXECUTABLE={sys.executable}",
+                f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
+                f"-DPYTHON_INCLUDE_DIR={sysconfig.get_path('include')}",
+                f"-DPYTHON_LIBRARY={sysconfig.get_config_var('LIBDIR')}",
+            ]
         build_args = []
         # Adding CMake arguments set as environment variable
         # (needed e.g. to build for ARM OSx on conda-forge)
@@ -117,7 +128,7 @@ class CMakeBuild(build_ext):
         build_temp = Path(self.build_temp) / ext.name
         if not build_temp.exists():
             build_temp.mkdir(parents=True)
-
+        print("cmake_args : ", cmake_args)
         subprocess.run(
             ["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
         )

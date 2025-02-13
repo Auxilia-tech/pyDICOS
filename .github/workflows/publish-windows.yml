@@ -58,3 +58,11 @@ jobs:
           for /f "delims=" %i in ('dir /b dist') do pip install dist\%i & exit
           pip install pytest pytest-cov pytest-xprocess pytest-order
           pytest --cov-report=xml --cov=pydicos tests/
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5.0.7
+        with:
+          files: ./coverage.xml
+          env_vars: inputs.os, inputs.python-version
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
