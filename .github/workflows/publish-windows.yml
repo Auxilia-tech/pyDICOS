@@ -39,7 +39,7 @@ jobs:
       - name: Debug DICOS Installation
         run: |
           echo "🔍 Vérification des fichiers DICOS..."
-          Get-ChildItem -Path "C:\Program Files\Stratovan\DICOS" -Recurse
+          Get-ChildItem -Path "C:\Program Files (x86)\Stratovan Corporation\SDICOS-VS2022" -Recurse
 
       - name: Verify DICOS Paths
         run: |
