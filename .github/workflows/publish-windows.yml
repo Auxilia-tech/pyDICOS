@@ -17,7 +17,7 @@ jobs:
       run:
         shell: cmd
     env:
-        SDICOS_PATH: 'C:\Program Files (x86)\Stratovan Corporation\SDICOS-VS2022'
+        SDICOS_PATH: 'C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022'
     strategy:
       fail-fast: true
       matrix:
