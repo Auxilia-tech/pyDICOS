@@ -97,7 +97,8 @@ void export_DCSSTRING(py::module &m)
         .def("GetEnd", [](DcsTime &self, S_UINT32& nHour, S_UINT32& nMinute, S_UINT32& nSecond, S_UINT32& nSecondFraction) {
             return std::make_tuple(self.Get(nHour, nMinute, nSecond, nSecondFraction), nHour, nMinute, nSecond, nSecondFraction);
         }, py::arg("nHour"), py::arg("nMinute"), py::arg("nSecond"), py::arg("nSecondFraction"))
-        .def("Now", &DcsTime::Now);
+        .def("Now", &DcsTime::Now)
+        .def("SetNow", &DcsTime::SetNow);
 
 
     py::class_<DcsDateTime>(m, "DcsDateTime")
