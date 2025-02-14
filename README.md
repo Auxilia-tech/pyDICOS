@@ -148,6 +148,11 @@ The library can be tested via `pytest`
 ```bash
 pytest tests/
 ```
+**Note for Linux Users**: 
+If your system clock is set to local time, you may need to export the `TZ` environment variable to UTC before running tests.
+```bash
+export TZ=UTC
+```
 
 ## Contributing
 
