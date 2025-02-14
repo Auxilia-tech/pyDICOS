@@ -121,7 +121,7 @@ jobs:
     if : ${{ github.event_name == 'push' || github.ref != 'refs/heads/main' }}
     needs:
     - build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
     environment:
@@ -146,7 +146,7 @@ jobs:
     if : ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs:
       - build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
     environment:
