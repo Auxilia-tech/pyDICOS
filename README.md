@@ -29,22 +29,23 @@ We firmly believe that by releasing this library, we will encourage and support 
    - [x] First releases : DICOS protocol, client/server functions
    - [x] Future release : more pure python functions to shave off heavy CPP signatures (`dcsread`, `dcswrite`, `get_data`, `set_data` and `CT::generate_tdr`)
    - [x] Future release : library indexed in PyPi 
-   - [ ] Out of scope for now : Windows release
+   - [x] Out of scope for now : Windows release
    - [ ] Out of scope for now : AIT2D, AIT3D, QR
    - [ ] Out of scope for now : Module and Tag level APIs
  - Stay up to date with Stratovan latest releases
    - Currently tested and supported DICOS version : `v3`
 
 ## Install
+### ✨ NEW ✨ : pyDICOS is now available for windows
 
-⚠️ pyDICOS is currently only available for Linux on x86 platform.
-
-### ✨ NEW ✨ Using PyPi index (recommended)
+### Using PyPi index (recommended)
 
 Using [pip](https://pip.pypa.io/en/stable/) directly from PyPi index :
 ```bash
 pip install pydicos
 ```
+
+⚠️ pyDICOS is currently available for Linux on x86 and windows on x64 platforms
 
 ### Building from source (dev mode)
 
