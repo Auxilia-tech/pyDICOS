@@ -3,10 +3,10 @@ name: publish-windows
 on:
   push:
     branches:
-      - Al-dev-windows
+      - main
   pull_request:
     branches:
-      - Al-dev-windows
+      - main
   workflow_dispatch:
 
 jobs:
@@ -118,7 +118,7 @@ jobs:
   
   publish-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
-    if : ${{ github.event_name == 'push' || github.ref != 'refs/heads/main' }}
+    if : ${{ github.event_name != 'push' || github.ref != 'refs/heads/main' }}
     needs:
     - build
     runs-on: ubuntu-latest
