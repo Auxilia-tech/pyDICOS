@@ -81,11 +81,14 @@ jobs:
     needs:
       - test
     env:
-      CIBW_BUILD: "cp37-win_amd64 cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 "
+      CIBW_BUILD: "cp37-win_amd64 cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64"
+      SDICOS_PATH: 'C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022'
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - uses: ilammy/msvc-dev-cmd@v1.13.0
 
       - name: Restore Cached DICOS Install
@@ -93,6 +96,16 @@ jobs:
         with:
           path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
           key: dicos-install-${{ runner.os }}
+
+      - name: Check if Include Directory Exists
+        id: check_include_dir
+        uses: andstor/file-existence-action@v3
+        with:
+          files: "C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022/include"
+
+      - name: Validate Include Directory Existence
+        if: steps.check_include_dir.outputs.files_exists == 'true'
+        run: echo All files exists!
           
       - name: Set Environment Variables
         run: echo "SDICOS_PATH=C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022" >> $GITHUB_ENV

@@ -44,6 +44,9 @@ set_target_properties(pyDICOS PROPERTIES SUFFIX "${MY_LIB_SUFFIX}")
 
 install(TARGETS pyDICOS DESTINATION ${CMAKE_SOURCE_DIR}/python)
 
+message(STATUS "CmakeLists Include $ENV{SDICOS_PATH}/include")
+message(STATUS "CmakeLists DICOS_LIB_PATH ${DICOS_LIB_PATH}")
+
 target_include_directories(pyDICOS PRIVATE $ENV{SDICOS_PATH}/include)
 target_link_libraries(pyDICOS PRIVATE "${DICOS_LIB_PATH}")
 
