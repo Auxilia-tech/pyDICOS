@@ -19,7 +19,7 @@ from pyDICOS import (
 
 def Init(ct_object=None):
     strDate = DcsDate.Today()
-    strTime = DcsTime.Now()
+    strTime = DcsTime.SetNow()
     vecRowOrientation = Vector3Dfloat()
     vecColumnOrientation = Vector3Dfloat()
     ct_object.FreeMemory()
