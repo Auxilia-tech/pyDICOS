@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 import numpy as np
 import pydicos
 from pathlib import Path
@@ -8,7 +8,7 @@ from pydicos import dcsread, TDR_DATA_TEMPLATE
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_no_threat_tdr")
 def test_loading_no_threat():
-    now = datetime.now()
+    now = datetime.now(tz=timezone.utc)
     tdr_object = dcsread(filename=Path("TDRFiles", "SimpleBaggageNoThreatTDR.dcs"))
     assert len(tdr_object) == 0
     data = tdr_object.get_data()
@@ -31,14 +31,14 @@ def test_loading_no_threat():
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_baggage_tdr")
 def test_loading_baggage():
-    now = datetime.now()
+    now = datetime.now(tz=timezone.utc)
     tdr_object = dcsread(filename=Path("TDRFiles", "SimpleBaggageTDR.dcs"))
     assert len(tdr_object) == 1
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
     assert data["ProcessingTime"] == 500
     assert data["ScanType"] == 1
-    assert (datetime(*(data["ContentDateAndTime"]["date"] + data["ContentDateAndTime"]["time"][:3])) - now).total_seconds() <= 30
+    assert (datetime(*(data["ContentDateAndTime"]["date"] + data["ContentDateAndTime"]["time"][:3]), tzinfo=timezone.utc) - now).total_seconds() <= 30
     assert data["AlarmDecision"] == 2
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
@@ -64,14 +64,14 @@ def test_loading_baggage():
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_multiple_ptos_tdr")
 def test_loading_multiple():
-    now = datetime.now()
+    now = datetime.now(tz=timezone.utc)
     tdr_object = dcsread(filename="TDRFiles/MultiplePTOsTDR.dcs")
     assert len(tdr_object) == 2
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
     assert data["ProcessingTime"] == 500
     assert data["ScanType"] == 1
-    assert (datetime(*(data["ContentDateAndTime"]["date"] + data["ContentDateAndTime"]["time"][:3])) - now).total_seconds() <= 30
+    assert (datetime(*(data["ContentDateAndTime"]["date"] + data["ContentDateAndTime"]["time"][:3]), tzinfo=timezone.utc) - now).total_seconds() <= 30
     assert data["AlarmDecision"] == 1
     assert data["AlarmDecisionDateTime"]["date"] == (1944, 6, 6)
     assert data["AlarmDecisionDateTime"]["time"] == (6, 30, 0, 0)
@@ -117,16 +117,16 @@ def test_loading_multiple():
 
 @pytest.mark.order(after="tests/test_TDR_write.py::test_ct_linked_tdr")
 def test_loading_tdr_linked_ct():
-    now = datetime.now()
+    now = datetime.now(tz=timezone.utc)
     tdr_object = dcsread(filename="CTwithTDR/TDR.dcs")
     assert len(tdr_object) == 2
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 0
     assert data["ProcessingTime"] == 50
     assert data["ScanType"] == 1
-    assert (datetime(*(data["ContentDateAndTime"]["date"] + data["ContentDateAndTime"]["time"][:3])) - now).total_seconds() <= 30
+    assert (datetime(*(data["ContentDateAndTime"]["date"] + data["ContentDateAndTime"]["time"][:3]), tzinfo=timezone.utc) - now).total_seconds() <= 30
     assert data["AlarmDecision"] == 1
-    assert (datetime(*(data["AlarmDecisionDateTime"]["date"] + data["AlarmDecisionDateTime"]["time"][:3])) - now).total_seconds() <= 30
+    assert (datetime(*(data["AlarmDecisionDateTime"]["date"] + data["AlarmDecisionDateTime"]["time"][:3]), tzinfo=timezone.utc) - now).total_seconds() <= 30
     assert data["ImageScaleRepresentation"] == 1
     assert data["TDRType"] == 1
     assert data["OOIType"] == 3

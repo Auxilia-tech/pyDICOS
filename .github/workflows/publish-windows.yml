@@ -1,0 +1,165 @@
+name: publish-windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run tests and coverage upload
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    env:
+        SDICOS_PATH: 'C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022'
+    strategy:
+      fail-fast: true
+      matrix:
+        arch:
+          - amd64
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1.13.0
+        with:
+          arch: ${{ matrix.arch }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download DICOS Installer
+        env:
+          AWS_DEFAULT_REGION: 'eu-west-3'
+          AWS_ACCESS_KEY_ID: ${{ secrets.DICOS_S3_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DICOS_S3_SECRET }}
+        run: |
+          aws s3 cp s3://dicos-installer/sdicos_win_vs2022_r20230925.exe installer.exe
+
+      - name: Install DICOS
+        run: |
+          .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
+
+      - name: Cache DICOS Install
+        uses: actions/cache@v3
+        with:
+          path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
+          key: dicos-install-${{ runner.os }}
+
+      - name: Build
+        run: |
+          pip install -r requirements.txt
+          setx SDICOS_PATH "${{env.SDICOS_PATH}}" /M
+          python -m build --wheel
+
+      - name: Run tests
+        run: |
+          for %%f in (dist\pydicos-*.whl) do pip install "%%f"
+          pip install pytest pytest-cov pytest-xprocess pytest-order
+          pytest --cov-report=xml --cov=pydicos tests/
+
+  build:
+    name: Build distribution 📦
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    needs:
+      - test
+    env:
+      CIBW_BUILD: "cp37-win_amd64 cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64"
+      SDICOS_PATH: 'C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: ilammy/msvc-dev-cmd@v1.13.0
+
+      - name: Restore Cached DICOS Install
+        uses: actions/cache@v3
+        with:
+          path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
+          key: dicos-install-${{ runner.os }}
+
+      - name: Check if Include Directory Exists
+        id: check_include_dir
+        uses: andstor/file-existence-action@v3
+        with:
+          files: "C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022/include"
+
+      - name: Validate Include Directory Existence
+        if: steps.check_include_dir.outputs.files_exists == 'true'
+        run: echo All files exists!
+          
+      - name: Set Environment Variables
+        run: echo "SDICOS_PATH=C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022" >> $GITHUB_ENV
+
+      - name: Install cibuildwheel
+        run: pip install cibuildwheel
+
+      - name: Build Wheels with cibuildwheel
+        run: |
+          cibuildwheel --output-dir wheelhouse
+
+      - name: Store Built Wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: wheelhouse/*.whl
+  
+  publish-testpypi:
+    name: Publish Python 🐍 distribution 📦 to TestPyPI
+    if : ${{ github.event_name != 'push' || github.ref != 'refs/heads/main' }}
+    needs:
+    - build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: test
+      url: https://test.pypi.org/p/pyDICOS
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist
+        merge-multiple: true
+
+    - name : publish to testpypi
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+
+  publish-pypi:
+    name: Publish Python 🐍 distribution 📦 to PyPI
+    if : ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pydicos
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist
+          merge-multiple: true
+
+      - name: publish to pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
