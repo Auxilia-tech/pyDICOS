@@ -37,7 +37,8 @@ def test_no_threat_tdr(session_cleanup):
     )
 
     TDRCreationStartDate = DcsDate.Today()
-    TDRCreationStartTime = DcsTime.Now()
+    TDRCreationStartTime = DcsTime()
+    TDRCreationStartTime.SetNow()
     tdr.SetContentDateAndTime(TDRCreationStartDate, TDRCreationStartTime)
 
     atrManufacturer = DcsLongString("Alchemy")
@@ -98,7 +99,8 @@ def test_baggage_tdr(session_cleanup):
     )
 
     TDRCreationStartDate = DcsDate.Today()
-    TDRCreationStartTime = DcsTime.Now()
+    TDRCreationStartTime = DcsTime()
+    TDRCreationStartTime.SetNow()
     tdr.SetContentDateAndTime(TDRCreationStartDate, TDRCreationStartTime)
 
     atrManufacturer = DcsLongString("Alchemy")
@@ -216,7 +218,8 @@ def test_multiple_ptos_tdr(session_cleanup):
     tdr.SetOOIIDType(TDR.OBJECT_OF_INSPECTION_ID_TYPE.enumRFID)
 
     TDRCreationStartDate = DcsDate.Today()
-    TDRCreationStartTime = DcsTime.Now()
+    TDRCreationStartTime = DcsTime()
+    TDRCreationStartTime.SetNow()
     tdr.SetContentDateAndTime(TDRCreationStartDate, TDRCreationStartTime)
 
     atrManufacturer = DcsLongString("Alchemy")
@@ -335,7 +338,8 @@ def test_ct_linked_tdr(session_cleanup):
     ct = CT()
     tdr = TDR()
     strDate = DcsDate(DcsDate.Today())
-    strTime = DcsTime(DcsTime.Now())
+    strTime = DcsTime()
+    strTime.SetNow()
     vecRowOrientation = Vector3Dfloat()
     vecColumnOrientation = Vector3Dfloat()
     nPTOIdentifier1 = 0
@@ -531,18 +535,19 @@ def test_ct_linked_tdr(session_cleanup):
     bRes = bRes and tdr.SetBaggagePTOLocationDescription(
         nPTOIdentifier2, DcsShortText("Corner Object"), 0
     )
-
+    dcsTime = DcsTime()
+    dcsTime.SetNow()
     bRes = bRes and tdr.SetProcessingStartTime(
-        nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+        nPTOIdentifier1, DcsDateTime(DcsDate.Today(), dcsTime)
     )
     bRes = bRes and tdr.SetProcessingEndTime(
-        nPTOIdentifier1, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+        nPTOIdentifier1, DcsDateTime(DcsDate.Today(), dcsTime)
     )
     bRes = bRes and tdr.SetProcessingStartTime(
-        nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+        nPTOIdentifier2, DcsDateTime(DcsDate.Today(), dcsTime)
     )
     bRes = bRes and tdr.SetProcessingEndTime(
-        nPTOIdentifier2, DcsDateTime(DcsDate.Today(), DcsTime.Now())
+        nPTOIdentifier2, DcsDateTime(DcsDate.Today(), dcsTime)
     )
 
     bRes = bRes and tdr.SetInstanceNumber(0)
