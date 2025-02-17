@@ -48,7 +48,7 @@ jobs:
           .\installer.exe --unattendedmodeui none --mode unattended --prefix "${{env.SDICOS_PATH}}"
 
       - name: Cache DICOS Install
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
           key: dicos-install-${{ runner.os }}
@@ -85,7 +85,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1.13.0
 
       - name: Restore Cached DICOS Install
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: C:/Program Files (x86)/Stratovan Corporation/SDICOS-VS2022
           key: dicos-install-${{ runner.os }}
