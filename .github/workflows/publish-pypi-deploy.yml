@@ -57,9 +57,10 @@ jobs:
       uses: codecov/codecov-action@v5
       with:
         files: ./coverage.xml
-        env_vars: inputs.os, inputs.python-version
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
+        name: pydicos-codecov
+        flags: workflow
 
   build:
     name: Build distribution 📦
