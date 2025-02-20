@@ -6,10 +6,16 @@ from pathlib import Path
 from pydicos import dcsread, TDR_DATA_TEMPLATE
 
 
+def test_invalid_dcs():
+    with pytest.raises(ValueError):
+        dcsread(filename=Path("TDRFiles", "IdontExist.dcs"))
+
+
 @pytest.mark.order(after="tests/test_TDR_write.py::test_no_threat_tdr")
 def test_loading_no_threat():
     now = datetime.now(tz=timezone.utc)
-    tdr_object = dcsread(filename=Path("TDRFiles", "SimpleBaggageNoThreatTDR.dcs"))
+    tdr_object = pydicos.TDRLoader()
+    dcsread(filename=Path("TDRFiles", "SimpleBaggageNoThreatTDR.dcs"), dcs=tdr_object)
     assert len(tdr_object) == 0
     data = tdr_object.get_data()
     assert data["InstanceNumber"] == 1234
