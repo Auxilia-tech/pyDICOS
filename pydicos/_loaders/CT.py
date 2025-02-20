@@ -246,8 +246,9 @@ class CTLoader(CT):
 
                 if "Polygon" in pto:
                     polygon = Array1DPoint3Dfloat()
-                    for point in pto["Polygon"]:
-                        polygon.Append(Point3Dfloat(point["x"], point["y"], point["z"]))
+                    polygon.SetSize(len(pto["Polygon"]), False)
+                    for i, point in enumerate(pto["Polygon"]):
+                        polygon[i] = Point3Dfloat(point["x"], point["y"], point["z"])
                     tdr.SetThreatBoundingPolygon(pto["ID"], polygon, 0)
 
                 if "Assessment" in pto:
