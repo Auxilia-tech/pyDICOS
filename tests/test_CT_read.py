@@ -15,7 +15,7 @@ def test_loading_from_file():
 
 @pytest.mark.order(after="tests/test_CT_write.py::test_create_ct_files")
 def test_loading_from_file_in_place():
-    ct_object = dcsread(Path("SimpleCT", "SimpleCT0000.dcs"))
+    ct_object = CTLoader(Path("SimpleCT", "SimpleCT0000.dcs"))
     data = ct_object.get_data()
     assert len(data) == 1
     assert data[0].shape == (40, 20, 10)
@@ -39,9 +39,10 @@ def test_loading_from_file_in_place():
 @pytest.mark.order(after="tests/test_TDR_write.py::test_ct_linked_tdr")
 def test_generate_tdr():
     ct_object = dcsread("CTwithTDR/CT.dcs")
+    sample_polygon = [{"x": 0, "y": 0, "z": 0}, {"x": 1, "y": 0, "z": 0}, {"x": 1, "y": 1, "z": 1}, {"x": 0, "y": 1, "z": 1}, {"x": 0, "y": 0, "z": 0}]
     tdr_data = get_tdr_data_output_template()
     tdr_data["PTOs"] = []
-    tdr_data["PTOs"].append(get_pto_data(0, [5, 5, 5], [5, 5, 5], f"Label0", 0.7, np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8)))
+    tdr_data["PTOs"].append(get_pto_data(0, [5, 5, 5], [5, 5, 5], f"Label0", 0.7, np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8), sample_polygon))
     tdr_data["PTOs"].append(get_pto_data(1, [40, 40, 40], [5, 5, 5], f"Label1", 0.7, np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8)))
     set_alarm_decision(tdr_data)
     tdr_object = ct_object.generate_tdr(tdr_data, output_file = "CTwithTDR/TDR2.dcs")
@@ -49,3 +50,6 @@ def test_generate_tdr():
     assert tdr_object.get_data()["AlarmDecision"] == 1
     assert np.sum(tdr_object.get_data()["PTOs"][0]["Bitmap"]) == np.sum(np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8))
     assert np.sum(tdr_object.get_data()["PTOs"][1]["Bitmap"]) == np.sum(np.ones((5, 5, 5)).astype(np.bool_).astype(np.uint8))
+    assert len(tdr_object.get_data()["PTOs"][0]["Polygon"]) == len(sample_polygon)
+    for point in tdr_object.get_data()["PTOs"][0]["Polygon"]:
+        assert point in sample_polygon

@@ -39,7 +39,7 @@ def get_tdr_data_output_template() -> Dict:
     data['ImageScaleRepresentation'] = 1.0
     return data
 
-def get_pto_data(id:int, base:List[float], extent:List[float], description:str, conf:float, bitmap:np.ndarray) -> Dict:
+def get_pto_data(id:int, base:List[float], extent:List[float], description:str, conf:float, bitmap:np.ndarray, polygon:List[Dict] = None) -> Dict:
     """
     Get a template for the output of a PTO data loader.
     """
@@ -74,6 +74,9 @@ def get_pto_data(id:int, base:List[float], extent:List[float], description:str, 
                 "fTotalTimeMS" : 50
             }
         }
+
+    if polygon is not None:
+        data["Polygon"] = polygon
 
     return data
     

@@ -8,7 +8,7 @@ from pydicos import dcsread, dcswrite
 @pytest.mark.order(after="tests/test_DX_write.py::test_create_dx_processing")
 def test_loading_from_file_processing():
     # Test 1: Load DX from a file written with pyDICOS
-    dx_object = dcsread(filename=Path("DXFiles", "SimpleProcessingDX.dcs"))
+    dx_object = pydicos.DXLoader(filename=Path("DXFiles", "SimpleProcessingDX.dcs"))
     data = dx_object.get_data()
     suite = np.array([i for i in range(128 * 256)]).reshape(128, 256)
     assert data.shape == (128, 256)
