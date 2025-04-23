@@ -36,7 +36,6 @@ We firmly believe that by releasing this library, we will encourage and support 
    - Currently tested and supported DICOS version : `v3`
 
 ## Install
-### ✨ NEW ✨ : pyDICOS is now available for windows
 
 ### Using PyPi index (recommended)
 
@@ -77,6 +76,8 @@ The lib wheel should be produced in the `dist` folder and can be installed _via_
 
 ## Usage
 
+✨ NEW ✨ : Detailed documentation is available [here](https://pydicos.auxilia-tech.com/). Generated with [pocket flow](https://github.com/The-Pocket/Tutorial-Codebase-Knowledge)
+
 ### Concept diagram
 
 <div align="center">
@@ -106,7 +107,7 @@ data = tdr.get_data() # dictionnay of metadata
 dcswrite(tdr, "SimpleTDR/SimpleTDR_2.dcs")
 ```
 
-✨ NEW ✨ : refer to [our notebook](notebooks/tutorial.ipynb) tutorial for instructions and examples to change an object main attribute.
+Refer to [our notebook](notebooks/tutorial.ipynb) tutorial for instructions and examples to change an object main attribute.
 
 ### Advanced usage
 
