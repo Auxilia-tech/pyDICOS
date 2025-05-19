@@ -1,4 +1,4 @@
-from ..metadata import (
+from .metadata import (
     BaseMetadata,
     DateTimeMetadata,
     Point3D,
