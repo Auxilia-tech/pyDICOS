@@ -25,10 +25,19 @@ from pyDICOS import (
     OBJECT_OF_INSPECTION_TYPE, 
     TDR_TYPE
 )
-from typing import Optional, Union
+from typing import Optional, Union, List
 
-from ..utils.time import DicosDateTime
 from .ATR import ATRSettings
+from ..metadata import (
+    TDRMetadata,
+    DateTimeMetadata,
+    Point3D,
+    PTOAssessment,
+    PTOReferencedInstance,
+    PTOProcessingTime,
+    PTOMetadata,
+    ATRMetadata
+)
 
 
 # This class can be utilized to load a TDR object by either reading a TDR file or using a provided TDR object.
@@ -43,9 +52,132 @@ class TDRLoader(TDR):
             The default is None and will create an empty TDR.
         """
         super().__init__()
+        self._metadata: Optional[TDRMetadata] = None
 
         if filename is not None:
             self.read(filename)
+
+    @property
+    def metadata(self) -> TDRMetadata:
+        """Get the TDR metadata.
+
+        Returns
+        -------
+        TDRMetadata
+            The TDR metadata.
+        """
+        if self._metadata is None:
+            self._metadata = self._load_metadata()
+        return self._metadata
+
+    def _load_metadata(self) -> TDRMetadata:
+        """Load the TDR metadata from the TDR object.
+
+        Returns
+        -------
+        TDRMetadata
+            The TDR metadata.
+        """
+        content_date = self.GetContentDate()
+        content_time = self.GetContentTime()
+        alarm_date, alarm_time = self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[1:]
+
+        atr_meta = self.get_ATR_metadata()
+        atr = ATRMetadata(
+            manufacturer=atr_meta.manufacturer.Get(),
+            version=atr_meta.version.Get(),
+            parameters=atr_meta.as_dict()["parameters"]
+        )
+
+        ptos: List[PTOMetadata] = []
+        PTOIds = Array1DS_UINT16()
+        self.GetPTOIds(PTOIds)
+        PTOBase, PTOExtent, bitmap, polygon = (
+            Point3Dfloat(),
+            Point3Dfloat(),
+            Bitmap(),
+            Array1DPoint3Dfloat(),
+        )
+
+        for i in range(PTOIds.GetSize()):
+            self.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
+            self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
+
+            if bitmap.GetSize() != 0:
+                byte_array = np.frombuffer(bitmap.GetBitmap(), dtype=np.uint8)
+                bit_array = np.unpackbits(byte_array, bitorder="little")[:bitmap.GetNumBits()]
+                assert bit_array.shape[0] == bitmap.GetDepth()*bitmap.GetHeight()*bitmap.GetWidth(), "Failed to unpack bitmap"
+                bit_array = bit_array.reshape(bitmap.GetDepth(), bitmap.GetHeight(), bitmap.GetWidth())
+            else: 
+                bit_array = np.zeros((int(PTOExtent.z), int(PTOExtent.y), int(PTOExtent.x)), dtype=np.uint16)
+
+            # Get assessment
+            assessment = None
+            if self.GetNumAssessments(PTOIds[i]) > 0:
+                assessment = PTOAssessment(
+                    flag=self.GetPTOAssessmentFlag(PTOIds[i], 0),
+                    category=self.GetPTOAssessmentThreatCategory(PTOIds[i], 0),
+                    ability=self.GetPTOAssessmentAbility(PTOIds[i], 0),
+                    description=self.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
+                    probability=self.GetPTOAssessmentProbability(PTOIds[i], 0)
+                )
+
+            # Get referenced instance
+            referenced_instance = None
+            if self.GetNumReferencedInstances(PTOIds[i]) > 0:
+                referenced_instance = PTOReferencedInstance(
+                    sop_class_uid=self.GetSopClassUID().Get(),
+                    sop_instance_uid=self.GetSopInstanceUID().Get()
+                )
+
+            # Get processing time
+            processing_time = None
+            if self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[0]:
+                start_time, end_time = self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1:]
+                processing_time = PTOProcessingTime(
+                    start_time=DateTimeMetadata(
+                        date=(start_time.GetDate().GetYear(), start_time.GetDate().GetMonth(), start_time.GetDate().GetDay()),
+                        time=(start_time.GetTime().GetHour(), start_time.GetTime().GetMinute(), start_time.GetTime().GetSecond(), start_time.GetTime().GetMicrosecond())
+                    ),
+                    end_time=DateTimeMetadata(
+                        date=(end_time.GetDate().GetYear(), end_time.GetDate().GetMonth(), end_time.GetDate().GetDay()),
+                        time=(end_time.GetTime().GetHour(), end_time.GetTime().GetMinute(), end_time.GetTime().GetSecond(), end_time.GetTime().GetMicrosecond())
+                    ),
+                    total_time_ms=float(end_time - start_time)
+                )
+
+            ptos.append(PTOMetadata(
+                base=Point3D(x=PTOBase.x, y=PTOBase.y, z=PTOBase.z),
+                extent=Point3D(x=PTOExtent.x, y=PTOExtent.y, z=PTOExtent.z),
+                bitmap=bit_array,
+                polygon=[Point3D(x=p.x, y=p.y, z=p.z) for p in polygon],
+                id=PTOIds[i],
+                assessment=assessment,
+                referenced_instance=referenced_instance,
+                processing_time=processing_time
+            ))
+
+        return TDRMetadata(
+            instance_number=self.GetInstanceNumber(),
+            instance_uid=self.GetScanInstanceUID().Get(),
+            ooi_id=self.GetOOIID().Get(),
+            content_date_time=DateTimeMetadata(
+                date=(content_date.GetYear(), content_date.GetMonth(), content_date.GetDay()),
+                time=(content_time.GetHour(), content_time.GetMinute(), content_time.GetSecond(), content_time.GetMicrosecond())
+            ),
+            processing_time=self.GetTotalProcessingTimeInMS(),
+            scan_type=self.GetScanType(),
+            alarm_decision=self.GetAlarmDecision(),
+            alarm_decision_date_time=DateTimeMetadata(
+                date=(alarm_date.GetYear(), alarm_date.GetMonth(), alarm_date.GetDay()),
+                time=(alarm_time.GetHour(), alarm_time.GetMinute(), alarm_time.GetSecond(), alarm_time.GetMicrosecond())
+            ),
+            image_scale_representation=self.GetImageScaleRepresentation(),
+            atr=atr,
+            tdr_type=self.GetTDRType(),
+            ooi_type=self.GetOOIType(),
+            ptos=ptos
+        )
 
     def read(self, filename: Union[str, Path]) -> None:
         """Reads the object from a file.
@@ -60,6 +192,7 @@ class TDRLoader(TDR):
             raise RuntimeError(
             f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
+        self._metadata = None  # Reset metadata cache
 
     def write(self, filename: Union[str, Path]) -> None:
         """Writes the object to a file.
@@ -84,6 +217,7 @@ class TDRLoader(TDR):
             The ATR settings.
         """
         self.SetTDRTypeATR(atr.manufacturer, atr.version, atr.parameters)
+        self._metadata = None  # Reset metadata cache
 
     def get_ATR_metadata(self) -> ATRSettings:
         """Get the ATR metadata.
@@ -117,78 +251,8 @@ class TDRLoader(TDR):
                 - ATR : dict, the ATR metadata.
                 - PTOs : list, the list of PTOs.
         """
-        data = {
-            "TDRType": self.GetTDRType(),
-            "InstanceNumber": self.GetInstanceNumber(),
-            "InstanceUID": self.GetScanInstanceUID().Get(),
-            "OOIID": self.GetOOIID().Get(),
-            "OOIType": self.GetOOIType(),
-            "ContentDateAndTime": DicosDateTime(
-                date=self.GetContentDate(), 
-                time=self.GetContentTime(),
-            ).as_dict(),
-            "ProcessingTime": self.GetTotalProcessingTimeInMS(),
-            "ScanType": self.GetScanType(),
-            "AlarmDecision": self.GetAlarmDecision(),
-            "AlarmDecisionDateTime": DicosDateTime(
-                date=self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[1],
-                time=self.GetAlarmDecisionDateTime(DcsDate(), DcsTime())[2],
-            ).as_dict(),
-            "ImageScaleRepresentation": self.GetImageScaleRepresentation(),
-            "ATR": self.get_ATR_metadata().as_dict(),
-            "PTOs": [],
-        }
+        return self.metadata.__dict__
 
-        PTOIds = Array1DS_UINT16()
-        self.GetPTOIds(PTOIds)
-        PTOBase, PTOExtent, bitmap, polygon = (
-            Point3Dfloat(),
-            Point3Dfloat(),
-            Bitmap(),
-            Array1DPoint3Dfloat(),
-        )
-        for i in range(PTOIds.GetSize()):
-            self.GetThreatRegionOfInterest(PTOIds[i], PTOBase, PTOExtent, bitmap, 0)
-            self.GetThreatBoundingPolygon(PTOIds[i], polygon, 0)
-
-            if bitmap.GetSize() != 0:
-                byte_array = np.frombuffer(bitmap.GetBitmap(), dtype=np.uint8)
-                bit_array = np.unpackbits(byte_array, bitorder="little")[:bitmap.GetNumBits()]
-                assert bit_array.shape[0] == bitmap.GetDepth()*bitmap.GetHeight()*bitmap.GetWidth(), "Failed to unpack bitmap"
-                bit_array = bit_array.reshape(bitmap.GetDepth(), bitmap.GetHeight(), bitmap.GetWidth())
-            else: 
-                bit_array = np.zeros((int(PTOExtent.z), int(PTOExtent.y), int(PTOExtent.x)), dtype=np.uint16)
-            data["PTOs"].append(
-                {
-                    "Base": {"z": PTOBase.z, "y": PTOBase.y, "x": PTOBase.x},
-                    "Extent": {"z": PTOExtent.z, "y": PTOExtent.y, "x": PTOExtent.x},
-                    "Bitmap": bit_array,
-                    "Polygon": [
-                        {"z": polygon[j].z, "y": polygon[j].y, "x": polygon[j].x}
-                        for j in range(polygon.GetSize())
-                    ],
-                    "ID": PTOIds[i],
-                    "Assessment": {
-                        "flag": self.GetPTOAssessmentFlag(PTOIds[i], 0),
-                        "category": self.GetPTOAssessmentThreatCategory(PTOIds[i], 0),
-                        "ability": self.GetPTOAssessmentAbility(PTOIds[i], 0),
-                        "description": self.GetPTOAssessmentDescription(PTOIds[i], 0).Get(),
-                        "probability": self.GetPTOAssessmentProbability(PTOIds[i], 0),
-                    },
-                    "PTOProcessingTime": {
-                        "ProcessingStartTime": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1]).as_dict(),
-                        "ProcessingEndTime": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[2]).as_dict(),
-                        "fTotalTimeMS": DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[2]) - DicosDateTime(datetime=self.GetPTOProcessingTime(PTOIds[i], DcsDateTime(), DcsDateTime(), 0)[1])
-                    },
-                    "ReferencedInstance": {
-                        "SopClassUID": self.GetSopClassUID().Get(),
-                        "SopInstanceUID": self.GetSopInstanceUID().Get()
-                    },
-                }
-            )
-
-        return data
-    
     def set_data(self, data: dict) -> None:
         """Set the data in the TDR object.
 
@@ -208,16 +272,7 @@ class TDRLoader(TDR):
                 - ATR : dict, the ATR metadata.
                 - TDRType : int, the TDR type.
                 - OOIType : int, the OOI type.
-                - PTOs : list, the list of PTOs. A PTO is a dict with the following keys:
-                    - Base : dict, the base point of the PTO.
-                    - Extent : dict, the extent of the PTO.
-                    - Bitmap : np.ndarray, the bitmap of the PTO.
-                    - Description : str, the description of the PTO.
-                    - Probability : float, the probability of the PTO.
-                    - Polygon : list, the list of points of the PTO polygon.
-                    - ID : int, the ID of the PTO.
-                    - ReferencedInstance : dict, the referenced instance of the PTO.
-                    - PTOProcessingTime : dict, the processing time of the PTO.
+                - PTOs : list, the list of PTOs.
         """
         if "InstanceNumber" in data:
             assert isinstance(data["InstanceNumber"], int), "InstanceNumber must be an integer"
@@ -355,6 +410,8 @@ class TDRLoader(TDR):
                         DcsDateTime(DcsDate(*ProcessingStartTime["date"]), DcsTime(*ProcessingStartTime["time"])),
                         DcsDateTime(DcsDate(*ProcessingEndTime["date"]), DcsTime(*ProcessingEndTime["time"])),
                         pto["PTOProcessingTime"]["fTotalTimeMS"])
+
+        self._metadata = None  # Reset metadata cache
 
     def __len__(self) -> int:
         """Get the number of PTO.

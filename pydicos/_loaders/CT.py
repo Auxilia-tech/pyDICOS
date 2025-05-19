@@ -23,6 +23,10 @@ from typing import Optional, Union
 
 from .TDR import TDRLoader
 from .ATR import ATRSettings
+from ..metadata import (
+    CTMetadata,
+    DateTimeMetadata
+)
 
 
 # This class can be utilized to load a CT object by either reading a CT file or using a provided CT object.
@@ -38,9 +42,48 @@ class CTLoader(CT):
             The default is None and will create an empty CT.
         """
         super().__init__()
+        self._metadata: Optional[CTMetadata] = None
 
         if filename is not None:
             self.read(filename)
+
+    @property
+    def metadata(self) -> CTMetadata:
+        """Get the CT metadata.
+
+        Returns
+        -------
+        CTMetadata
+            The CT metadata.
+        """
+        if self._metadata is None:
+            self._metadata = self._load_metadata()
+        return self._metadata
+
+    def _load_metadata(self) -> CTMetadata:
+        """Load the CT metadata from the CT object.
+
+        Returns
+        -------
+        CTMetadata
+            The CT metadata.
+        """
+        content_date = self.GetContentDate()
+        content_time = self.GetContentTime()
+
+        return CTMetadata(
+            instance_number=self.GetInstanceNumber(),
+            instance_uid=self.GetScanInstanceUID().Get(),
+            series_instance_uid=self.GetSeriesInstanceUID().Get(),
+            frame_of_reference_uid=self.GetFrameOfReferenceUID().Get(),
+            ooi_id=self.GetOOIID().Get(),
+            ooi_type=self.GetOOIType(),
+            content_date_time=DateTimeMetadata(
+                date=(content_date.GetYear(), content_date.GetMonth(), content_date.GetDay()),
+                time=(content_time.GetHour(), content_time.GetMinute(), content_time.GetSecond(), content_time.GetMicrosecond())
+            ),
+            sop_class_uid=self.GetSopClassUID().Get()
+        )
 
     def read(self, filename: Union[str, Path]) -> None:
         """Reads the object from a file.
@@ -55,6 +98,7 @@ class CTLoader(CT):
             raise RuntimeError(
             f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
+        self._metadata = None  # Reset metadata cache
 
     def write(self, filename: Union[str, Path]) -> None:
         """Writes the object to a file.
@@ -116,7 +160,6 @@ class CTLoader(CT):
         data : list
             A list of 3D NumPy arrays.
         """
-
         self.SetNumberOfSections(len(data))
 
         for n, array in enumerate(data):

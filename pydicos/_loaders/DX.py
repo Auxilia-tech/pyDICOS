@@ -4,6 +4,10 @@ from pyDICOS import DX, ErrorLog, Filename, Volume
 from typing import Optional, Union
 
 from .TDR import TDRLoader
+from ..metadata import (
+    DXMetadata,
+    DateTimeMetadata
+)
 
 
 # This class can be utilized to load a DX object by either reading a DX file or using a provided DX object.
@@ -19,9 +23,48 @@ class DXLoader(DX):
             The default is None and will create an empty DX.
         """
         super().__init__()
+        self._metadata: Optional[DXMetadata] = None
 
         if filename is not None:
             self.read(filename)
+
+    @property
+    def metadata(self) -> DXMetadata:
+        """Get the DX metadata.
+
+        Returns
+        -------
+        DXMetadata
+            The DX metadata.
+        """
+        if self._metadata is None:
+            self._metadata = self._load_metadata()
+        return self._metadata
+
+    def _load_metadata(self) -> DXMetadata:
+        """Load the DX metadata from the DX object.
+
+        Returns
+        -------
+        DXMetadata
+            The DX metadata.
+        """
+        content_date = self.GetContentDate()
+        content_time = self.GetContentTime()
+
+        return DXMetadata(
+            instance_number=self.GetInstanceNumber(),
+            instance_uid=self.GetScanInstanceUID().Get(),
+            series_instance_uid=self.GetSeriesInstanceUID().Get(),
+            frame_of_reference_uid=self.GetFrameOfReferenceUID().Get(),
+            ooi_id=self.GetOOIID().Get(),
+            ooi_type=self.GetOOIType(),
+            content_date_time=DateTimeMetadata(
+                date=(content_date.GetYear(), content_date.GetMonth(), content_date.GetDay()),
+                time=(content_time.GetHour(), content_time.GetMinute(), content_time.GetSecond(), content_time.GetMicrosecond())
+            ),
+            sop_class_uid=self.GetSopClassUID().Get()
+        )
 
     def read(self, filename: Union[str, Path]) -> None:
         """Reads the object from a file.
@@ -36,6 +79,7 @@ class DXLoader(DX):
             raise RuntimeError(
             f"Failed to read DICOS file: {filename}\n{_err.GetErrorLog().Get()}"
         )
+        self._metadata = None  # Reset metadata cache
 
     def write(self, filename: Union[str, Path]) -> None:
         """Writes the object to a file.
